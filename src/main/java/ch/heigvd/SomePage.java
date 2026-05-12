@@ -1,4 +1,4 @@
-package org.acme;
+package ch.heigvd;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;

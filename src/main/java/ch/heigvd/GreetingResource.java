@@ -1,4 +1,4 @@
-package org.acme;
+package ch.heigvd;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
