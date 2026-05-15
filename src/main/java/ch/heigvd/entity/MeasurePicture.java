@@ -1,4 +1,4 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import jakarta.persistence.*;
 

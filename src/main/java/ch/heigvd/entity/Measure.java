@@ -1,4 +1,4 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import jakarta.persistence.*;
 
@@ -25,10 +25,18 @@ public class Measure {
     @Column(name = "location", nullable = false)
     private String location;
 
+    @Enumerated(EnumType.STRING)
+    private MeasureType type;
+
     @OneToMany(mappedBy = "measure", cascade = CascadeType.ALL)
     private Set<MeasurePicture> pictures;
 
     public Measure() {}
+
+    //superclass method to return the Measure type
+    public String getType() {
+        return "";
+    }
 
     public Long getId() {
         return id;

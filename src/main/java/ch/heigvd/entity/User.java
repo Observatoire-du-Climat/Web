@@ -1,13 +1,17 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
+import io.quarkus.security.jpa.UserDefinition;
+import io.quarkus.security.jpa.Username;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "users") //name "user" not avaiable
+@UserDefinition
 public class User {
 
     @Id
@@ -16,9 +20,11 @@ public class User {
     private Long id;
 
     @Column(name = "name", length = 50, nullable = false)
+    @Username
     private String name;
 
     @Column(name = "email", length = 50, nullable = false)
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
 
     @Column(name = "password", nullable = false)

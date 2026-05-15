@@ -1,9 +1,11 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "bird_migration")
 public class BirdMigration extends Measure {
 
     @Column(name = "bird_type", length = 15, nullable = false)
