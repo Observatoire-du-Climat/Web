@@ -33,11 +33,6 @@ public class Measure {
 
     public Measure() {}
 
-    //superclass method to return the Measure type
-    public String getType() {
-        return "";
-    }
-
     public Long getId() {
         return id;
     }
@@ -68,6 +63,14 @@ public class Measure {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public MeasureType getType() {
+        return type;
+    }
+
+    public void setType(MeasureType type) {
+        this.type = type;
     }
 
     public Set<MeasurePicture> getPictures() {
