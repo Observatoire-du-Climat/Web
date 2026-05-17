@@ -1,5 +1,6 @@
 package ch.heigvd.service;
 
+import ch.heigvd.dto.BirdMigrationMeasureDTO;
 import ch.heigvd.entity.BirdMigration;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.User;
@@ -27,7 +28,7 @@ public class BirdMigrationService {
      * @param arrival true if it is an arrival, false if departure
      * @return an Optional with the newly created BirdMigration if the insert was successful, or an empty Optional if insertion
      */
-    public Optional<MeasureService.BirdMigrationMeasureDTO> addBirdMigration(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {
+    public Optional<BirdMigrationMeasureDTO> addBirdMigration(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {
 
         try {
             BirdMigration birdMigration = new BirdMigration();
@@ -42,7 +43,7 @@ public class BirdMigrationService {
             user.getMeasures().add(birdMigration);
 
             em.persist(birdMigration);
-            return Optional.of(new MeasureService.BirdMigrationMeasureDTO(birdMigration.getId(),
+            return Optional.of(new BirdMigrationMeasureDTO(birdMigration.getId(),
                     birdMigration.getDate(),
                     birdMigration.getLocation(),
                     birdMigration.getType().toString(),
@@ -63,7 +64,7 @@ public class BirdMigrationService {
      * @param arrival the (new) arrival boolean of the measure
      * @return an Optional with the modified BirdMigration if the update was successful, or an empty Optional if update failed
      */
-    public Optional<MeasureService.BirdMigrationMeasureDTO> modifyBirdMigration(BirdMigration birdMigration, LocalDate date, String location, String birdType, Boolean arrival) {
+    public Optional<BirdMigrationMeasureDTO> modifyBirdMigration(BirdMigration birdMigration, LocalDate date, String location, String birdType, Boolean arrival) {
 
         try {
 
@@ -72,7 +73,7 @@ public class BirdMigrationService {
             birdMigrationToModify.setLocation(location);
             birdMigrationToModify.setBirdType(birdType);
             birdMigrationToModify.setArrival(arrival);
-            return Optional.of(new MeasureService.BirdMigrationMeasureDTO(birdMigrationToModify.getId(),
+            return Optional.of(new BirdMigrationMeasureDTO(birdMigrationToModify.getId(),
                     birdMigrationToModify.getDate(),
                     birdMigrationToModify.getLocation(),
                     birdMigrationToModify.getType().toString(),

@@ -1,5 +1,6 @@
 package ch.heigvd.service;
 
+import ch.heigvd.dto.EggsLayingMeasureDTO;
 import ch.heigvd.entity.EggsLaying;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.User;
@@ -26,7 +27,7 @@ public class EggsLayingService {
      * @param number the number value of the measure
      * @return an Optional with the newly created EggsLaying if the insert was successful, or an empty Optional if insertion
      */
-    public Optional<MeasureService.EggsLayingMeasureDTO> addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
+    public Optional<EggsLayingMeasureDTO> addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
 
         try {
             EggsLaying eggsLaying = new EggsLaying();
@@ -40,7 +41,7 @@ public class EggsLayingService {
             user.getMeasures().add(eggsLaying);
 
             em.persist(eggsLaying);
-            return Optional.of(new MeasureService.EggsLayingMeasureDTO(eggsLaying.getId(),
+            return Optional.of(new EggsLayingMeasureDTO(eggsLaying.getId(),
                     eggsLaying.getDate(),
                     eggsLaying.getLocation(),
                     eggsLaying.getType().toString(),
@@ -59,7 +60,7 @@ public class EggsLayingService {
      * @param number the (new) number value of the measure
      * @return an Optional with the modified EggsLaying if the update was successful, or an empty Optional if update failed
      */
-    public Optional<MeasureService.EggsLayingMeasureDTO> modifyEggsLaying(EggsLaying eggsLaying, LocalDate date, String location, Integer number) {
+    public Optional<EggsLayingMeasureDTO> modifyEggsLaying(EggsLaying eggsLaying, LocalDate date, String location, Integer number) {
 
         try {
 
@@ -67,7 +68,7 @@ public class EggsLayingService {
             eggsLayingToModify.setDate(date);
             eggsLayingToModify.setLocation(location);
             eggsLayingToModify.setNumber(number);
-            return Optional.of(new MeasureService.EggsLayingMeasureDTO(eggsLayingToModify.getId(),
+            return Optional.of(new EggsLayingMeasureDTO(eggsLayingToModify.getId(),
                     eggsLayingToModify.getDate(),
                     eggsLayingToModify.getLocation(),
                     eggsLayingToModify.getType().toString(),

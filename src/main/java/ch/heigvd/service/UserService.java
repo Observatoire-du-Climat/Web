@@ -1,5 +1,6 @@
 package ch.heigvd.service;
 
+import ch.heigvd.dto.UserDTO;
 import ch.heigvd.entity.User;
 import ch.heigvd.entity.UserParameters;
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -19,8 +20,6 @@ public class UserService {
     public UserService(EntityManager em) {
         this.em = em;
     }
-
-    public record UserDTO(Long id, String name, String email) {}
 
     /**
      * Search a User by its id

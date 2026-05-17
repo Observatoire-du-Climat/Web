@@ -1,5 +1,6 @@
 package ch.heigvd.service;
 
+import ch.heigvd.dto.TemperatureMeasureDTO;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.Temperature;
 import ch.heigvd.entity.User;
@@ -28,7 +29,7 @@ public class TemperatureService {
      * @param degree the degree value
      * @return an Optional with the newly created Temperature if the insert was successful, or an empty Optional if insertion failed
      */
-    public Optional<MeasureService.TemperatureMeasureDTO> addTemperature(Long userId, LocalDate date, String location, Integer degree) {
+    public Optional<TemperatureMeasureDTO> addTemperature(Long userId, LocalDate date, String location, Integer degree) {
 
         try {
             Temperature temperature = new Temperature();
@@ -42,7 +43,7 @@ public class TemperatureService {
             user.getMeasures().add(temperature);
 
             em.persist(temperature);
-            return Optional.of(new MeasureService.TemperatureMeasureDTO(temperature.getId(),
+            return Optional.of(new TemperatureMeasureDTO(temperature.getId(),
                                                                         temperature.getDate(),
                                                                         temperature.getLocation(),
                                                                         temperature.getType().toString(),
@@ -61,7 +62,7 @@ public class TemperatureService {
      * @param degree the (new) degree of the Temperature
      * @return an Optional with the modified Temperature if the update was successful, or an empty Optional if update failed
      */
-    public Optional<MeasureService.TemperatureMeasureDTO> modifyTemperature(Temperature temperature, LocalDate date, String location, Integer degree) {
+    public Optional<TemperatureMeasureDTO> modifyTemperature(Temperature temperature, LocalDate date, String location, Integer degree) {
 
         try {
 
@@ -69,7 +70,7 @@ public class TemperatureService {
             temperatureToModify.setDate(date);
             temperatureToModify.setLocation(location);
             temperatureToModify.setDegree(degree);
-            return Optional.of(new MeasureService.TemperatureMeasureDTO(temperatureToModify.getId(),
+            return Optional.of(new TemperatureMeasureDTO(temperatureToModify.getId(),
                                                                         temperatureToModify.getDate(),
                                                                         temperatureToModify.getLocation(),
                                                                         temperatureToModify.getType().toString(),

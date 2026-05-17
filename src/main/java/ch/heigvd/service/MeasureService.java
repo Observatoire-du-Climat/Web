@@ -1,7 +1,7 @@
 package ch.heigvd.service;
 
+import ch.heigvd.dto.*;
 import ch.heigvd.entity.Measure;
-import ch.heigvd.entity.Temperature;
 import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,12 +21,6 @@ public class MeasureService {
     public MeasureService(EntityManager em) {
         this.em = em;
     }
-
-    public record MeasureDTO(Long id, LocalDate date, String location, String type) {}
-    public record TemperatureMeasureDTO(Long id, LocalDate date, String location, String type, Integer degree) {}
-    public record SnowHeightMeasureDTO(Long id, LocalDate date, String location, String type, Integer height, String weather, Integer precipitation) {}
-    public record BirdMigrationMeasureDTO(Long id, LocalDate date, String location, String type, String birdType, Boolean arrival) {}
-    public record EggsLayingMeasureDTO(Long id, LocalDate date, String location, String type, Integer number) {}
 
     /**
      * Search all the measures in the database

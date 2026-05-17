@@ -1,5 +1,6 @@
 package ch.heigvd.service;
 
+import ch.heigvd.dto.SnowHeightMeasureDTO;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.SnowHeight;
 import ch.heigvd.entity.Temperature;
@@ -30,7 +31,7 @@ public class SnowHeightService {
      * @param precipitation the precipitation value of the measure
      * @return an Optional with the newly created SnowHeight if the insert was successful, or an empty Optional if insertion
      */
-    public Optional<MeasureService.SnowHeightMeasureDTO> addSnowHeight(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
+    public Optional<SnowHeightMeasureDTO> addSnowHeight(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
         try {
             SnowHeight snowHeight = new SnowHeight();
@@ -46,7 +47,7 @@ public class SnowHeightService {
             user.getMeasures().add(snowHeight);
 
             em.persist(snowHeight);
-            return Optional.of(new MeasureService.SnowHeightMeasureDTO(snowHeight.getId(),
+            return Optional.of(new SnowHeightMeasureDTO(snowHeight.getId(),
                     snowHeight.getDate(),
                     snowHeight.getLocation(),
                     snowHeight.getType().toString(),
@@ -69,7 +70,7 @@ public class SnowHeightService {
      * @param precipitation the (new) precipitation value of the measure
      * @return an Optional with the modified SnowHeight if the update was successful, or an empty Optional if update failed
      */
-    public Optional<MeasureService.SnowHeightMeasureDTO> modifySnowHeight(SnowHeight snowHeight, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
+    public Optional<SnowHeightMeasureDTO> modifySnowHeight(SnowHeight snowHeight, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
         try {
 
@@ -79,7 +80,7 @@ public class SnowHeightService {
             snowHeightToModify.setHeight(height);
             snowHeightToModify.setWeather(weather);
             snowHeightToModify.setPrecipitation(precipitation);
-            return Optional.of(new MeasureService.SnowHeightMeasureDTO(snowHeightToModify.getId(),
+            return Optional.of(new SnowHeightMeasureDTO(snowHeightToModify.getId(),
                     snowHeightToModify.getDate(),
                     snowHeightToModify.getLocation(),
                     snowHeightToModify.getType().toString(),
