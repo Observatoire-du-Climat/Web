@@ -72,17 +72,17 @@ public class UserService {
     /**
      * Update a User
      * All the attribute are updated, even if not all of them are changed
-     * @param user the user to update
+     * @param userId the id of the user to update
      * @param name the (new) name of the user
      * @param email the (new) email of the user
      * @param password the (new) password of the user, encrypted by Bcrypt
      * @return an Optional with the modified User if the update was successful, or an empty Optional if insertion failed
      */
     @Transactional
-    public Optional<UserDTO> modifyUser(User user, String name, String email, String password) {
+    public Optional<UserDTO> modifyUserById(Long userId, String name, String email, String password) {
 
         try {
-            User userToModify = em.find(User.class, user.getId());
+            User userToModify = em.find(User.class, userId);
             userToModify.setName(name);
             userToModify.setEmail(email);
             userToModify.setPassword(BcryptUtil.bcryptHash(password));

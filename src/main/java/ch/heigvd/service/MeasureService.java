@@ -100,12 +100,12 @@ public class MeasureService {
 
     /**
      * Delete a Measure
-     * @param measure the measure to delete
+     * @param measureId the id of the measure to delete
      * @return an Optional with a true boolean if the suppression was successful, or an empty Optional otherwise
      */
-    public Optional<Boolean> deleteMeasure(Measure measure) {
+    public Optional<Boolean> deleteMeasureById(Long measureId) {
 
-        Measure measureToDelete = em.find(Measure.class, measure.getId());
+        Measure measureToDelete = em.find(Measure.class, measureId);
         if (measureToDelete == null) {
             return Optional.empty();
         }
