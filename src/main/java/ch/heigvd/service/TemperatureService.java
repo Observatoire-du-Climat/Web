@@ -56,17 +56,17 @@ public class TemperatureService {
     /**
      * Update a Temperature
      * All the attribute are updated, even if not all of them are changed
-     * @param temperature the Temperature to Update
+     * @param measureId the if of the Temperature Measure to Update
      * @param date the (new) date of the Temperature
      * @param location the (new) location of the Temperature
      * @param degree the (new) degree of the Temperature
      * @return an Optional with the modified Temperature if the update was successful, or an empty Optional if update failed
      */
-    public Optional<TemperatureMeasureDTO> modifyTemperature(Temperature temperature, LocalDate date, String location, Integer degree) {
+    public Optional<TemperatureMeasureDTO> modifyTemperatureById(Long measureId, LocalDate date, String location, Integer degree) {
 
         try {
 
-            Temperature temperatureToModify = em.find(Temperature.class, temperature.getId());
+            Temperature temperatureToModify = em.find(Temperature.class, measureId);
             temperatureToModify.setDate(date);
             temperatureToModify.setLocation(location);
             temperatureToModify.setDegree(degree);

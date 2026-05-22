@@ -12,6 +12,7 @@ import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.Optional;
 
+@ApplicationScoped
 public class SnowHeightService {
 
     private final EntityManager em;
@@ -62,7 +63,7 @@ public class SnowHeightService {
     /**
      * Update a SnowHeight Measure
      * All the attribute are updated, even if not all of them are changed
-     * @param snowHeight the measure to update
+     * @param measureId the id of the measure to update
      * @param date the (new) date of the measure
      * @param location the (new) location of the measure
      * @param height the (new) height value of the measure
@@ -70,11 +71,11 @@ public class SnowHeightService {
      * @param precipitation the (new) precipitation value of the measure
      * @return an Optional with the modified SnowHeight if the update was successful, or an empty Optional if update failed
      */
-    public Optional<SnowHeightMeasureDTO> modifySnowHeight(SnowHeight snowHeight, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
+    public Optional<SnowHeightMeasureDTO> modifySnowHeightById(Long measureId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
         try {
 
-            SnowHeight snowHeightToModify = em.find(SnowHeight.class, snowHeight.getId());
+            SnowHeight snowHeightToModify = em.find(SnowHeight.class, measureId);
             snowHeightToModify.setDate(date);
             snowHeightToModify.setLocation(location);
             snowHeightToModify.setHeight(height);

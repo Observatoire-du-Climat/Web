@@ -4,12 +4,14 @@ import ch.heigvd.dto.BirdMigrationMeasureDTO;
 import ch.heigvd.entity.BirdMigration;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.User;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+@ApplicationScoped
 public class BirdMigrationService {
 
     private final EntityManager em;
@@ -57,18 +59,18 @@ public class BirdMigrationService {
     /**
      * Update a Bird Migration Measure
      * All the attribute are updated, even if not all of them are changed
-     * @param birdMigration the measure to modify
+     * @param measureId the id of the measure to modify
      * @param date the (new) date of the measure
      * @param location the (new) location of the measure
      * @param birdType the (new) bird type of the measure
      * @param arrival the (new) arrival boolean of the measure
      * @return an Optional with the modified BirdMigration if the update was successful, or an empty Optional if update failed
      */
-    public Optional<BirdMigrationMeasureDTO> modifyBirdMigration(BirdMigration birdMigration, LocalDate date, String location, String birdType, Boolean arrival) {
+    public Optional<BirdMigrationMeasureDTO> modifyBirdMigrationById(Long measureId, LocalDate date, String location, String birdType, Boolean arrival) {
 
         try {
 
-            BirdMigration birdMigrationToModify = em.find(BirdMigration.class, birdMigration.getId());
+            BirdMigration birdMigrationToModify = em.find(BirdMigration.class, measureId);
             birdMigrationToModify.setDate(date);
             birdMigrationToModify.setLocation(location);
             birdMigrationToModify.setBirdType(birdType);

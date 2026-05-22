@@ -2,7 +2,6 @@ package ch.heigvd.service;
 
 import ch.heigvd.dto.UserDTO;
 import ch.heigvd.entity.User;
-import ch.heigvd.entity.UserParameters;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -55,12 +54,6 @@ public class UserService {
             user.setPassword(BcryptUtil.bcryptHash(password));
             user.setRole(""); //TODO to modify after admin features
 
-            //Associate parameters with the user
-            UserParameters userParameters = new UserParameters();
-            userParameters.setUser(user);
-            userParameters.setNotifications(true);
-
-            em.persist(userParameters);
             em.persist(user);
 
             return Optional.of(new UserDTO(user.getId(), user.getName(), user.getEmail()));

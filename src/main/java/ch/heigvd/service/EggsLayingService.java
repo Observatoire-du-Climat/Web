@@ -4,12 +4,14 @@ import ch.heigvd.dto.EggsLayingMeasureDTO;
 import ch.heigvd.entity.EggsLaying;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.User;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+@ApplicationScoped
 public class EggsLayingService {
 
     private final EntityManager em;
@@ -54,17 +56,17 @@ public class EggsLayingService {
     /**
      * Update a Bird Migration Measure
      * All the attribute are updated, even if not all of them are changed
-     * @param eggsLaying the measure to modify
+     * @param measureId the id of the measure to modify
      * @param date the (new) date of the measure
      * @param location the (new) location of the measure
      * @param number the (new) number value of the measure
      * @return an Optional with the modified EggsLaying if the update was successful, or an empty Optional if update failed
      */
-    public Optional<EggsLayingMeasureDTO> modifyEggsLaying(EggsLaying eggsLaying, LocalDate date, String location, Integer number) {
+    public Optional<EggsLayingMeasureDTO> modifyEggsLayingById(Long measureId, LocalDate date, String location, Integer number) {
 
         try {
 
-            EggsLaying eggsLayingToModify = em.find(EggsLaying.class, eggsLaying.getId());
+            EggsLaying eggsLayingToModify = em.find(EggsLaying.class, measureId);
             eggsLayingToModify.setDate(date);
             eggsLayingToModify.setLocation(location);
             eggsLayingToModify.setNumber(number);

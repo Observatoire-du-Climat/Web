@@ -43,9 +43,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Measure> measures;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserParameters parameters;
-
     public User() {}
 
     public Long getId() {
@@ -110,13 +107,5 @@ public class User {
 
     public void setMeasures(Set<Measure> measures) {
         this.measures = measures;
-    }
-
-    public UserParameters getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(UserParameters parameters) {
-        this.parameters = parameters;
     }
 }

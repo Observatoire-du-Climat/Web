@@ -14,10 +14,12 @@ public class UserResource {
     @Inject
     UserService userService;
 
+    public record UserRequest(String name, String email, String password) {}
+
     @POST
-    public Response createUser(String name, String email, String password) {
+    public Response createUser(UserRequest userRequest) {
         try {
-            userService.addUser(name, email, password);
+            userService.addUser(userRequest.name, userRequest.email, userRequest.password);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -37,9 +39,9 @@ public class UserResource {
 
     @Path("/{id}")
     @PUT
-    public Response updateUser(@PathParam("id") Long id, String name, String email, String password) {
+    public Response updateUser(@PathParam("id") Long id, UserRequest userRequest) {
         try {
-            UserDTO userDTO = userService.modifyUserById(id, name, email, password).orElseThrow();
+            UserDTO userDTO = userService.modifyUserById(id,userRequest.name, userRequest.email, userRequest.password).orElseThrow();
             return Response.status(Response.Status.OK).entity(userDTO).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
