@@ -51,7 +51,7 @@ public class SnowHeightService {
             return Optional.of(new SnowHeightMeasureDTO(snowHeight.getId(),
                     snowHeight.getDate(),
                     snowHeight.getLocation(),
-                    snowHeight.getType().toString(),
+                    snowHeight.getType(),
                     snowHeight.getHeight(),
                     snowHeight.getWeather(),
                     snowHeight.getPrecipitation()));
@@ -84,7 +84,7 @@ public class SnowHeightService {
             return Optional.of(new SnowHeightMeasureDTO(snowHeightToModify.getId(),
                     snowHeightToModify.getDate(),
                     snowHeightToModify.getLocation(),
-                    snowHeightToModify.getType().toString(),
+                    snowHeightToModify.getType(),
                     snowHeightToModify.getHeight(),
                     snowHeightToModify.getWeather(),
                     snowHeightToModify.getPrecipitation()));

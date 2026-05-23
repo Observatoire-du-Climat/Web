@@ -48,7 +48,7 @@ public class BirdMigrationService {
             return Optional.of(new BirdMigrationMeasureDTO(birdMigration.getId(),
                     birdMigration.getDate(),
                     birdMigration.getLocation(),
-                    birdMigration.getType().toString(),
+                    birdMigration.getType(),
                     birdMigration.getBirdType(),
                     birdMigration.getArrival()));
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class BirdMigrationService {
             return Optional.of(new BirdMigrationMeasureDTO(birdMigrationToModify.getId(),
                     birdMigrationToModify.getDate(),
                     birdMigrationToModify.getLocation(),
-                    birdMigrationToModify.getType().toString(),
+                    birdMigrationToModify.getType(),
                     birdMigrationToModify.getBirdType(),
                     birdMigrationToModify.getArrival()));
 

@@ -46,7 +46,7 @@ public class EggsLayingService {
             return Optional.of(new EggsLayingMeasureDTO(eggsLaying.getId(),
                     eggsLaying.getDate(),
                     eggsLaying.getLocation(),
-                    eggsLaying.getType().toString(),
+                    eggsLaying.getType(),
                     eggsLaying.getNumber()));
         } catch (Exception e) {
             return Optional.empty();
@@ -73,7 +73,7 @@ public class EggsLayingService {
             return Optional.of(new EggsLayingMeasureDTO(eggsLayingToModify.getId(),
                     eggsLayingToModify.getDate(),
                     eggsLayingToModify.getLocation(),
-                    eggsLayingToModify.getType().toString(),
+                    eggsLayingToModify.getType(),
                     eggsLayingToModify.getNumber()));
 
         } catch (Exception e) {

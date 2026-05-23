@@ -3,6 +3,7 @@ package ch.heigvd.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,7 @@ public class Measure {
     private MeasureType type;
 
     @OneToMany(mappedBy = "measure", cascade = CascadeType.ALL)
-    private Set<MeasurePicture> pictures;
+    private Set<MeasurePicture> pictures = new HashSet<>();
 
     public Measure() {}
 

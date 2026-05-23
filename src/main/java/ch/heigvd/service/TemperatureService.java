@@ -44,10 +44,10 @@ public class TemperatureService {
 
             em.persist(temperature);
             return Optional.of(new TemperatureMeasureDTO(temperature.getId(),
-                                                                        temperature.getDate(),
-                                                                        temperature.getLocation(),
-                                                                        temperature.getType().toString(),
-                                                                        temperature.getDegree()));
+                                                        temperature.getDate(),
+                                                        temperature.getLocation(),
+                                                        temperature.getType(),
+                                                        temperature.getDegree()));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -56,7 +56,7 @@ public class TemperatureService {
     /**
      * Update a Temperature
      * All the attribute are updated, even if not all of them are changed
-     * @param measureId the if of the Temperature Measure to Update
+     * @param measureId the id of the Temperature Measure to Update
      * @param date the (new) date of the Temperature
      * @param location the (new) location of the Temperature
      * @param degree the (new) degree of the Temperature
@@ -73,7 +73,7 @@ public class TemperatureService {
             return Optional.of(new TemperatureMeasureDTO(temperatureToModify.getId(),
                                                                         temperatureToModify.getDate(),
                                                                         temperatureToModify.getLocation(),
-                                                                        temperatureToModify.getType().toString(),
+                                                                        temperatureToModify.getType(),
                                                                         temperatureToModify.getDegree()));
 
         } catch (Exception e) {

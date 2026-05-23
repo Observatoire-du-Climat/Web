@@ -28,16 +28,21 @@ public class MeasureService {
      */
     public List<MeasureDTO> searchAllMeasures() {
         var query = em.createQuery("""
-            SELECT m.id, m.date, m.location, m.type
+            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type)
             FROM Measure AS m
         """, MeasureDTO.class);
 
         return query.getResultList();
     }
 
+    /**
+     * Search all the measure of a specific user
+     * @param userId the id of the user
+     * @return the list of all measure taken by the specific user
+     */
     public List<MeasureDTO> searchAllMeasuresByUserId(Long userId) {
         var query = em.createQuery("""
-            SELECT m.id, m.date, m.location, m.type
+            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type)
             FROM Measure AS m
             WHERE m.user.id = :id
         """, MeasureDTO.class).setParameter("id", userId);
@@ -60,7 +65,7 @@ public class MeasureService {
         switch (measure.getType()) {
             case TEMPERATURE -> {
                 var query = em.createQuery("""
-                    SELECT t.id, t.date, t.location, t.degree
+                    SELECT new ch.heigvd.dto.TemperatureMeasureDTO(t.id, t.date, t.location, t.type, t.degree)
                     FROM Temperature AS t
                     WHERE t.id = :id
                 """, TemperatureMeasureDTO.class).setParameter("id", measure.getId());
@@ -69,7 +74,7 @@ public class MeasureService {
 
             case SNOW_HEIGHT -> {
                 var query = em.createQuery("""
-                    SELECT s.id, s.date, s.location, s.height, s.weather, s.precipitation
+                    SELECT new ch.heigvd.dto.SnowHeightMeasureDTO(s.id, s.date, s.location, s.type, s.height, s.weather, s.precipitation)
                     FROM SnowHeight AS s
                     WHERE s.id = :id
                 """, SnowHeightMeasureDTO.class).setParameter("id", measure.getId());
@@ -78,7 +83,7 @@ public class MeasureService {
 
             case BIRD_MIGRATION -> {
                 var query = em.createQuery("""
-                    SELECT b.id, b.date, b.location, b.birdType, b.arrival
+                    SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.birdType, b.arrival)
                     FROM BirdMigration AS b
                     WHERE b.id = :id
                 """, BirdMigrationMeasureDTO.class).setParameter("id", measure.getId());
@@ -87,7 +92,7 @@ public class MeasureService {
 
             case EGGS_LAYING -> {
                 var query = em.createQuery("""
-                    SELECT e.id, e.date, e.location, e.number
+                    SELECT new ch.heigvd.dto.EggsLayingMeasureDTO(e.id, e.date, e.location, e.type, e.number)
                     FROM EggsLaying AS e
                     WHERE e.id = :id
                 """, EggsLayingMeasureDTO.class).setParameter("id", measure.getId());
@@ -103,21 +108,21 @@ public class MeasureService {
      * @param measureId the id of the measure to delete
      * @return an Optional with a true boolean if the suppression was successful, or an empty Optional otherwise
      */
-    public Optional<Boolean> deleteMeasureById(Long measureId) {
+    public Boolean deleteMeasureById(Long measureId) {
 
         Measure measureToDelete = em.find(Measure.class, measureId);
         if (measureToDelete == null) {
-            return Optional.empty();
+            return false;
         }
 
         User user = em.find(User.class, measureToDelete.getUser().getId());
         if (!user.getMeasures().remove(measureToDelete)) {
             //If the user doesn't have this measure in his measures set
-            return Optional.empty();
+            return false;
         }
         em.remove(measureToDelete);
 
-        return Optional.of(true);
+        return true;
     }
 
 

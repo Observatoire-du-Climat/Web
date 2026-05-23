@@ -7,6 +7,7 @@ import io.quarkus.security.jpa.Username;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -41,7 +42,7 @@ public class User {
     private Boolean isValid;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Measure> measures;
+    private Set<Measure> measures = new HashSet<>();
 
     public User() {}
 

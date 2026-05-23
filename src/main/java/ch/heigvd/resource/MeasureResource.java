@@ -40,12 +40,10 @@ public class MeasureResource {
     @Path("/{id}")
     @DELETE
     public Response deleteMeasure(@PathParam("id") Long id) {
-        try {
-            measureService.deleteMeasureById(id);
-            return Response.status(Response.Status.NO_CONTENT).build();
-        } catch (Exception e) {
+        if (!measureService.deleteMeasureById(id)) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }
 
