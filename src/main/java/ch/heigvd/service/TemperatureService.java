@@ -7,6 +7,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -27,30 +28,29 @@ public class TemperatureService {
      * @param date the date of the measure
      * @param location the location of the measure
      * @param degree the degree value
-     * @return an Optional with the newly created Temperature if the insert was successful, or an empty Optional if insertion failed
+     * @return A DTO of the newly created Temperature if the insert was successful
      */
-    public Optional<TemperatureMeasureDTO> addTemperature(Long userId, LocalDate date, String location, Integer degree) {
+    public TemperatureMeasureDTO addTemperature(Long userId, LocalDate date, String location, Integer degree) {
 
-        try {
-            Temperature temperature = new Temperature();
-            temperature.setDate(date);
-            temperature.setLocation(location);
-            temperature.setDegree(degree);
-            temperature.setType(MeasureType.TEMPERATURE);
+        Temperature temperature = new Temperature();
+        temperature.setDate(date);
+        temperature.setLocation(location);
+        temperature.setDegree(degree);
+        temperature.setType(MeasureType.TEMPERATURE);
 
-            User user = em.find(User.class, userId);
-            temperature.setUser(user);
-            user.getMeasures().add(temperature);
-
-            em.persist(temperature);
-            return Optional.of(new TemperatureMeasureDTO(temperature.getId(),
-                                                        temperature.getDate(),
-                                                        temperature.getLocation(),
-                                                        temperature.getType(),
-                                                        temperature.getDegree()));
-        } catch (Exception e) {
-            return Optional.empty();
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
         }
+        temperature.setUser(user);
+        user.getMeasures().add(temperature);
+
+        em.persist(temperature);
+        return new TemperatureMeasureDTO(temperature.getId(),
+                                        temperature.getDate(),
+                                        temperature.getLocation(),
+                                        temperature.getType(),
+                                        temperature.getDegree());
     }
 
     /**
@@ -60,25 +60,23 @@ public class TemperatureService {
      * @param date the (new) date of the Temperature
      * @param location the (new) location of the Temperature
      * @param degree the (new) degree of the Temperature
-     * @return an Optional with the modified Temperature if the update was successful, or an empty Optional if update failed
+     * @return a DTO with the modified Temperature if the update was successful
      */
-    public Optional<TemperatureMeasureDTO> modifyTemperatureById(Long measureId, LocalDate date, String location, Integer degree) {
+    public TemperatureMeasureDTO modifyTemperatureById(Long measureId, LocalDate date, String location, Integer degree) {
 
-        try {
-
-            Temperature temperatureToModify = em.find(Temperature.class, measureId);
-            temperatureToModify.setDate(date);
-            temperatureToModify.setLocation(location);
-            temperatureToModify.setDegree(degree);
-            return Optional.of(new TemperatureMeasureDTO(temperatureToModify.getId(),
-                                                                        temperatureToModify.getDate(),
-                                                                        temperatureToModify.getLocation(),
-                                                                        temperatureToModify.getType(),
-                                                                        temperatureToModify.getDegree()));
-
-        } catch (Exception e) {
-            return Optional.empty();
+        Temperature temperatureToModify = em.find(Temperature.class, measureId);
+        if (temperatureToModify == null) {
+            throw new NotFoundException("Measure not found");
         }
+        temperatureToModify.setDate(date);
+        temperatureToModify.setLocation(location);
+        temperatureToModify.setDegree(degree);
+        return new TemperatureMeasureDTO(temperatureToModify.getId(),
+                                        temperatureToModify.getDate(),
+                                        temperatureToModify.getLocation(),
+                                        temperatureToModify.getType(),
+                                        temperatureToModify.getDegree());
+
     }
 
 }

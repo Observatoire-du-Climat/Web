@@ -7,6 +7,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -27,30 +28,29 @@ public class EggsLayingService {
      * @param date the date of the measure
      * @param location the location of the measure
      * @param number the number value of the measure
-     * @return an Optional with the newly created EggsLaying if the insert was successful, or an empty Optional if insertion
+     * @return a DTO with the newly created EggsLaying if the insert was successful
      */
-    public Optional<EggsLayingMeasureDTO> addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
+    public EggsLayingMeasureDTO addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
 
-        try {
-            EggsLaying eggsLaying = new EggsLaying();
-            eggsLaying.setDate(date);
-            eggsLaying.setLocation(location);
-            eggsLaying.setNumber(number);
-            eggsLaying.setType(MeasureType.EGGS_LAYING);
+        EggsLaying eggsLaying = new EggsLaying();
+        eggsLaying.setDate(date);
+        eggsLaying.setLocation(location);
+        eggsLaying.setNumber(number);
+        eggsLaying.setType(MeasureType.EGGS_LAYING);
 
-            User user = em.find(User.class, userId);
-            eggsLaying.setUser(user);
-            user.getMeasures().add(eggsLaying);
-
-            em.persist(eggsLaying);
-            return Optional.of(new EggsLayingMeasureDTO(eggsLaying.getId(),
-                    eggsLaying.getDate(),
-                    eggsLaying.getLocation(),
-                    eggsLaying.getType(),
-                    eggsLaying.getNumber()));
-        } catch (Exception e) {
-            return Optional.empty();
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
         }
+        eggsLaying.setUser(user);
+        user.getMeasures().add(eggsLaying);
+
+        em.persist(eggsLaying);
+        return new EggsLayingMeasureDTO(eggsLaying.getId(),
+                eggsLaying.getDate(),
+                eggsLaying.getLocation(),
+                eggsLaying.getType(),
+                eggsLaying.getNumber());
     }
 
     /**
@@ -60,24 +60,21 @@ public class EggsLayingService {
      * @param date the (new) date of the measure
      * @param location the (new) location of the measure
      * @param number the (new) number value of the measure
-     * @return an Optional with the modified EggsLaying if the update was successful, or an empty Optional if update failed
+     * @return a DTO with the modified EggsLaying if the update was successful
      */
-    public Optional<EggsLayingMeasureDTO> modifyEggsLayingById(Long measureId, LocalDate date, String location, Integer number) {
+    public EggsLayingMeasureDTO modifyEggsLayingById(Long measureId, LocalDate date, String location, Integer number) {
 
-        try {
-
-            EggsLaying eggsLayingToModify = em.find(EggsLaying.class, measureId);
-            eggsLayingToModify.setDate(date);
-            eggsLayingToModify.setLocation(location);
-            eggsLayingToModify.setNumber(number);
-            return Optional.of(new EggsLayingMeasureDTO(eggsLayingToModify.getId(),
-                    eggsLayingToModify.getDate(),
-                    eggsLayingToModify.getLocation(),
-                    eggsLayingToModify.getType(),
-                    eggsLayingToModify.getNumber()));
-
-        } catch (Exception e) {
-            return Optional.empty();
+        EggsLaying eggsLayingToModify = em.find(EggsLaying.class, measureId);
+        if (eggsLayingToModify == null) {
+            throw new NotFoundException("Measure not found");
         }
+        eggsLayingToModify.setDate(date);
+        eggsLayingToModify.setLocation(location);
+        eggsLayingToModify.setNumber(number);
+        return new EggsLayingMeasureDTO(eggsLayingToModify.getId(),
+                eggsLayingToModify.getDate(),
+                eggsLayingToModify.getLocation(),
+                eggsLayingToModify.getType(),
+                eggsLayingToModify.getNumber());
     }
 }

@@ -47,9 +47,9 @@ public class TemperatureResource {
     @PUT
     public Response updateTemperatureMeasure(@PathParam("id") Long id, TemperatureRequest request) {
         try {
-            TemperatureMeasureDTO temperatureMeasureDTO = temperatureService.modifyTemperatureById(id, request.date, request.location, request.degree).orElseThrow();
+            TemperatureMeasureDTO temperatureMeasureDTO = temperatureService.modifyTemperatureById(id, request.date, request.location, request.degree);
             return Response.status(Response.Status.OK).entity(temperatureMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

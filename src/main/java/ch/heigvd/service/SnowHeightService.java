@@ -8,6 +8,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -30,34 +31,33 @@ public class SnowHeightService {
      * @param height the height value of the measure
      * @param weather the weather value of the measure
      * @param precipitation the precipitation value of the measure
-     * @return an Optional with the newly created SnowHeight if the insert was successful, or an empty Optional if insertion
+     * @return a DTO with the newly created SnowHeight if the insert was successful
      */
-    public Optional<SnowHeightMeasureDTO> addSnowHeight(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
+    public SnowHeightMeasureDTO addSnowHeight(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
-        try {
-            SnowHeight snowHeight = new SnowHeight();
-            snowHeight.setDate(date);
-            snowHeight.setLocation(location);
-            snowHeight.setHeight(height);
-            snowHeight.setWeather(weather);
-            snowHeight.setPrecipitation(precipitation);
-            snowHeight.setType(MeasureType.SNOW_HEIGHT);
+        SnowHeight snowHeight = new SnowHeight();
+        snowHeight.setDate(date);
+        snowHeight.setLocation(location);
+        snowHeight.setHeight(height);
+        snowHeight.setWeather(weather);
+        snowHeight.setPrecipitation(precipitation);
+        snowHeight.setType(MeasureType.SNOW_HEIGHT);
 
-            User user = em.find(User.class, userId);
-            snowHeight.setUser(user);
-            user.getMeasures().add(snowHeight);
-
-            em.persist(snowHeight);
-            return Optional.of(new SnowHeightMeasureDTO(snowHeight.getId(),
-                    snowHeight.getDate(),
-                    snowHeight.getLocation(),
-                    snowHeight.getType(),
-                    snowHeight.getHeight(),
-                    snowHeight.getWeather(),
-                    snowHeight.getPrecipitation()));
-        } catch (Exception e) {
-            return Optional.empty();
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
         }
+        snowHeight.setUser(user);
+        user.getMeasures().add(snowHeight);
+
+        em.persist(snowHeight);
+        return new SnowHeightMeasureDTO(snowHeight.getId(),
+                snowHeight.getDate(),
+                snowHeight.getLocation(),
+                snowHeight.getType(),
+                snowHeight.getHeight(),
+                snowHeight.getWeather(),
+                snowHeight.getPrecipitation());
     }
 
     /**
@@ -69,28 +69,26 @@ public class SnowHeightService {
      * @param height the (new) height value of the measure
      * @param weather the (new) weather value of the measure
      * @param precipitation the (new) precipitation value of the measure
-     * @return an Optional with the modified SnowHeight if the update was successful, or an empty Optional if update failed
+     * @return a DTO with the modified SnowHeight if the update was successful
      */
-    public Optional<SnowHeightMeasureDTO> modifySnowHeightById(Long measureId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
+    public SnowHeightMeasureDTO modifySnowHeightById(Long measureId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
-        try {
-
-            SnowHeight snowHeightToModify = em.find(SnowHeight.class, measureId);
-            snowHeightToModify.setDate(date);
-            snowHeightToModify.setLocation(location);
-            snowHeightToModify.setHeight(height);
-            snowHeightToModify.setWeather(weather);
-            snowHeightToModify.setPrecipitation(precipitation);
-            return Optional.of(new SnowHeightMeasureDTO(snowHeightToModify.getId(),
-                    snowHeightToModify.getDate(),
-                    snowHeightToModify.getLocation(),
-                    snowHeightToModify.getType(),
-                    snowHeightToModify.getHeight(),
-                    snowHeightToModify.getWeather(),
-                    snowHeightToModify.getPrecipitation()));
-
-        } catch (Exception e) {
-            return Optional.empty();
+        SnowHeight snowHeightToModify = em.find(SnowHeight.class, measureId);
+        if (snowHeightToModify == null) {
+            throw new NotFoundException("Measure not found");
         }
+        snowHeightToModify.setDate(date);
+        snowHeightToModify.setLocation(location);
+        snowHeightToModify.setHeight(height);
+        snowHeightToModify.setWeather(weather);
+        snowHeightToModify.setPrecipitation(precipitation);
+        return new SnowHeightMeasureDTO(snowHeightToModify.getId(),
+                snowHeightToModify.getDate(),
+                snowHeightToModify.getLocation(),
+                snowHeightToModify.getType(),
+                snowHeightToModify.getHeight(),
+                snowHeightToModify.getWeather(),
+                snowHeightToModify.getPrecipitation());
+
     }
 }

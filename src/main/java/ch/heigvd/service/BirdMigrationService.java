@@ -7,6 +7,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -28,32 +29,31 @@ public class BirdMigrationService {
      * @param location the location of the measure
      * @param birdType the bird type
      * @param arrival true if it is an arrival, false if departure
-     * @return an Optional with the newly created BirdMigration if the insert was successful, or an empty Optional if insertion
+     * @return a DTO with the newly created BirdMigration if the insert was successful
      */
-    public Optional<BirdMigrationMeasureDTO> addBirdMigration(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {
+    public BirdMigrationMeasureDTO addBirdMigration(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {
 
-        try {
-            BirdMigration birdMigration = new BirdMigration();
-            birdMigration.setDate(date);
-            birdMigration.setLocation(location);
-            birdMigration.setBirdType(birdType);
-            birdMigration.setArrival(arrival);
-            birdMigration.setType(MeasureType.BIRD_MIGRATION);
+        BirdMigration birdMigration = new BirdMigration();
+        birdMigration.setDate(date);
+        birdMigration.setLocation(location);
+        birdMigration.setBirdType(birdType);
+        birdMigration.setArrival(arrival);
+        birdMigration.setType(MeasureType.BIRD_MIGRATION);
 
-            User user = em.find(User.class, userId);
-            birdMigration.setUser(user);
-            user.getMeasures().add(birdMigration);
-
-            em.persist(birdMigration);
-            return Optional.of(new BirdMigrationMeasureDTO(birdMigration.getId(),
-                    birdMigration.getDate(),
-                    birdMigration.getLocation(),
-                    birdMigration.getType(),
-                    birdMigration.getBirdType(),
-                    birdMigration.getArrival()));
-        } catch (Exception e) {
-            return Optional.empty();
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
         }
+        birdMigration.setUser(user);
+        user.getMeasures().add(birdMigration);
+
+        em.persist(birdMigration);
+        return new BirdMigrationMeasureDTO(birdMigration.getId(),
+                birdMigration.getDate(),
+                birdMigration.getLocation(),
+                birdMigration.getType(),
+                birdMigration.getBirdType(),
+                birdMigration.getArrival());
     }
 
     /**
@@ -64,26 +64,23 @@ public class BirdMigrationService {
      * @param location the (new) location of the measure
      * @param birdType the (new) bird type of the measure
      * @param arrival the (new) arrival boolean of the measure
-     * @return an Optional with the modified BirdMigration if the update was successful, or an empty Optional if update failed
+     * @return a DTO with the modified BirdMigration if the update was successful
      */
-    public Optional<BirdMigrationMeasureDTO> modifyBirdMigrationById(Long measureId, LocalDate date, String location, String birdType, Boolean arrival) {
+    public BirdMigrationMeasureDTO modifyBirdMigrationById(Long measureId, LocalDate date, String location, String birdType, Boolean arrival) {
 
-        try {
-
-            BirdMigration birdMigrationToModify = em.find(BirdMigration.class, measureId);
-            birdMigrationToModify.setDate(date);
-            birdMigrationToModify.setLocation(location);
-            birdMigrationToModify.setBirdType(birdType);
-            birdMigrationToModify.setArrival(arrival);
-            return Optional.of(new BirdMigrationMeasureDTO(birdMigrationToModify.getId(),
-                    birdMigrationToModify.getDate(),
-                    birdMigrationToModify.getLocation(),
-                    birdMigrationToModify.getType(),
-                    birdMigrationToModify.getBirdType(),
-                    birdMigrationToModify.getArrival()));
-
-        } catch (Exception e) {
-            return Optional.empty();
+        BirdMigration birdMigrationToModify = em.find(BirdMigration.class, measureId);
+        if (birdMigrationToModify == null) {
+            throw new NotFoundException("Measure not found");
         }
+        birdMigrationToModify.setDate(date);
+        birdMigrationToModify.setLocation(location);
+        birdMigrationToModify.setBirdType(birdType);
+        birdMigrationToModify.setArrival(arrival);
+        return new BirdMigrationMeasureDTO(birdMigrationToModify.getId(),
+                birdMigrationToModify.getDate(),
+                birdMigrationToModify.getLocation(),
+                birdMigrationToModify.getType(),
+                birdMigrationToModify.getBirdType(),
+                birdMigrationToModify.getArrival());
     }
 }

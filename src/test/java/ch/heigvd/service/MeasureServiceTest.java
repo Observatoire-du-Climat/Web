@@ -98,10 +98,14 @@ public class MeasureServiceTest {
 
 
     @Test
+    void testSearchMeasureByIdWrongId() {
+        assertThrows(NotFoundException.class, () -> measureService.searchMeasureById(-1L));
+
+    }
+
+    @Test
     @TestTransaction
     void testSearchMeasureByIdTemperature() {
-
-        assertThrows(NotFoundException.class, () -> measureService.searchMeasureById(10L));
 
         User user = TestHelpers.createTestUser(em);
         Temperature temperature = TestHelpers.createTestTemperatureMeasure(em, user);
@@ -121,8 +125,6 @@ public class MeasureServiceTest {
     @Test
     @TestTransaction
     void testSearchMeasureByIdSnowHeight() {
-
-        assertThrows(NotFoundException.class, () -> measureService.searchMeasureById(10L));
 
         User user = TestHelpers.createTestUser(em);
         SnowHeight snowHeight = TestHelpers.createTestSnowHeightMeasure(em, user);
@@ -145,8 +147,6 @@ public class MeasureServiceTest {
     @TestTransaction
     void testSearchMeasureByIdBirdMigration() {
 
-        assertThrows(NotFoundException.class, () -> measureService.searchMeasureById(10L));
-
         User user = TestHelpers.createTestUser(em);
         BirdMigration birdMigration = TestHelpers.createTestBirdMigrationMeasure(em, user);
 
@@ -166,8 +166,6 @@ public class MeasureServiceTest {
     @Test
     @TestTransaction
     void testSearchMeasureByIdEggsLaying() {
-
-        assertThrows(NotFoundException.class, () -> measureService.searchMeasureById(10L));
 
         User user = TestHelpers.createTestUser(em);
         EggsLaying eggsLaying = TestHelpers.createTestEggsLayingMeasure(em, user);

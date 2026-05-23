@@ -47,7 +47,7 @@ public class EggsLayingResource {
     @PUT
     public Response updateEggsLayingMeasure(@PathParam("id") Long id, EggsLayingRequest request) {
         try {
-            EggsLayingMeasureDTO eggsLayingMeasureDTO = eggsLayingService.modifyEggsLayingById(id, request.date, request.location, request.number).orElseThrow();
+            EggsLayingMeasureDTO eggsLayingMeasureDTO = eggsLayingService.modifyEggsLayingById(id, request.date, request.location, request.number);
             return Response.status(Response.Status.OK).entity(eggsLayingMeasureDTO).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();

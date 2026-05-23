@@ -47,7 +47,7 @@ public class SnowHeightResource {
     @PUT
     public Response updateSnowHeightMeasure(@PathParam("id") Long id, SnowHeightRequest request) {
         try {
-            SnowHeightMeasureDTO snowHeightMeasureDTO = snowHeightService.modifySnowHeightById(id, request.date, request.location, request.height, request.weather, request.precipitation).orElseThrow();
+            SnowHeightMeasureDTO snowHeightMeasureDTO = snowHeightService.modifySnowHeightById(id, request.date, request.location, request.height, request.weather, request.precipitation);
             return Response.status(Response.Status.OK).entity(snowHeightMeasureDTO).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();

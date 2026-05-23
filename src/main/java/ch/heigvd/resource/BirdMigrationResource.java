@@ -47,7 +47,7 @@ public class BirdMigrationResource {
     @PUT
     public Response updateBirdMigrationMeasure(@PathParam("id") Long id, BirdMigrationRequest request) {
         try {
-            BirdMigrationMeasureDTO birdMigrationMeasureDTO = birdMigrationService.modifyBirdMigrationById(id, request.date, request.location, request.birdType, request.arrival).orElseThrow();
+            BirdMigrationMeasureDTO birdMigrationMeasureDTO = birdMigrationService.modifyBirdMigrationById(id, request.date, request.location, request.birdType, request.arrival);
             return Response.status(Response.Status.OK).entity(birdMigrationMeasureDTO).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();

@@ -1,0 +1,113 @@
+package ch.heigvd.service;
+
+import ch.heigvd.dto.TemperatureMeasureDTO;
+import ch.heigvd.entity.MeasureType;
+import ch.heigvd.entity.Temperature;
+import ch.heigvd.entity.User;
+import ch.heigvd.utils.TestHelpers;
+import io.quarkus.test.TestTransaction;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.NotFoundException;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@QuarkusTest
+public class TemperatureServiceTest {
+
+    @Inject
+    EntityManager em;
+
+    @Inject
+    TemperatureService temperatureService;
+
+    @Test
+    @TestTransaction
+    void testAddTemperatureWrongUser() {
+        assertThrows(NotFoundException.class, () ->
+                temperatureService.addTemperature(
+                        -1L,
+                        LocalDate.of(2001, 2, 15),
+                        "testlocation",
+                        30
+                )
+        );
+    }
+
+    @Test
+    @TestTransaction
+    void testAddTemperature() {
+
+        User user = TestHelpers.createTestUser(em);
+        TemperatureMeasureDTO result = temperatureService.addTemperature(
+                user.getId(),
+                LocalDate.of(2001, 2, 15),
+                "testlocation",
+                30);
+
+        TemperatureMeasureDTO temperatureMeasureDTO = new TemperatureMeasureDTO(
+                result.id(),
+                LocalDate.of(2001, 2, 15),
+                "testlocation",
+                MeasureType.TEMPERATURE,
+                30);
+
+        assertEquals(temperatureMeasureDTO, result);
+
+        //Should be persisted
+        Temperature temperature = em.find(Temperature.class, result.id());
+
+        assertNotNull(temperature);
+        assertEquals(30, temperature.getDegree());
+        assertEquals(user.getId(), temperature.getUser().getId());
+        assertTrue(user.getMeasures().contains(temperature));
+    }
+
+    @Test
+    @TestTransaction
+    void testModifyTemperatureWrongId() {
+        assertThrows(NotFoundException.class, () ->
+                temperatureService.modifyTemperatureById(
+                        -1L,
+                        LocalDate.of(2001, 2, 15),
+                        "testlocation",
+                        20
+                )
+        );
+    }
+
+    @Test
+    @TestTransaction
+    void testModifyTemperature() {
+
+        User user = TestHelpers.createTestUser(em);
+        TemperatureMeasureDTO firstTemperatureMeasureDTO = temperatureService.addTemperature(
+                user.getId(),
+                LocalDate.of(2001, 2, 15),
+                "testlocation",
+                30
+        );
+
+        TemperatureMeasureDTO result = temperatureService.modifyTemperatureById(
+                firstTemperatureMeasureDTO.id(),
+                LocalDate.of(2001, 2, 15),
+                "testlocation",
+                20
+        );
+
+        TemperatureMeasureDTO secondTemperatureMeasureDTO = new TemperatureMeasureDTO(
+                result.id(),
+                LocalDate.of(2001, 2, 15),
+                "testlocation",
+                MeasureType.TEMPERATURE,
+                20
+        );
+
+        assertNotEquals(firstTemperatureMeasureDTO, result);
+        assertEquals(secondTemperatureMeasureDTO, result);
+    }
+}
