@@ -41,7 +41,7 @@ public class UserResource {
     @PUT
     public Response updateUser(@PathParam("id") Long id, UserRequest userRequest) {
         try {
-            UserDTO userDTO = userService.modifyUserById(id,userRequest.name, userRequest.email, userRequest.password).orElseThrow();
+            UserDTO userDTO = userService.modifyUserById(id,userRequest.name, userRequest.email, userRequest.password);
             return Response.status(Response.Status.OK).entity(userDTO).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();

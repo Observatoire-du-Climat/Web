@@ -40,26 +40,22 @@ public class UserService {
      * @param name the name of the User
      * @param email the email of the User
      * @param password the password, encrypted with Bcrypt, of the User
-     * @return an Optional with the newly created User if the insert was successful, or an empty Optional if insertion failed
+     * @return a DTO with the newly created User if the insert was successful
      */
     @Transactional
-    public Optional<UserDTO> addUser(String name, String email, String password) {
+    public UserDTO addUser(String name, String email, String password) {
 
-        try {
-            User user = new User();
-            user.setName(name);
-            user.setEmail(email);
-            user.setValid(false);
-            user.setAdmin(false);
-            user.setPassword(BcryptUtil.bcryptHash(password));
-            user.setRole(""); //TODO to modify after admin features
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setValid(false);
+        user.setAdmin(false);
+        user.setPassword(BcryptUtil.bcryptHash(password));
+        user.setRole(""); //TODO to modify after admin features
 
-            em.persist(user);
+        em.persist(user);
 
-            return Optional.of(new UserDTO(user.getId(), user.getName(), user.getEmail()));
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+        return new UserDTO(user.getId(), user.getName(), user.getEmail());
     }
 
     /**
@@ -69,21 +65,17 @@ public class UserService {
      * @param name the (new) name of the user
      * @param email the (new) email of the user
      * @param password the (new) password of the user, encrypted by Bcrypt
-     * @return an Optional with the modified User if the update was successful, or an empty Optional if insertion failed
+     * @return a DTO with the modified User if the update was successful, or an empty Optional if insertion failed
      */
     @Transactional
-    public Optional<UserDTO> modifyUserById(Long userId, String name, String email, String password) {
+    public UserDTO modifyUserById(Long userId, String name, String email, String password) {
 
-        try {
-            User userToModify = em.find(User.class, userId);
-            userToModify.setName(name);
-            userToModify.setEmail(email);
-            userToModify.setPassword(BcryptUtil.bcryptHash(password));
-            return Optional.of(new UserDTO(userToModify.getId(), userToModify.getName(), userToModify.getEmail()));
+        User userToModify = em.find(User.class, userId);
+        userToModify.setName(name);
+        userToModify.setEmail(email);
+        userToModify.setPassword(BcryptUtil.bcryptHash(password));
+        return new UserDTO(userToModify.getId(), userToModify.getName(), userToModify.getEmail());
 
-        } catch (Exception e) {
-            return Optional.empty();
-        }
     }
 
 
