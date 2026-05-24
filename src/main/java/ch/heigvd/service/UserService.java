@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class UserService {
      * @return the user with this id
      */
     public UserDTO searchUserById(Long userId) {
+
         var query = em.createQuery("""
             SELECT u.id, u.name, u.email
             FROM User as u
@@ -71,6 +73,9 @@ public class UserService {
     public UserDTO modifyUserById(Long userId, String name, String email, String password) {
 
         User userToModify = em.find(User.class, userId);
+        if (userToModify == null) {
+            throw new NotFoundException("User not found");
+        }
         userToModify.setName(name);
         userToModify.setEmail(email);
         userToModify.setPassword(BcryptUtil.bcryptHash(password));
