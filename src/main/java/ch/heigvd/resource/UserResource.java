@@ -16,6 +16,8 @@ public class UserResource {
 
     public record UserRequest(String name, String email, String password) {}
 
+    // SAME AS REGISTER
+    /*
     @POST
     public Response createUser(UserRequest userRequest) {
         try {
@@ -25,6 +27,7 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+     */
 
     @Path("/{id}")
     @GET

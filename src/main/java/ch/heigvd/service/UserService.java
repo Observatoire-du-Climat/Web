@@ -21,6 +21,10 @@ public class UserService {
         this.em = em;
     }
 
+    //DTO used only for login, checking the password with email in the LoginResource
+    public record UserPasswordDTO(Long id, String name, String email, String password) {}
+
+
     /**
      * Search a User by its id
      * @param userId the user id
@@ -83,5 +87,22 @@ public class UserService {
 
     }
 
+
+    /**
+     * Get a User from his email
+     * This method is used for the LoginResource
+     * @param userEmail the email of the User
+     * @return the User
+     */
+    public User searchUserByEmail(String userEmail) {
+
+        var query = em.createQuery("""
+            SELECT u
+            FROM User as u
+            WHERE u.email = :email
+        """, User.class).setParameter("email", userEmail);
+
+        return query.getSingleResult();
+    }
 
 }
