@@ -6,6 +6,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
@@ -41,6 +42,12 @@ public class MeasureService {
      * @return the list of all measure taken by the specific user
      */
     public List<MeasureDTO> searchAllMeasuresByUserId(Long userId) {
+
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+
         var query = em.createQuery("""
             SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type)
             FROM Measure AS m
@@ -106,8 +113,9 @@ public class MeasureService {
     /**
      * Delete a Measure
      * @param measureId the id of the measure to delete
-     * @return an Optional with a true boolean if the suppression was successful, or an empty Optional otherwise
+     * @return true if the suppression was successful, false if not
      */
+    @Transactional
     public Boolean deleteMeasureById(Long measureId) {
 
         Measure measureToDelete = em.find(Measure.class, measureId);

@@ -1,8 +1,8 @@
 package ch.heigvd.resource;
 
 import ch.heigvd.entity.User;
-import ch.heigvd.service.UserService;
 import ch.heigvd.utils.TestHelpers;
+import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -20,20 +20,11 @@ public class UserResourceTest {
 
     @Inject
     EntityManager em;
-    @Inject
-    UserService userService;
-
-    //Made to have the user insertion and REST test in different transactions
-    //Otherwise the tests would not find the user in the database
-    @Transactional
-    User createUserForTest() {
-        return TestHelpers.createTestUser(em);
-    }
 
     @Test
     public void testGetUserById() {
 
-        User user = createUserForTest();
+        User user = TestResourceHelpers.createUserForTest(em);
         given().contentType("application/json")
                 .when()
                 .get("/" + user.getId())
@@ -56,7 +47,7 @@ public class UserResourceTest {
     @Test
     public void testUpdateUser() {
 
-        User user = createUserForTest();
+        User user = TestResourceHelpers.createUserForTest(em);
         String body = """
             {
               "name": "New Name",
@@ -98,7 +89,7 @@ public class UserResourceTest {
 
     @Test
     public void testUpdateUserNoBody() {
-        User user = createUserForTest();
+        User user = TestResourceHelpers.createUserForTest(em);
 
         given().contentType("application/json")
                 .body("")
