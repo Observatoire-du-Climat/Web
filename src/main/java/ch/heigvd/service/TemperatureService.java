@@ -7,6 +7,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class TemperatureService {
      * @param degree the degree value
      * @return A DTO of the newly created Temperature if the insert was successful
      */
+    @Transactional
     public TemperatureMeasureDTO addTemperature(Long userId, LocalDate date, String location, Integer degree) {
 
         Temperature temperature = new Temperature();
@@ -62,6 +64,7 @@ public class TemperatureService {
      * @param degree the (new) degree of the Temperature
      * @return a DTO with the modified Temperature if the update was successful
      */
+    @Transactional
     public TemperatureMeasureDTO modifyTemperatureById(Long measureId, LocalDate date, String location, Integer degree) {
 
         Temperature temperatureToModify = em.find(Temperature.class, measureId);

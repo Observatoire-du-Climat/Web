@@ -36,8 +36,10 @@ public class TemperatureResource {
     @POST
     public Response createTemperatureMeasure(TemperatureRequest request) {
         try {
-            var temperatureMeasureDTO = temperatureService.addTemperature(request.userId, request.date, request.location, request.degree);
+            var temperatureMeasureDTO = temperatureService.addTemperature(request.userId(), request.date(), request.location(), request.degree());
             return Response.status(Response.Status.CREATED).entity(temperatureMeasureDTO).build();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -47,10 +49,12 @@ public class TemperatureResource {
     @PUT
     public Response updateTemperatureMeasure(@PathParam("id") Long id, TemperatureRequest request) {
         try {
-            TemperatureMeasureDTO temperatureMeasureDTO = temperatureService.modifyTemperatureById(id, request.date, request.location, request.degree);
+            TemperatureMeasureDTO temperatureMeasureDTO = temperatureService.modifyTemperatureById(id, request.date(), request.location(), request.degree());
             return Response.status(Response.Status.OK).entity(temperatureMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 

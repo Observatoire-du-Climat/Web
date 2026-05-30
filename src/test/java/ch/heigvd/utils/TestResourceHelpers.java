@@ -18,7 +18,7 @@ public class TestResourceHelpers {
     //Made to have the Measure insertion and REST test in different transactions
     //Otherwise the tests would not find the user in the database
     @Transactional
-    static public Measure createTestTemperatureMeasureForTest(EntityManager em, User user) {
+    static public Temperature createTestTemperatureMeasureForTest(EntityManager em, User user) {
         return TestHelpers.createTestTemperatureMeasure(em, user);
     }
 
