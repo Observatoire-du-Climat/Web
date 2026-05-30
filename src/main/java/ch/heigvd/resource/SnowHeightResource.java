@@ -28,8 +28,10 @@ public class SnowHeightResource {
         try {
             var snowHeightMeasureDTO = measureService.searchMeasureById(id);
             return Response.status(Response.Status.OK).entity(snowHeightMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
@@ -38,6 +40,8 @@ public class SnowHeightResource {
         try {
             var snowHeightMeasureDTO = snowHeightService.addSnowHeight(request.userId, request.date, request.location, request.height, request.weather, request.precipitation);
             return Response.status(Response.Status.CREATED).entity(snowHeightMeasureDTO).build();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -49,8 +53,10 @@ public class SnowHeightResource {
         try {
             SnowHeightMeasureDTO snowHeightMeasureDTO = snowHeightService.modifySnowHeightById(id, request.date, request.location, request.height, request.weather, request.precipitation);
             return Response.status(Response.Status.OK).entity(snowHeightMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 }

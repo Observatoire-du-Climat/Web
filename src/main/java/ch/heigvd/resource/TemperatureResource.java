@@ -28,8 +28,10 @@ public class TemperatureResource {
         try {
             var temperatureMeasureDTO = measureService.searchMeasureById(id);
             return Response.status(Response.Status.OK).entity(temperatureMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 

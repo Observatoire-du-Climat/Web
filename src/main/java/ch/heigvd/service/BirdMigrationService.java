@@ -7,6 +7,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class BirdMigrationService {
      * @param arrival true if it is an arrival, false if departure
      * @return a DTO with the newly created BirdMigration if the insert was successful
      */
+    @Transactional
     public BirdMigrationMeasureDTO addBirdMigration(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {
 
         BirdMigration birdMigration = new BirdMigration();
@@ -66,6 +68,7 @@ public class BirdMigrationService {
      * @param arrival the (new) arrival boolean of the measure
      * @return a DTO with the modified BirdMigration if the update was successful
      */
+    @Transactional
     public BirdMigrationMeasureDTO modifyBirdMigrationById(Long measureId, LocalDate date, String location, String birdType, Boolean arrival) {
 
         BirdMigration birdMigrationToModify = em.find(BirdMigration.class, measureId);

@@ -8,6 +8,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
@@ -33,6 +34,7 @@ public class SnowHeightService {
      * @param precipitation the precipitation value of the measure
      * @return a DTO with the newly created SnowHeight if the insert was successful
      */
+    @Transactional
     public SnowHeightMeasureDTO addSnowHeight(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
         SnowHeight snowHeight = new SnowHeight();
@@ -71,6 +73,7 @@ public class SnowHeightService {
      * @param precipitation the (new) precipitation value of the measure
      * @return a DTO with the modified SnowHeight if the update was successful
      */
+    @Transactional
     public SnowHeightMeasureDTO modifySnowHeightById(Long measureId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
 
         SnowHeight snowHeightToModify = em.find(SnowHeight.class, measureId);

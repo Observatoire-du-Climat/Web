@@ -21,8 +21,10 @@ public class MeasureResource {
         try {
             List<MeasureDTO> measureDTOs = measureService.searchAllMeasuresByUserId(id);
             return Response.status(Response.Status.OK).entity(measureDTOs).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
@@ -32,8 +34,10 @@ public class MeasureResource {
         try {
             var measureDTO = measureService.searchMeasureById(id);
             return Response.status(Response.Status.OK).entity(measureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 

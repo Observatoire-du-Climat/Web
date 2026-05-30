@@ -28,8 +28,10 @@ public class EggsLayingResource {
         try {
             var eggsLayingMeasureDTO = measureService.searchMeasureById(id);
             return Response.status(Response.Status.OK).entity(eggsLayingMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
@@ -38,6 +40,8 @@ public class EggsLayingResource {
         try {
             var eggsLayingMeasureDTO = eggsLayingService.addEggsLaying(request.userId, request.date, request.location, request.number);
             return Response.status(Response.Status.CREATED).entity(eggsLayingMeasureDTO).build();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -49,8 +53,10 @@ public class EggsLayingResource {
         try {
             EggsLayingMeasureDTO eggsLayingMeasureDTO = eggsLayingService.modifyEggsLayingById(id, request.date, request.location, request.number);
             return Response.status(Response.Status.OK).entity(eggsLayingMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 }

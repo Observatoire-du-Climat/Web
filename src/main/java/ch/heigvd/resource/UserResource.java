@@ -35,8 +35,10 @@ public class UserResource {
         try {
             UserDTO userDTO = userService.searchUserById(id);
             return Response.status(Response.Status.OK).entity(userDTO).build();
-        } catch(Exception e) {
+        } catch(NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
@@ -46,6 +48,8 @@ public class UserResource {
         try {
             UserDTO userDTO = userService.modifyUserById(id,userRequest.name(), userRequest.email(), userRequest.password());
             return Response.status(Response.Status.OK).entity(userDTO).build();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

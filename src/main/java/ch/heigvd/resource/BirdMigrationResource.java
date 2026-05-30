@@ -28,8 +28,10 @@ public class BirdMigrationResource {
         try {
             var birdMigrationMeasureDTO = measureService.searchMeasureById(id);
             return Response.status(Response.Status.OK).entity(birdMigrationMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
@@ -38,6 +40,8 @@ public class BirdMigrationResource {
         try {
             var birdMigrationMeasureDTO = birdMigrationService.addBirdMigration(request.userId, request.date, request.location, request.birdType, request.arrival);
             return Response.status(Response.Status.CREATED).entity(birdMigrationMeasureDTO).build();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -49,8 +53,10 @@ public class BirdMigrationResource {
         try {
             BirdMigrationMeasureDTO birdMigrationMeasureDTO = birdMigrationService.modifyBirdMigrationById(id, request.date, request.location, request.birdType, request.arrival);
             return Response.status(Response.Status.OK).entity(birdMigrationMeasureDTO).build();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 }

@@ -7,6 +7,7 @@ import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class EggsLayingService {
      * @param number the number value of the measure
      * @return a DTO with the newly created EggsLaying if the insert was successful
      */
+    @Transactional
     public EggsLayingMeasureDTO addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
 
         EggsLaying eggsLaying = new EggsLaying();
@@ -62,6 +64,7 @@ public class EggsLayingService {
      * @param number the (new) number value of the measure
      * @return a DTO with the modified EggsLaying if the update was successful
      */
+    @Transactional
     public EggsLayingMeasureDTO modifyEggsLayingById(Long measureId, LocalDate date, String location, Integer number) {
 
         EggsLaying eggsLayingToModify = em.find(EggsLaying.class, measureId);
