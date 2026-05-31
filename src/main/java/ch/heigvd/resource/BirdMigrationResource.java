@@ -2,7 +2,6 @@ package ch.heigvd.resource;
 
 import ch.heigvd.dto.BirdMigrationMeasureDTO;
 import ch.heigvd.service.BirdMigrationService;
-import ch.heigvd.service.MeasureService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -16,12 +15,13 @@ public class BirdMigrationResource {
 
     @Inject
     BirdMigrationService birdMigrationService;
-
+    /*
     @Inject
     MeasureService measureService;
+    */
 
     public record BirdMigrationRequest(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {}
-
+    /*
     @Path("/{id}")
     @GET
     public Response getBirdMigrationMeasure(@PathParam("id") Long id) {
@@ -34,6 +34,7 @@ public class BirdMigrationResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+     */
 
     @POST
     public Response createBirdMigrationMeasure(BirdMigrationRequest request) {

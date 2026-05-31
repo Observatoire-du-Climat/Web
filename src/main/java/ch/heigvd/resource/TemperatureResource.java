@@ -1,7 +1,6 @@
 package ch.heigvd.resource;
 
 import ch.heigvd.dto.TemperatureMeasureDTO;
-import ch.heigvd.service.MeasureService;
 import ch.heigvd.service.TemperatureService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -16,12 +15,14 @@ public class TemperatureResource {
 
     @Inject
     TemperatureService temperatureService;
-
+    /*
     @Inject
     MeasureService measureService;
+    */
 
     public record TemperatureRequest(Long userId, LocalDate date, String location, Integer degree) {}
 
+    /*
     @Path("/{id}")
     @GET
     public Response getTemperatureMeasure(@PathParam("id") Long id) {
@@ -34,6 +35,7 @@ public class TemperatureResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+     */
 
     @POST
     public Response createTemperatureMeasure(TemperatureRequest request) {

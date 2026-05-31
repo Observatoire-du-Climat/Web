@@ -2,7 +2,6 @@ package ch.heigvd.resource;
 
 import ch.heigvd.dto.EggsLayingMeasureDTO;
 import ch.heigvd.service.EggsLayingService;
-import ch.heigvd.service.MeasureService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -16,12 +15,13 @@ public class EggsLayingResource {
 
     @Inject
     EggsLayingService eggsLayingService;
-
+    /*
     @Inject
     MeasureService measureService;
+     */
 
     public record EggsLayingRequest(Long userId, LocalDate date, String location, Integer number) {}
-
+    /*
     @Path("/{id}")
     @GET
     public Response getEggsLayingMeasure(@PathParam("id") Long id) {
@@ -34,6 +34,7 @@ public class EggsLayingResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+     */
 
     @POST
     public Response createEggsLayingMeasure(EggsLayingRequest request) {

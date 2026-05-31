@@ -1,7 +1,6 @@
 package ch.heigvd.resource;
 
 import ch.heigvd.dto.SnowHeightMeasureDTO;
-import ch.heigvd.service.MeasureService;
 import ch.heigvd.service.SnowHeightService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -16,12 +15,13 @@ public class SnowHeightResource {
 
     @Inject
     SnowHeightService snowHeightService;
-
+    /*
     @Inject
     MeasureService measureService;
+     */
 
     public record SnowHeightRequest(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {}
-
+    /*
     @Path("/{id}")
     @GET
     public Response getSnowHeightMeasure(@PathParam("id") Long id) {
@@ -34,6 +34,7 @@ public class SnowHeightResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+     */
 
     @POST
     public Response createSnowHeightMeasure(SnowHeightRequest request) {
