@@ -25,7 +25,7 @@ public class UserServiceTest {
 
     @Test
     public void testSearchUserByIdWrongId() {
-        assertThrows(NoResultException.class, () -> userService.searchUserById(-1L));
+        assertThrows(NotFoundException.class, () -> userService.searchUserById(-1L));
     }
 
     @Test
