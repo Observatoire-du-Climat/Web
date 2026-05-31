@@ -38,7 +38,7 @@ public class SnowHeightResource {
     @POST
     public Response createSnowHeightMeasure(SnowHeightRequest request) {
         try {
-            var snowHeightMeasureDTO = snowHeightService.addSnowHeight(request.userId, request.date, request.location, request.height, request.weather, request.precipitation);
+            var snowHeightMeasureDTO = snowHeightService.addSnowHeight(request.userId(), request.date(), request.location(), request.height(), request.weather(), request.precipitation());
             return Response.status(Response.Status.CREATED).entity(snowHeightMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -51,7 +51,7 @@ public class SnowHeightResource {
     @PUT
     public Response updateSnowHeightMeasure(@PathParam("id") Long id, SnowHeightRequest request) {
         try {
-            SnowHeightMeasureDTO snowHeightMeasureDTO = snowHeightService.modifySnowHeightById(id, request.date, request.location, request.height, request.weather, request.precipitation);
+            SnowHeightMeasureDTO snowHeightMeasureDTO = snowHeightService.modifySnowHeightById(id, request.date(), request.location(), request.height(), request.weather(), request.precipitation());
             return Response.status(Response.Status.OK).entity(snowHeightMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

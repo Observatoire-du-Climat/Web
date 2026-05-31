@@ -38,7 +38,7 @@ public class BirdMigrationResource {
     @POST
     public Response createBirdMigrationMeasure(BirdMigrationRequest request) {
         try {
-            var birdMigrationMeasureDTO = birdMigrationService.addBirdMigration(request.userId, request.date, request.location, request.birdType, request.arrival);
+            var birdMigrationMeasureDTO = birdMigrationService.addBirdMigration(request.userId(), request.date(), request.location(), request.birdType(), request.arrival());
             return Response.status(Response.Status.CREATED).entity(birdMigrationMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -51,7 +51,7 @@ public class BirdMigrationResource {
     @PUT
     public Response updateBirdMigrationMeasure(@PathParam("id") Long id, BirdMigrationRequest request) {
         try {
-            BirdMigrationMeasureDTO birdMigrationMeasureDTO = birdMigrationService.modifyBirdMigrationById(id, request.date, request.location, request.birdType, request.arrival);
+            BirdMigrationMeasureDTO birdMigrationMeasureDTO = birdMigrationService.modifyBirdMigrationById(id, request.date(), request.location(), request.birdType(), request.arrival());
             return Response.status(Response.Status.OK).entity(birdMigrationMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

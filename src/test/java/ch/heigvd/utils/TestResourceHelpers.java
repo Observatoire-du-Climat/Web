@@ -1,8 +1,6 @@
 package ch.heigvd.utils;
 
-import ch.heigvd.entity.Measure;
-import ch.heigvd.entity.Temperature;
-import ch.heigvd.entity.User;
+import ch.heigvd.entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
@@ -23,17 +21,17 @@ public class TestResourceHelpers {
     }
 
     @Transactional
-    static public Measure createTestSnowHeightMeasureForTest(EntityManager em, User user) {
+    static public SnowHeight createTestSnowHeightMeasureForTest(EntityManager em, User user) {
         return TestHelpers.createTestSnowHeightMeasure(em, user);
     }
 
     @Transactional
-    static public Measure createTestBirdMigrationForTest(EntityManager em, User user) {
+    static public BirdMigration createTestBirdMigrationForTest(EntityManager em, User user) {
         return TestHelpers.createTestBirdMigrationMeasure(em, user);
     }
 
     @Transactional
-    static public Measure createTestEggsLayingMeasureForTest(EntityManager em, User user) {
+    static public EggsLaying createTestEggsLayingMeasureForTest(EntityManager em, User user) {
         return TestHelpers.createTestEggsLayingMeasure(em, user);
     }
 
