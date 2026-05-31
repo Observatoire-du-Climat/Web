@@ -28,14 +28,14 @@ public class LoginResource {
     @POST
     public Response login(LoginRequest request) {
         try {
-            User user = userService.searchUserByEmail(request.email);
-            if (BcryptUtil.matches(request.password, user.getPassword())) {
-                throw new Exception("Unauthorized");
+            User user = userService.searchUserByEmail(request.email());
+            if (!BcryptUtil.matches(request.password(), user.getPassword())) {
+                return Response.status(Response.Status.UNAUTHORIZED).build();
             }
             return Response.status(Response.Status.OK).entity(new UserDTO(user.getId(), user.getName(), user.getEmail())).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
 

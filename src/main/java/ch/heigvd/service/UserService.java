@@ -32,6 +32,11 @@ public class UserService {
      */
     public UserDTO searchUserById(Long userId) {
 
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+
         var query = em.createQuery("""
             SELECT u.id, u.name, u.email
             FROM User as u

@@ -12,19 +12,27 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@TestHTTPEndpoint(UserResource.class)
-public class UserResourceTest {
+@TestHTTPEndpoint(LoginResource.class)
+public class LoginResourceTest {
 
     @Inject
     EntityManager em;
 
     @Test
-    public void testGetUserById() {
-
+    public void testLogin() {
         User user = TestResourceHelpers.createUserForTest(em);
+
+        String body = """
+        {
+            "email": "%s",
+            "password": "password"
+        }
+        """.formatted(user.getEmail());
+
         given().contentType("application/json")
+                .body(body)
                 .when()
-                .get("/" + user.getId())
+                .post()
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(user.getId().intValue()))
@@ -33,67 +41,58 @@ public class UserResourceTest {
     }
 
     @Test
-    public void testGetUserWrongId() {
-        given().contentType("application/json")
-                .when()
-                .get("/-1")
-                .then()
-                .statusCode(404);
-    }
-
-    @Test
-    public void testUpdateUser() {
-
+    public void testLoginWrongPassword() {
         User user = TestResourceHelpers.createUserForTest(em);
+
         String body = """
-            {
-              "name": "New Name",
-              "email": "new@test.ch",
-              "password": "newpassword"
-            }
-            """;
+        {
+            "email": "%s",
+            "password": "wrongpassword"
+        }
+        """.formatted(user.getEmail());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + user.getId())
+                .post()
                 .then()
-                .statusCode(200)
-                .body("id", equalTo(user.getId().intValue()))
-                .body("name", equalTo("New Name"))
-                .body("email", equalTo("new@test.ch"));
-
+                .statusCode(401);
     }
 
     @Test
-    public void testUpdateUserWrongId() {
+    public void testLoginWrongEmail() {
 
         String body = """
-            {
-              "name": "New Name",
-              "email": "new@test.ch",
-              "password": "newpassword"
-            }
-            """;
+        {
+            "email": "unknown@test.ch",
+            "password": "password"
+        }
+        """;
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/-1")
-                .then()
-                .statusCode(404);
-    }
-
-    @Test
-    public void testUpdateUserNoBody() {
-        User user = TestResourceHelpers.createUserForTest(em);
-
-        given().contentType("application/json")
-                .body("")
-                .when()
-                .put("/" + user.getId())
+                .post()
                 .then()
                 .statusCode(400);
     }
+
+    @Test
+    public void testLoginWrongBody() {
+
+        String body = """
+        {
+            "email": "test@test.ch"
+        }
+        """;
+
+        given().contentType("application/json")
+                .body(body)
+                .when()
+                .post()
+                .then()
+                .statusCode(400);
+    }
+
 
 }

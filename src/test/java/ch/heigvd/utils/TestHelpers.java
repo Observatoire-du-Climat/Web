@@ -1,6 +1,7 @@
 package ch.heigvd.utils;
 
 import ch.heigvd.entity.*;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class TestHelpers {
         user.setName("Test User");
         //generate different random email to be sure there is no compatibility problem
         user.setEmail(UUID.randomUUID() + "@test.ch");
-        user.setPassword("password");
+        user.setPassword(BcryptUtil.bcryptHash("password"));
         user.setValid(true);
         user.setAdmin(false);
         user.setRole("");
