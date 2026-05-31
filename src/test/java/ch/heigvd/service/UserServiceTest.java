@@ -12,6 +12,8 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.NotFoundException;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -46,8 +48,8 @@ public class UserServiceTest {
     @TestTransaction
     public void testAddUser() {
 
-        UserDTO result = userService.addUser("Test", "test@test.ch", "password");
-        UserDTO userDTO = new UserDTO(result.id(), "Test", "test@test.ch");
+        UserDTO result = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
+        UserDTO userDTO = new UserDTO(result.id(), "Test", result.email());
 
         assertEquals(userDTO, result);
 
@@ -61,7 +63,7 @@ public class UserServiceTest {
     @Test
     @TestTransaction
     public void testAddUserDefaultValues() {
-        UserDTO result = userService.addUser("Test", "test@test.ch", "password");
+        UserDTO result = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
 
         User user = em.find(User.class, result.id());
 
@@ -73,7 +75,7 @@ public class UserServiceTest {
     @Test
     @TestTransaction
     public void testAddUserHashPassword() {
-        UserDTO result = userService.addUser("Test", "test@test.ch", "password");
+        UserDTO result = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
 
         User user = em.find(User.class, result.id());
 
@@ -96,16 +98,16 @@ public class UserServiceTest {
     @TestTransaction
     public void testModifyUser() {
 
-        UserDTO firstUserDTO = userService.addUser("Test", "test@test.ch", "password");
+        UserDTO firstUserDTO = userService.addUser("Test", UUID.randomUUID()+ "@test.ch", "password");
 
         UserDTO result = userService.modifyUserById(
                 firstUserDTO.id(),
                 "newName",
-                "test@test.ch",
+                firstUserDTO.email(),
                 "newpassword"
         );
 
-        UserDTO secondUserDTO = new UserDTO(result.id(), "newName", "test@test.ch");
+        UserDTO secondUserDTO = new UserDTO(result.id(), "newName", firstUserDTO.email());
 
         assertEquals(secondUserDTO, result);
 
@@ -118,12 +120,12 @@ public class UserServiceTest {
     @Test
     @TestTransaction
     public void testModifyUserHashNewPassword() {
-        UserDTO firstUserDTO = userService.addUser("Test", "test@test.ch", "password");
+        UserDTO firstUserDTO = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
 
         userService.modifyUserById(
                 firstUserDTO.id(),
                 "Test",
-                "test@test.ch",
+                firstUserDTO.email(),
                 "newpassword"
         );
 
