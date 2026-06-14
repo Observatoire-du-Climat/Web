@@ -160,8 +160,8 @@ public class MeasureServiceTest {
         assertEquals(LocalDate.of(2001, 2, 15), birdMigrationMeasureDTO.date());
         assertEquals("testlocation", birdMigrationMeasureDTO.location());
         assertEquals(MeasureType.BIRD_MIGRATION, birdMigrationMeasureDTO.type());
-        assertEquals(birdMigration.getBirdType(), birdMigrationMeasureDTO.birdType());
-        assertEquals(birdMigration.getArrival(), birdMigrationMeasureDTO.arrival());
+        assertEquals(birdMigration.getSpecie(), birdMigrationMeasureDTO.specie());
+        assertEquals(birdMigration.getEventType(), birdMigrationMeasureDTO.event());
 
     }
 

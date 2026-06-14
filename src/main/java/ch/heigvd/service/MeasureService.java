@@ -90,7 +90,7 @@ public class MeasureService {
 
             case BIRD_MIGRATION -> {
                 var query = em.createQuery("""
-                    SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.birdType, b.arrival)
+                    SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.specie, b.eventType)
                     FROM BirdMigration AS b
                     WHERE b.id = :id
                 """, BirdMigrationMeasureDTO.class).setParameter("id", measure.getId());

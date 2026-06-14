@@ -2,6 +2,8 @@ package ch.heigvd.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 public class SnowHeight extends Measure{
@@ -10,7 +12,8 @@ public class SnowHeight extends Measure{
     private Integer height;
 
     @Column(name = "weather", nullable = false)
-    private String weather;
+    @Enumerated(EnumType.STRING)
+    private WeatherType weather;
 
     @Column(name = "precipitation", nullable = false)
     private Integer precipitation;
@@ -25,11 +28,11 @@ public class SnowHeight extends Measure{
         this.height = height;
     }
 
-    public String getWeather() {
+    public WeatherType getWeather() {
         return weather;
     }
 
-    public void setWeather(String weather) {
+    public void setWeather(WeatherType weather) {
         this.weather = weather;
     }
 

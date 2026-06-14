@@ -29,8 +29,8 @@ public class BirdMigrationResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "birdType": "pigeon",
-                  "arrival": true
+                  "specie": "Swallow",
+                  "event": "Arrival"
                 }
                 """.formatted(user.getId());
 
@@ -43,8 +43,8 @@ public class BirdMigrationResourceTest {
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("testlocation"))
                 .body("type", equalTo("BIRD_MIGRATION"))
-                .body("birdType", equalTo("pigeon"))
-                .body("arrival", equalTo(true));
+                .body("specie", equalTo("SWALLOW"))
+                .body("event", equalTo("ARRIVAL"));
     }
 
     @Test
@@ -54,8 +54,8 @@ public class BirdMigrationResourceTest {
                   "userId": -1,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "birdType": "pigeon",
-                  "arrival": true
+                  "specie": "Swallow",
+                  "event": "Arrival"
                 }
                 """;
 
@@ -76,7 +76,7 @@ public class BirdMigrationResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "birdType": "pigeon"
+                  "specie": "Swallow"
                 }
                 """.formatted(user.getId());
 
@@ -98,8 +98,8 @@ public class BirdMigrationResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "newlocation",
-                  "birdType": "hirondelle",
-                  "arrival": true
+                  "specie": "Swift",
+                  "event": "Departure"
                 }
                 """.formatted(user.getId());
 
@@ -112,22 +112,21 @@ public class BirdMigrationResourceTest {
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("newlocation"))
                 .body("type", equalTo("BIRD_MIGRATION"))
-                .body("birdType", equalTo("hirondelle"))
-                .body("arrival", equalTo(true));
+                .body("specie", equalTo("SWIFT"))
+                .body("event", equalTo("DEPARTURE"));
     }
 
     @Test
     public void testUpdateBirdMigrationMeasureWrongId() {
         User user = TestResourceHelpers.createUserForTest(em);
-        BirdMigration birdMigration = TestResourceHelpers.createTestBirdMigrationForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "birdType": "pigeon",
-                  "arrival": true
+                  "specie": "Swift",
+                  "event": "Depature"
                 }
                 """.formatted(user.getId());
 
@@ -150,7 +149,7 @@ public class BirdMigrationResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "birdType": "hirondelle",
+                  "specie": "Swallow",
                 }
                 """.formatted(user.getId());
 

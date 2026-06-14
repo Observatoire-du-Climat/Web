@@ -45,7 +45,7 @@ public class SnowHeightResourceTest {
                 .body("location", equalTo("testlocation"))
                 .body("type", equalTo("SNOW_HEIGHT"))
                 .body("height", equalTo(10))
-                .body("weather", equalTo("Sunny"))
+                .body("weather", equalTo("SUNNY"))
                 .body("precipitation", equalTo(2));
     }
 
@@ -118,7 +118,7 @@ public class SnowHeightResourceTest {
                 .body("location", equalTo("newlocation"))
                 .body("type", equalTo("SNOW_HEIGHT"))
                 .body("height", equalTo(20))
-                .body("weather", equalTo("Rainy"))
+                .body("weather", equalTo("RAINY"))
                 .body("precipitation", equalTo(2));
     }
 

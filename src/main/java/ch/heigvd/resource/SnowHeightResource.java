@@ -21,6 +21,7 @@ public class SnowHeightResource {
      */
 
     public record SnowHeightRequest(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {}
+
     /*
     @Path("/{id}")
     @GET

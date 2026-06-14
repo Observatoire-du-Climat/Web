@@ -1,10 +1,7 @@
 package ch.heigvd.service;
 
 import ch.heigvd.dto.SnowHeightMeasureDTO;
-import ch.heigvd.entity.MeasureType;
-import ch.heigvd.entity.SnowHeight;
-import ch.heigvd.entity.Temperature;
-import ch.heigvd.entity.User;
+import ch.heigvd.entity.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -12,7 +9,6 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @ApplicationScoped
 public class SnowHeightService {
@@ -41,7 +37,7 @@ public class SnowHeightService {
         snowHeight.setDate(date);
         snowHeight.setLocation(location);
         snowHeight.setHeight(height);
-        snowHeight.setWeather(weather);
+        snowHeight.setWeather(WeatherType.valueOf(weather.toUpperCase()));
         snowHeight.setPrecipitation(precipitation);
         snowHeight.setType(MeasureType.SNOW_HEIGHT);
 
@@ -83,7 +79,7 @@ public class SnowHeightService {
         snowHeightToModify.setDate(date);
         snowHeightToModify.setLocation(location);
         snowHeightToModify.setHeight(height);
-        snowHeightToModify.setWeather(weather);
+        snowHeightToModify.setWeather(WeatherType.valueOf(weather.toUpperCase()));
         snowHeightToModify.setPrecipitation(precipitation);
         return new SnowHeightMeasureDTO(snowHeightToModify.getId(),
                 snowHeightToModify.getDate(),

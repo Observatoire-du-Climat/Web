@@ -4,6 +4,7 @@ import ch.heigvd.dto.SnowHeightMeasureDTO;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.SnowHeight;
 import ch.heigvd.entity.User;
+import ch.heigvd.entity.WeatherType;
 import ch.heigvd.utils.TestHelpers;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -61,7 +62,7 @@ public class SnowHeightServiceTest {
                 "testlocation",
                 MeasureType.SNOW_HEIGHT,
                 10,
-                "Sunny",
+                WeatherType.SUNNY,
                 2
         );
 
@@ -72,7 +73,7 @@ public class SnowHeightServiceTest {
 
         assertNotNull(snowHeight);
         assertEquals(10, snowHeight.getHeight());
-        assertEquals("Sunny", snowHeight.getWeather());
+        assertEquals(WeatherType.SUNNY, snowHeight.getWeather());
         assertEquals(2, snowHeight.getPrecipitation());
         assertEquals(user.getId(), snowHeight.getUser().getId());
         assertTrue(user.getMeasures().contains(snowHeight));
@@ -122,7 +123,7 @@ public class SnowHeightServiceTest {
                 "testlocation",
                 MeasureType.SNOW_HEIGHT,
                 20,
-                "Sunny",
+                WeatherType.SUNNY,
                 2
         );
 

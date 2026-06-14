@@ -1,34 +1,34 @@
 package ch.heigvd.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "bird_migration")
 public class BirdMigration extends Measure {
 
-    @Column(name = "bird_type", length = 15, nullable = false)
-    private String birdType;
+    @Column(name = "specie", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BirdSpecies specie;
 
-    @Column(name = "arrival", nullable = false)
-    private Boolean arrival;
+    @Column(name = "event", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BirdEventType eventType;
 
     public BirdMigration() {}
 
-    public String getBirdType() {
-        return birdType;
+    public BirdSpecies getSpecie() {
+        return specie;
     }
 
-    public void setBirdType(String birdType) {
-        this.birdType = birdType;
+    public void setSpecie(BirdSpecies specie) {
+        this.specie = specie;
     }
 
-    public Boolean getArrival() {
-        return arrival;
+    public BirdEventType getEventType() {
+        return eventType;
     }
 
-    public void setArrival(Boolean arrival) {
-        this.arrival = arrival;
+    public void setEventType(BirdEventType eventType) {
+        this.eventType = eventType;
     }
 }

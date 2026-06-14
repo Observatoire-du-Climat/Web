@@ -1,9 +1,7 @@
 package ch.heigvd.service;
 
 import ch.heigvd.dto.BirdMigrationMeasureDTO;
-import ch.heigvd.entity.BirdMigration;
-import ch.heigvd.entity.MeasureType;
-import ch.heigvd.entity.User;
+import ch.heigvd.entity.*;
 import ch.heigvd.utils.TestHelpers;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
@@ -33,8 +31,8 @@ public class BirdMigrationServiceTest {
                         -1L,
                         LocalDate.of(2001, 2, 15),
                         "testlocation",
-                        "Pigeon",
-                        true
+                        "Swallow",
+                        "Arrival"
                 )
         );
     }
@@ -48,16 +46,16 @@ public class BirdMigrationServiceTest {
                 user.getId(),
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
-                "Pigeon",
-                true);
+                "Swallow",
+                "Arrival");
 
         BirdMigrationMeasureDTO birdMigrationMeasureDTO = new BirdMigrationMeasureDTO(
                 result.id(),
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.BIRD_MIGRATION,
-                "Pigeon",
-                true
+                BirdSpecies.SWALLOW,
+                BirdEventType.ARRIVAL
         );
 
         assertEquals(birdMigrationMeasureDTO, result);
@@ -66,8 +64,8 @@ public class BirdMigrationServiceTest {
         BirdMigration birdMigration = em.find(BirdMigration.class, result.id());
 
         assertNotNull(birdMigration);
-        assertEquals("Pigeon", birdMigration.getBirdType());
-        assertTrue(birdMigration.getArrival());
+        assertEquals(BirdSpecies.SWALLOW, birdMigration.getSpecie());
+        assertEquals(BirdEventType.ARRIVAL, birdMigration.getEventType());
         assertEquals(user.getId(), birdMigration.getUser().getId());
         assertTrue(user.getMeasures().contains(birdMigration));
     }
@@ -80,8 +78,8 @@ public class BirdMigrationServiceTest {
                         -1L,
                         LocalDate.of(2001, 2, 15),
                         "testlocation",
-                        "Hirondelle",
-                        true
+                        "Swift",
+                        "Arrival"
                 )
         );
     }
@@ -95,16 +93,16 @@ public class BirdMigrationServiceTest {
                 user.getId(),
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
-                "Pigeon",
-                true
+                "Swallow",
+                "Arrival"
         );
 
         BirdMigrationMeasureDTO result = birdMigrationService.modifyBirdMigrationById(
                 firstBirdMigrationMeasureDTO.id(),
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
-                "Hirondelle",
-                true
+                "Swift",
+                "Departure"
         );
 
         BirdMigrationMeasureDTO secondBirdMigrationMeasureDTO = new BirdMigrationMeasureDTO(
@@ -112,8 +110,8 @@ public class BirdMigrationServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.BIRD_MIGRATION,
-                "Hirondelle",
-                true
+                BirdSpecies.SWIFT,
+                BirdEventType.DEPARTURE
         );
 
         assertNotEquals(firstBirdMigrationMeasureDTO, result);

@@ -1,9 +1,7 @@
 package ch.heigvd.service;
 
 import ch.heigvd.dto.BirdMigrationMeasureDTO;
-import ch.heigvd.entity.BirdMigration;
-import ch.heigvd.entity.MeasureType;
-import ch.heigvd.entity.User;
+import ch.heigvd.entity.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -28,18 +26,18 @@ public class BirdMigrationService {
      * @param userId the id of the user that created the measure
      * @param date the date of the measure
      * @param location the location of the measure
-     * @param birdType the bird type
-     * @param arrival true if it is an arrival, false if departure
+     * @param specie the specie of the bird
+     * @param event departure or arrival
      * @return a DTO with the newly created BirdMigration if the insert was successful
      */
     @Transactional
-    public BirdMigrationMeasureDTO addBirdMigration(Long userId, LocalDate date, String location, String birdType, Boolean arrival) {
+    public BirdMigrationMeasureDTO addBirdMigration(Long userId, LocalDate date, String location, String specie, String event) {
 
         BirdMigration birdMigration = new BirdMigration();
         birdMigration.setDate(date);
         birdMigration.setLocation(location);
-        birdMigration.setBirdType(birdType);
-        birdMigration.setArrival(arrival);
+        birdMigration.setSpecie(BirdSpecies.valueOf(specie.toUpperCase()));
+        birdMigration.setEventType(BirdEventType.valueOf(event.toUpperCase()));
         birdMigration.setType(MeasureType.BIRD_MIGRATION);
 
         User user = em.find(User.class, userId);
@@ -54,8 +52,8 @@ public class BirdMigrationService {
                 birdMigration.getDate(),
                 birdMigration.getLocation(),
                 birdMigration.getType(),
-                birdMigration.getBirdType(),
-                birdMigration.getArrival());
+                birdMigration.getSpecie(),
+                birdMigration.getEventType());
     }
 
     /**
@@ -64,12 +62,12 @@ public class BirdMigrationService {
      * @param measureId the id of the measure to modify
      * @param date the (new) date of the measure
      * @param location the (new) location of the measure
-     * @param birdType the (new) bird type of the measure
-     * @param arrival the (new) arrival boolean of the measure
+     * @param specie the (new) bird specie of the measure
+     * @param event the (new) event of the measure
      * @return a DTO with the modified BirdMigration if the update was successful
      */
     @Transactional
-    public BirdMigrationMeasureDTO modifyBirdMigrationById(Long measureId, LocalDate date, String location, String birdType, Boolean arrival) {
+    public BirdMigrationMeasureDTO modifyBirdMigrationById(Long measureId, LocalDate date, String location, String specie, String event) {
 
         BirdMigration birdMigrationToModify = em.find(BirdMigration.class, measureId);
         if (birdMigrationToModify == null) {
@@ -77,13 +75,13 @@ public class BirdMigrationService {
         }
         birdMigrationToModify.setDate(date);
         birdMigrationToModify.setLocation(location);
-        birdMigrationToModify.setBirdType(birdType);
-        birdMigrationToModify.setArrival(arrival);
+        birdMigrationToModify.setSpecie(BirdSpecies.valueOf(specie.toUpperCase()));
+        birdMigrationToModify.setEventType(BirdEventType.valueOf(event.toUpperCase()));
         return new BirdMigrationMeasureDTO(birdMigrationToModify.getId(),
                 birdMigrationToModify.getDate(),
                 birdMigrationToModify.getLocation(),
                 birdMigrationToModify.getType(),
-                birdMigrationToModify.getBirdType(),
-                birdMigrationToModify.getArrival());
+                birdMigrationToModify.getSpecie(),
+                birdMigrationToModify.getEventType());
     }
 }

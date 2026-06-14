@@ -61,7 +61,7 @@ public class TestHelpers {
         snowHeight.setDate(LocalDate.of(2001, 2, 15));
         snowHeight.setLocation("testlocation");
         snowHeight.setHeight(10);
-        snowHeight.setWeather("Sunny");
+        snowHeight.setWeather(WeatherType.SUNNY);
         snowHeight.setPrecipitation(3);
         snowHeight.setType(MeasureType.SNOW_HEIGHT);
         snowHeight.setUser(user);
@@ -83,8 +83,8 @@ public class TestHelpers {
         BirdMigration birdMigration = new BirdMigration();
         birdMigration.setDate(LocalDate.of(2001, 2, 15));
         birdMigration.setLocation("testlocation");
-        birdMigration.setBirdType("Pigeon");
-        birdMigration.setArrival(true);
+        birdMigration.setSpecie(BirdSpecies.SWALLOW);
+        birdMigration.setEventType(BirdEventType.ARRIVAL);
         birdMigration.setType(MeasureType.BIRD_MIGRATION);
         birdMigration.setUser(user);
         user.getMeasures().add(birdMigration);
