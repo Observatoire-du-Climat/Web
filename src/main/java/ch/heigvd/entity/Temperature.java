@@ -1,9 +1,11 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "temperature")
 public class Temperature extends Measure {
 
     @Column(name = "degree", nullable = false)

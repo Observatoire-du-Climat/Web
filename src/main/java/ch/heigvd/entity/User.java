@@ -1,13 +1,18 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
+import io.quarkus.security.jpa.UserDefinition;
+import io.quarkus.security.jpa.Username;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users") //name "user" not avaiable
+@UserDefinition
 public class User {
 
     @Id
@@ -16,9 +21,11 @@ public class User {
     private Long id;
 
     @Column(name = "name", length = 50, nullable = false)
+    @Username
     private String name;
 
-    @Column(name = "email", length = 50, nullable = false)
+    @Column(name = "email", length = 50, nullable = false, unique = true)
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -35,10 +42,7 @@ public class User {
     private Boolean isValid;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Measure> measures;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private UserParameters parameters;
+    private Set<Measure> measures = new HashSet<>();
 
     public User() {}
 
@@ -104,13 +108,5 @@ public class User {
 
     public void setMeasures(Set<Measure> measures) {
         this.measures = measures;
-    }
-
-    public UserParameters getParameters() {
-        return parameters;
-    }
-
-    public void setParameters(UserParameters parameters) {
-        this.parameters = parameters;
     }
 }

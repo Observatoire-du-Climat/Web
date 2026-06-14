@@ -1,0 +1,83 @@
+package ch.heigvd.service;
+
+import ch.heigvd.dto.EggsLayingMeasureDTO;
+import ch.heigvd.entity.EggsLaying;
+import ch.heigvd.entity.MeasureType;
+import ch.heigvd.entity.User;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+@ApplicationScoped
+public class EggsLayingService {
+
+    private final EntityManager em;
+
+    @Inject
+    public EggsLayingService(EntityManager em) {
+        this.em = em;
+    }
+
+    /**
+     * Insert an EggsLaying Measure
+     * @param userId the id of the user that created the measure
+     * @param date the date of the measure
+     * @param location the location of the measure
+     * @param number the number value of the measure
+     * @return a DTO with the newly created EggsLaying if the insert was successful
+     */
+    @Transactional
+    public EggsLayingMeasureDTO addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
+
+        EggsLaying eggsLaying = new EggsLaying();
+        eggsLaying.setDate(date);
+        eggsLaying.setLocation(location);
+        eggsLaying.setNumber(number);
+        eggsLaying.setType(MeasureType.EGGS_LAYING);
+
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+        eggsLaying.setUser(user);
+        user.getMeasures().add(eggsLaying);
+
+        em.persist(eggsLaying);
+        return new EggsLayingMeasureDTO(eggsLaying.getId(),
+                eggsLaying.getDate(),
+                eggsLaying.getLocation(),
+                eggsLaying.getType(),
+                eggsLaying.getNumber());
+    }
+
+    /**
+     * Update a Bird Migration Measure
+     * All the attribute are updated, even if not all of them are changed
+     * @param measureId the id of the measure to modify
+     * @param date the (new) date of the measure
+     * @param location the (new) location of the measure
+     * @param number the (new) number value of the measure
+     * @return a DTO with the modified EggsLaying if the update was successful
+     */
+    @Transactional
+    public EggsLayingMeasureDTO modifyEggsLayingById(Long measureId, LocalDate date, String location, Integer number) {
+
+        EggsLaying eggsLayingToModify = em.find(EggsLaying.class, measureId);
+        if (eggsLayingToModify == null) {
+            throw new NotFoundException("Measure not found");
+        }
+        eggsLayingToModify.setDate(date);
+        eggsLayingToModify.setLocation(location);
+        eggsLayingToModify.setNumber(number);
+        return new EggsLayingMeasureDTO(eggsLayingToModify.getId(),
+                eggsLayingToModify.getDate(),
+                eggsLayingToModify.getLocation(),
+                eggsLayingToModify.getType(),
+                eggsLayingToModify.getNumber());
+    }
+}

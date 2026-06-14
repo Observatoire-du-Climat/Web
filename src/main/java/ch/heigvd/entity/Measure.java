@@ -1,8 +1,9 @@
-package ch.heigvd.Entity;
+package ch.heigvd.entity;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,8 +26,11 @@ public class Measure {
     @Column(name = "location", nullable = false)
     private String location;
 
+    @Enumerated(EnumType.STRING)
+    private MeasureType type;
+
     @OneToMany(mappedBy = "measure", cascade = CascadeType.ALL)
-    private Set<MeasurePicture> pictures;
+    private Set<MeasurePicture> pictures = new HashSet<>();
 
     public Measure() {}
 
@@ -60,6 +64,14 @@ public class Measure {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public MeasureType getType() {
+        return type;
+    }
+
+    public void setType(MeasureType type) {
+        this.type = type;
     }
 
     public Set<MeasurePicture> getPictures() {
