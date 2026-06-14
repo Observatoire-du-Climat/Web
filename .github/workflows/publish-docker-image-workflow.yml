@@ -62,7 +62,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/observatoire-du-climat-web:latest .
+        run: docker build -t ghcr.io/observatoire-du-climat/observatoire-du-climat-web:latest .
 
       - name: Publish docker image
-        run: docker push ghcr.io/${{ github.repository_owner }}/observatoire-du-climat-web:latest
+        run: docker push ghcr.io/observatoire-du-climat/observatoire-du-climat-web:latest
