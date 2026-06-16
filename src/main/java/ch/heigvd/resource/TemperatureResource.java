@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDate;
 
-@Path("/measures/temperature")
+@Path("/api/measures/temperature")
 @Consumes("application/json")
 @Produces("application/json")
 public class TemperatureResource {

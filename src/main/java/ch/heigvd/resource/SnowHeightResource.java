@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDate;
 
-@Path("/measures/snow-height")
+@Path("/api/measures/snow-height")
 @Consumes("application/json")
 @Produces("application/json")
 public class SnowHeightResource {

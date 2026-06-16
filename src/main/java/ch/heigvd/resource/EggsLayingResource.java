@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDate;
 
-@Path("/measures/eggs-laying")
+@Path("/api/measures/eggs-laying")
 @Consumes("application/json")
 @Produces("application/json")
 public class EggsLayingResource {
