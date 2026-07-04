@@ -22,8 +22,8 @@ public class TestHelpers {
         user.setEmail(UUID.randomUUID() + "@test.ch");
         user.setPassword(BcryptUtil.bcryptHash("password"));
         user.setValid(true);
-        user.setAdmin(false);
-        user.setRole("");
+        //user.setAdmin(false);
+        user.setRole("user");
 
         em.persist(user);
         return user;

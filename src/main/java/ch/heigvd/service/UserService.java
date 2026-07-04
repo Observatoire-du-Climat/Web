@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -20,10 +21,6 @@ public class UserService {
     public UserService(EntityManager em) {
         this.em = em;
     }
-
-    //DTO used only for login, checking the password with email in the LoginResource
-    public record UserPasswordDTO(Long id, String name, String email, String password) {}
-
 
     /**
      * Search a User by its id
@@ -60,9 +57,9 @@ public class UserService {
         user.setName(name);
         user.setEmail(email);
         user.setValid(false);
-        user.setAdmin(false);
+        //user.setAdmin(false);
         user.setPassword(BcryptUtil.bcryptHash(password));
-        user.setRole(""); //TODO to modify after admin features
+        user.setRole("admin");
 
         em.persist(user);
 
@@ -108,6 +105,16 @@ public class UserService {
         """, User.class).setParameter("email", userEmail);
 
         return query.getSingleResult();
+    }
+
+
+    public List<UserDTO> getAllUser() {
+        var query = em.createQuery("""
+            SELECT u.id, u.name, u.email
+            FROM User as u
+        """, UserDTO.class);
+
+        return query.getResultList();
     }
 
 }

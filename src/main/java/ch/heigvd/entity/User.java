@@ -35,8 +35,8 @@ public class User {
     @Roles
     private String role;
 
-    @Column(name = "is_admin", nullable = false)
-    private Boolean isAdmin;
+    //@Column(name = "is_admin", nullable = false)
+    //private Boolean isAdmin;
 
     @Column(name = "is_valid", nullable = false)
     private Boolean isValid;
@@ -86,6 +86,7 @@ public class User {
         this.role = role;
     }
 
+    /*
     public Boolean getAdmin() {
         return isAdmin;
     }
@@ -93,7 +94,7 @@ public class User {
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
-
+     */
     public Boolean getValid() {
         return isValid;
     }

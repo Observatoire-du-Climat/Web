@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion administrateur</title>
+</head>
+<body>
+    <h2>Connexion</h2>
+    <form method="post" action="/admin/login">
+        <label>Email</label>
+        <input type="email" name="email">
+
+        <label>Mot de passe</label>
+        <input type="password" name="password">
+
+        <button type="submit">Se connecter</button>
+    </form>
+
+    {#if error}
+        <p>Email ou mot de passe incorrect</p>
+    {/if}
+</body>

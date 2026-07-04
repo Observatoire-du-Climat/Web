@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<link rel="stylesheet" href="css/style.css">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin interface</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Portail Administrateur</h1>
+    </header>
+
+    <section class="card">
+
+        <div class="section-header">
+            <h2>Utilisateurs</h2>
+            <input type="text" placeholder="Rechercher un utilisateur...">
+        </div>
+
+        {#if users.isEmpty}
+            <p class="empty">Aucun utilisateur</p>
+        {#else}
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {#for user in users}
+                    <tr>
+                        <td>{user.id}</td>
+                        <td>{user.name}</td>
+                        <td>✔ Validé</td>
+                    </tr>
+                {/for}
+                </tbody>
+            </table>
+        {/if}
+
+    </section>
+
+    <section class="card">
+
+        <div class="section-header">
+            <h2>Mesures</h2>
+            <input type="text" placeholder="Rechercher une mesure...">
+        </div>
+
+        {#if measures.isEmpty}
+            <p class="empty">Aucune mesure</p>
+        {#else}
+
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Auteur</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {#for measure in measures}
+                    <tr>
+                        <td>{measure.id}</td>
+                        <td>{measure.date}</td>
+                        <td>{measure.type}</td>
+                        <td>Auteur</td>
+                    </tr>
+                {/for}
+                </tbody>
+            </table>
+
+        {/if}
+
+    </section>
+
+</div>
+
+</body>
+</html>

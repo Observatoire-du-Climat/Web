@@ -133,6 +133,13 @@ public class MeasureService {
         return true;
     }
 
+    public List<MeasureDTO> getAllMeasures() {
+        var query = em.createQuery("""
+            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type)
+            FROM Measure AS m
+        """, MeasureDTO.class);
 
+        return query.getResultList();
+    }
 
 }
