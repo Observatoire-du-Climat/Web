@@ -1,4 +1,4 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.UserDTO;
 import ch.heigvd.entity.User;

@@ -1,6 +1,7 @@
 package ch.heigvd.resource;
 
 import ch.heigvd.entity.User;
+import ch.heigvd.resource.api.UserResource;
 import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;

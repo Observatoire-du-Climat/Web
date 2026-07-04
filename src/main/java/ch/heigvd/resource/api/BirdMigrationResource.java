@@ -1,4 +1,4 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.BirdMigrationMeasureDTO;
 import ch.heigvd.service.BirdMigrationService;
@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDate;
 
-@Path("/measures/bird-migration")
+@Path("/api/measures/bird-migration")
 @Consumes("application/json")
 @Produces("application/json")
 public class BirdMigrationResource {

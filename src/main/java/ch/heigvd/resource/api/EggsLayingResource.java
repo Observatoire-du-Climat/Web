@@ -1,4 +1,4 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.EggsLayingMeasureDTO;
 import ch.heigvd.service.EggsLayingService;
@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.time.LocalDate;
 
-@Path("/measures/eggs-laying")
+@Path("/api/measures/eggs-laying")
 @Consumes("application/json")
 @Produces("application/json")
 public class EggsLayingResource {
