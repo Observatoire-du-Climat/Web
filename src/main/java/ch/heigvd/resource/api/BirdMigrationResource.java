@@ -1,4 +1,4 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.BirdMigrationMeasureDTO;
 import ch.heigvd.service.BirdMigrationService;
