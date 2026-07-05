@@ -32,7 +32,7 @@ public class LoginResource {
             if (!BcryptUtil.matches(request.password(), user.getPassword())) {
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
-            return Response.status(Response.Status.OK).entity(new UserDTO(user.getId(), user.getName(), user.getEmail())).build();
+            return Response.status(Response.Status.OK).entity(new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getValid())).build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();

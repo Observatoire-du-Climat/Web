@@ -49,7 +49,7 @@ public class UserServiceTest {
     public void testAddUser() {
 
         UserDTO result = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
-        UserDTO userDTO = new UserDTO(result.id(), "Test", result.email());
+        UserDTO userDTO = new UserDTO(result.id(), "Test", result.email(), result.isValid());
 
         assertEquals(userDTO, result);
 
@@ -107,7 +107,7 @@ public class UserServiceTest {
                 "newpassword"
         );
 
-        UserDTO secondUserDTO = new UserDTO(result.id(), "newName", firstUserDTO.email());
+        UserDTO secondUserDTO = new UserDTO(result.id(), "newName", firstUserDTO.email(), firstUserDTO.isValid());
 
         assertEquals(secondUserDTO, result);
 

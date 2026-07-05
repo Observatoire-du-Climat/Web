@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profil - {user.name}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<script>
+    async function validateUser(userId) {
+
+        const response = await fetch(`/admin/user/{user.id}`, {
+            method: "PUT"
+        });
+        console.log(response)
+        if (response.ok) {
+            //location.reload();
+        } else {
+            alert("Erreur lors de la validation.");
+        }
+    }
+</script>
+
+<body>
+    <div>
+        <h2>Profil de {user.name}</h2>
+        <p>Id : {user.id}</p>
+        <p>Email : {user.email}</p>
+        <p>Status :
+            {#if user.isValid}
+                Valide
+            {#else}
+                Non valide
+            {/if}
+        </p>
+        <button onclick="validateUser({user.id})"> Valider l'utilisateur</button>
+    </div>
+
+    <div>
+        <h3>Mesures prises par l'utilisateur</h3>
+        {#if measures.isEmpty}
+            <p class="empty">Aucune mesure</p>
+        {#else}
+
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Auteur</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {#for measure in measures}
+                    <tr>
+                        <td>{measure.id}</td>
+                        <td>{measure.date}</td>
+                        <td>{measure.type}</td>
+                    </tr>
+                {/for}
+                </tbody>
+            </table>
+
+        {/if}
+    </div>
+
+</body>

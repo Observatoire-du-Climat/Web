@@ -35,7 +35,7 @@ public class UserService {
         }
 
         var query = em.createQuery("""
-            SELECT u.id, u.name, u.email
+            SELECT u.id, u.name, u.email, u.isValid
             FROM User as u
             WHERE u.id = :id
         """, UserDTO.class).setParameter("id", userId);
@@ -63,7 +63,7 @@ public class UserService {
 
         em.persist(user);
 
-        return new UserDTO(user.getId(), user.getName(), user.getEmail());
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getValid());
     }
 
     /**
@@ -85,7 +85,7 @@ public class UserService {
         userToModify.setName(name);
         userToModify.setEmail(email);
         userToModify.setPassword(BcryptUtil.bcryptHash(password));
-        return new UserDTO(userToModify.getId(), userToModify.getName(), userToModify.getEmail());
+        return new UserDTO(userToModify.getId(), userToModify.getName(), userToModify.getEmail(), userToModify.getValid());
 
     }
 
@@ -110,11 +110,21 @@ public class UserService {
 
     public List<UserDTO> getAllUser() {
         var query = em.createQuery("""
-            SELECT u.id, u.name, u.email
+            SELECT u.id, u.name, u.email, u.isValid
             FROM User as u
         """, UserDTO.class);
 
         return query.getResultList();
+    }
+
+    @Transactional
+    public UserDTO validateUserById(long userId) {
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+        user.setValid(true);
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getValid());
     }
 
 }

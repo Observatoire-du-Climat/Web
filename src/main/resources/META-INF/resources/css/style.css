@@ -81,3 +81,11 @@ tbody tr:hover {
     color: grey;
     font-style: italic;
 }
+
+.valid {
+    color: #224433
+}
+
+.invalid {
+    color: red;
+}

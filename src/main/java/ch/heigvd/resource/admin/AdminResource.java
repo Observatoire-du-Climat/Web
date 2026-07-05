@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
 
-@RolesAllowed("admin")
+//@RolesAllowed("admin")
 @Path("/admin")
 public class AdminResource {
 
