@@ -36,7 +36,7 @@
 
                 <tbody>
                     {#for user in users}
-                        <tr>
+                        <tr onclick="window.location='/admin/user/{user.id}'">
                             <td>{user.id}</td>
                             <td>{user.name}</td>
                             {#if user.isValid}
@@ -75,7 +75,7 @@
 
                 <tbody>
                 {#for measure in measures}
-                    <tr>
+                    <tr onclick="window.location='/admin/measure/{measure.id}'">
                         <td>{measure.id}</td>
                         <td>{measure.date}</td>
                         <td>{measure.type}</td>

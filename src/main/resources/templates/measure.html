@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mesure {measure.id}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+<div>
+    <h2>Mesure {measure.id}</h2>
+    <p>Id : {measure.id}</p>
+    <p>Auteur : Quelqu'un</p>
+    <p>Date : {measure.date}</p>
+    <p>Lieu : {measure.location}</p>
+    <p>Type : {measure.type}</p>
+
+    {#if measure.type.name == "TEMPERATURE"}
+        <p>Degré : {measure.degree}</p>
+
+    {#else if measure.type.name == "SNOW_HEIGHT"}
+        <p>Hauteur : {measure.height}</p>
+        <p>Condition météo : {measure.weather}</p>
+        <p>Précipitation : {measure.precipitation}</p>
+
+    {#else if measure.type.name == "BIRD_MIGRATION"}
+        <p>Espèce : {measure.specie}</p>
+        <p>Evénement : {measure.event}</p>
+
+    {#else if measure.type.name == "EGGS_LAYING"}
+        <p>Nombre de pontes : {measure.number}</p>
+    {/if}
+
+    <button onclick=""> Modifier</button>
+    <button onclick=""> Supprimer</button>
+</div>
+
+</body>
