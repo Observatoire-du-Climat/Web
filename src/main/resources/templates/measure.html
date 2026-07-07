@@ -7,12 +7,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
+<script>
+    async function deleteMeasure() {
+        const response = await fetch(`/api/measures/{measure.id}`, {
+            method: "DELETE"
+        });
+        console.log(response)
+        if (response.status === 204) {
+            window.location="/admin"
+        } else {
+            alert("Erreur lors de la suppression.");
+        }
+    }
+</script>
 
 <body>
 <div>
     <h2>Mesure {measure.id}</h2>
     <p>Id : {measure.id}</p>
-    <p>Auteur : Quelqu'un</p>
+    <p>Auteur : {measure.author}</p>
     <p>Date : {measure.date}</p>
     <p>Lieu : {measure.location}</p>
     <p>Type : {measure.type}</p>
@@ -34,7 +47,7 @@
     {/if}
 
     <button onclick=""> Modifier</button>
-    <button onclick=""> Supprimer</button>
+    <button onclick="deleteMeasure()"> Supprimer</button>
 </div>
 
 </body>

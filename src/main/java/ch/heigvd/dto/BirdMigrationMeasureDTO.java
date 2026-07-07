@@ -6,5 +6,6 @@ import ch.heigvd.entity.MeasureType;
 
 import java.time.LocalDate;
 
-public record BirdMigrationMeasureDTO(Long id, LocalDate date, String location, MeasureType type, BirdSpecies specie, BirdEventType event) {
+//author will be used only in the admin interface
+public record BirdMigrationMeasureDTO(Long id, LocalDate date, String location, MeasureType type, String author, BirdSpecies specie, BirdEventType event) {
 }

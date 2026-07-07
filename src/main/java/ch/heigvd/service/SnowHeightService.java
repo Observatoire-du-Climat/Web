@@ -53,6 +53,7 @@ public class SnowHeightService {
                 snowHeight.getDate(),
                 snowHeight.getLocation(),
                 snowHeight.getType(),
+                snowHeight.getUser().getName(),
                 snowHeight.getHeight(),
                 snowHeight.getWeather(),
                 snowHeight.getPrecipitation());
@@ -85,6 +86,7 @@ public class SnowHeightService {
                 snowHeightToModify.getDate(),
                 snowHeightToModify.getLocation(),
                 snowHeightToModify.getType(),
+                snowHeightToModify.getUser().getName(),
                 snowHeightToModify.getHeight(),
                 snowHeightToModify.getWeather(),
                 snowHeightToModify.getPrecipitation());

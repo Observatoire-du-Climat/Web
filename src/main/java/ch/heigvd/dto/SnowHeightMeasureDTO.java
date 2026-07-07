@@ -5,5 +5,6 @@ import ch.heigvd.entity.WeatherType;
 
 import java.time.LocalDate;
 
-public record SnowHeightMeasureDTO(Long id, LocalDate date, String location, MeasureType type, Integer height, WeatherType weather, Integer precipitation) {
+//author will be used only in the admin interface
+public record SnowHeightMeasureDTO(Long id, LocalDate date, String location, MeasureType type, String author, Integer height, WeatherType weather, Integer precipitation) {
 }

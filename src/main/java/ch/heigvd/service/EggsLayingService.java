@@ -52,6 +52,7 @@ public class EggsLayingService {
                 eggsLaying.getDate(),
                 eggsLaying.getLocation(),
                 eggsLaying.getType(),
+                eggsLaying.getUser().getName(),
                 eggsLaying.getNumber());
     }
 
@@ -78,6 +79,7 @@ public class EggsLayingService {
                 eggsLayingToModify.getDate(),
                 eggsLayingToModify.getLocation(),
                 eggsLayingToModify.getType(),
+                eggsLayingToModify.getUser().getName(),
                 eggsLayingToModify.getNumber());
     }
 }

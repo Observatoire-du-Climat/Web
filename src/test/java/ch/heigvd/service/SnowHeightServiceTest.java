@@ -61,6 +61,7 @@ public class SnowHeightServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.SNOW_HEIGHT,
+                "Test User",
                 10,
                 WeatherType.SUNNY,
                 2
@@ -122,6 +123,7 @@ public class SnowHeightServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.SNOW_HEIGHT,
+                "Test User",
                 20,
                 WeatherType.SUNNY,
                 2

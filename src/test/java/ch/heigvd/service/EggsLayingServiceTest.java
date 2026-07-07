@@ -54,6 +54,7 @@ public class EggsLayingServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.EGGS_LAYING,
+                "Test User",
                 10);
 
         assertEquals(eggsLayingMeasureDTO, result);
@@ -104,6 +105,7 @@ public class EggsLayingServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.EGGS_LAYING,
+                "Test User",
                 20
         );
 
