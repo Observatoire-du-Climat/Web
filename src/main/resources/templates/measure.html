@@ -28,19 +28,19 @@
     <p>Auteur : {measure.author}</p>
     <p>Date : {measure.date}</p>
     <p>Lieu : {measure.location}</p>
-    <p>Type : {measure.type}</p>
+    <p>Type : {measure.type.getLabel()}</p>
 
     {#if measure.type.name == "TEMPERATURE"}
         <p>Degré : {measure.degree}</p>
 
     {#else if measure.type.name == "SNOW_HEIGHT"}
         <p>Hauteur : {measure.height}</p>
-        <p>Condition météo : {measure.weather}</p>
+        <p>Condition météo : {measure.weather.getLabel()}</p>
         <p>Précipitation : {measure.precipitation}</p>
 
     {#else if measure.type.name == "BIRD_MIGRATION"}
-        <p>Espèce : {measure.specie}</p>
-        <p>Evénement : {measure.event}</p>
+        <p>Espèce : {measure.specie.getLabel()}</p>
+        <p>Evénement : {measure.event.getLabel()}</p>
 
     {#else if measure.type.name == "EGGS_LAYING"}
         <p>Nombre de pontes : {measure.number}</p>

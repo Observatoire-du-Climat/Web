@@ -78,7 +78,7 @@
                     <tr onclick="window.location='/admin/measure/{measure.id}'">
                         <td>{measure.id}</td>
                         <td>{measure.date}</td>
-                        <td>{measure.type}</td>
+                        <td>{measure.type.getLabel()}</td>
                         <td>{measure.author}</td>
                     </tr>
                 {/for}
