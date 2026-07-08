@@ -5,11 +5,13 @@ import ch.heigvd.service.MeasureService;
 import ch.heigvd.service.UserService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+@RolesAllowed("admin")
 @Path("/admin/user")
 public class AdminUserResource {
 

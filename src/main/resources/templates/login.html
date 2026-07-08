@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-    <title>Connexion administrateur</title>
+    <title>Connexion admin</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-    <h2>Connexion</h2>
-    <form method="post" action="/admin/login">
-        <label>Email</label>
-        <input type="email" name="email">
+<div class="detail-page">
+    <div class="detail-card login-card">
+        <h2 class="page-title">Connexion administrateur</h2>
 
-        <label>Mot de passe</label>
-        <input type="password" name="password">
+        <form method="post" action="/admin/login" class="login-form">
+            <div>
+                <label for="email">Email</label>
+                <input id="email" type="email" name="j_username" required>
+            </div>
 
-        <button type="submit">Se connecter</button>
-    </form>
+            <div>
+                <label for="password">Mot de passe</label>
+                <input id="password" type="password" name="j_password" required>
+            </div>
 
-    {#if error}
-        <p>Email ou mot de passe incorrect</p>
-    {/if}
+            <button class="btn btn-primary" type="submit">Se connecter</button>
+        </form>
+    </div>
+</div>
 </body>
+</html>

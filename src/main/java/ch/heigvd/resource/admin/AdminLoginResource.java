@@ -26,10 +26,11 @@ public class AdminLoginResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance loginPage() {
-        return login.data("error", false);
+    public TemplateInstance loginPage(@QueryParam("error") String error) {
+        return login.data("error", error != null);
     }
 
+    /*
     @POST
     public Response login(@FormParam("email") String email, @FormParam("password") String password) {
         User user = userService.searchUserByEmail(email);
@@ -48,4 +49,5 @@ public class AdminLoginResource {
                 .cookie(cookie)
                 .build();
     }
+     */
 }

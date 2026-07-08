@@ -13,6 +13,10 @@
 
     <header>
         <h1>Portail Administrateur</h1>
+        <h3>Connecté en tant que : {adminName}</h3>
+        <br>
+        <br>
+        <a class="btn btn-secondary" href="/admin/logout">Déconnexion</a>
     </header>
 
     <section class="card">
@@ -21,7 +25,7 @@
             <h2>Utilisateurs</h2>
             <form method="get" action="/admin">
                 <input type="text" name="userSearch" value="{userSearch ?: ''}" placeholder="Rechercher un utilisateur...">
-                <button type="submit">Rechercher</button>
+                <button type="submit" class="btn btn-secondary">Rechercher</button>
             </form>
         </div>
 
@@ -62,7 +66,6 @@
 
         <div class="section-header">
             <h2>Mesures</h2>
-            <input type="text" placeholder="Rechercher une mesure...">
         </div>
 
         {#if measures.isEmpty}
