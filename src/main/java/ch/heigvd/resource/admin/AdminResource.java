@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
@@ -32,8 +33,10 @@ public class AdminResource {
 
     @GET
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance index() {
-        return admin.data("users", userService.getAllUser())
-                .data("measures", measureService.getAllMeasures());
+    public TemplateInstance index(@QueryParam("userSearch") String userSearch, @QueryParam("order") String order) {
+        return admin.data("users", userService.getAllUser(userSearch))
+                .data("userSearch", userSearch)
+                .data("measures", measureService.getAllMeasures(order))
+                .data("order", order);
     }
 }

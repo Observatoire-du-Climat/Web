@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil - {user.name}</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <script>
@@ -23,48 +23,69 @@
 </script>
 
 <body>
-    <div>
+<div class="detail-page">
+
+    <div class="detail-header">
         <h2>Profil de {user.name}</h2>
-        <p>Id : {user.id}</p>
-        <p>Email : {user.email}</p>
-        <p>Status :
-            {#if user.isValid}
-                Valide
-            {#else}
-                Non valide
-            {/if}
-        </p>
-        <button onclick="validateUser({user.id})"> Valider l'utilisateur</button>
     </div>
 
-    <div>
-        <h3>Mesures prises par l'utilisateur</h3>
-        {#if measures.isEmpty}
-            <p class="empty">Aucune mesure</p>
-        {#else}
+    <div class="detail-card">
+        <h3 class="page-title">Informations utilisateur</h3>
 
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Auteur</th>
-                </tr>
-                </thead>
+        <div class="info-grid">
+            <div class="info-label">ID</div>
+            <div class="info-value">{user.id}</div>
 
-                <tbody>
-                {#for measure in measures}
-                    <tr>
-                        <td>{measure.id}</td>
-                        <td>{measure.date}</td>
-                        <td>{measure.type.getLabel()}</td>
-                    </tr>
-                {/for}
-                </tbody>
-            </table>
+            <div class="info-label">Email</div>
+            <div class="info-value">{user.email}</div>
 
+            <div class="info-label">Statut</div>
+            <div class="info-value">
+                {#if user.isValid}
+                    <span class="badge badge-valid">Valide</span>
+                {#else}
+                    <span class="badge badge-invalid">Non valide</span>
+                {/if}
+            </div>
+        </div>
+
+        {#if !user.isValid}
+            <div class="actions">
+                <button class="btn btn-primary" onclick="validateUser({user.id})">
+                    Valider l'utilisateur
+                </button>
+            </div>
         {/if}
     </div>
 
+    <div class="detail-card">
+        <h3 class="page-title">Mesures prises par l'utilisateur</h3>
+
+        {#if measures.isEmpty}
+            <p class="empty">Aucune mesure</p>
+        {#else}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {#for measure in measures}
+                        <tr onclick="window.location='/admin/measure/{measure.id}'">
+                            <td>{measure.id}</td>
+                            <td>{measure.date}</td>
+                            <td>{measure.type.getLabel()}</td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+        {/if}
+    </div>
+
+</div>
 </body>

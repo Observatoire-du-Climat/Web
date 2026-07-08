@@ -52,6 +52,7 @@ public class MeasureService {
             SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
             FROM Measure AS m
             WHERE m.user.id = :id
+            ORDER BY m.date
         """, MeasureDTO.class).setParameter("id", userId);
 
         return query.getResultList();
@@ -133,13 +134,25 @@ public class MeasureService {
         return true;
     }
 
-    public List<MeasureDTO> getAllMeasures() {
-        var query = em.createQuery("""
-            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
-            FROM Measure AS m
-        """, MeasureDTO.class);
+    public List<MeasureDTO> getAllMeasures(String sort) {
+        String orderBy;
+        if (sort == null || sort.isBlank()) {
+            orderBy = "m.id";
+        } else {
+            orderBy = switch (sort) {
+                case "date" -> "m.date";
+                case "type" -> "m.type";
+                case "author" -> "m.user.name";
+                default -> "m.id";
+            };
+        }
 
-        return query.getResultList();
+        String query = """
+                SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
+                FROM Measure AS m
+                ORDER BY %s
+                """.formatted(orderBy);
+        return em.createQuery(query, MeasureDTO.class).getResultList();
     }
 
 }

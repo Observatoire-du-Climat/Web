@@ -108,11 +108,21 @@ public class UserService {
     }
 
 
-    public List<UserDTO> getAllUser() {
+    public List<UserDTO> getAllUser(String search) {
+
+        if (search == null || search.isBlank()) {
+            return em.createQuery("""
+            SELECT u.id, u.name, u.email, u.isValid
+            FROM User as u
+            ORDER BY u.id
+        """, UserDTO.class).getResultList();
+        }
+
         var query = em.createQuery("""
             SELECT u.id, u.name, u.email, u.isValid
             FROM User as u
-        """, UserDTO.class);
+            WHERE LOWER(u.name) LIKE LOWER(:search)
+        """, UserDTO.class).setParameter("search", "%"+search+"%");
 
         return query.getResultList();
     }

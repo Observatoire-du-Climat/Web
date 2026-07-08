@@ -19,22 +19,26 @@
 
         <div class="section-header">
             <h2>Utilisateurs</h2>
-            <input type="text" placeholder="Rechercher un utilisateur...">
+            <form method="get" action="/admin">
+                <input type="text" name="userSearch" value="{userSearch ?: ''}" placeholder="Rechercher un utilisateur...">
+                <button type="submit">Rechercher</button>
+            </form>
         </div>
 
         {#if users.isEmpty}
             <p class="empty">Aucun utilisateur</p>
         {#else}
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nom</th>
-                    <th>Statut</th>
-                </tr>
-                </thead>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Statut</th>
+                    </tr>
+                    </thead>
 
-                <tbody>
+                    <tbody>
                     {#for user in users}
                         <tr onclick="window.location='/admin/user/{user.id}'">
                             <td>{user.id}</td>
@@ -46,8 +50,10 @@
                             {/if}
                         </tr>
                     {/for}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+
         {/if}
 
     </section>
@@ -62,29 +68,49 @@
         {#if measures.isEmpty}
             <p class="empty">Aucune mesure</p>
         {#else}
-
-            <table>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Auteur</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {#for measure in measures}
-                    <tr onclick="window.location='/admin/measure/{measure.id}'">
-                        <td>{measure.id}</td>
-                        <td>{measure.date}</td>
-                        <td>{measure.type.getLabel()}</td>
-                        <td>{measure.author}</td>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=id">
+                                ID
+                                {#if order == 'id'} ▼ {/if}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=date">
+                                Date
+                                {#if order == 'date'} ▼ {/if}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=type">
+                                Type
+                                {#if order == 'type'} ▼ {/if}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=author">
+                                Auteur
+                                {#if order == 'author'} ▼ {/if}
+                            </a>
+                        </th>
                     </tr>
-                {/for}
-                </tbody>
-            </table>
+                    </thead>
 
+                    <tbody>
+                    {#for measure in measures}
+                        <tr onclick="window.location='/admin/measure/{measure.id}'">
+                            <td>{measure.id}</td>
+                            <td>{measure.date}</td>
+                            <td>{measure.type.getLabel()}</td>
+                            <td>{measure.author}</td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
         {/if}
 
     </section>
