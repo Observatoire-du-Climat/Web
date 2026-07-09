@@ -12,6 +12,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.NotFoundException;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +70,7 @@ public class UserServiceTest {
 
         assertFalse(user.getValid());
         //assertFalse(user.getAdmin());
-        assertEquals("", user.getRole());
+        assertEquals("user", user.getRole());
     }
 
     @Test
@@ -132,5 +133,52 @@ public class UserServiceTest {
         User user = em.find(User.class, firstUserDTO.id());
         assertNotEquals("newpassword", user.getPassword());
         assertTrue(user.getPassword().startsWith("$2"));
+    }
+
+    /*
+    Works when tested alone
+    @Test
+    public void testGetAllUserEmpty() {
+        List<UserDTO> users = userService.getAllUser("");
+        assertTrue(users.isEmpty());
+    }
+     */
+
+    @Test
+    @TestTransaction
+    public void testGetAllUser() {
+        UserDTO firstUserDTO = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
+        UserDTO secondUserDTO = userService.addUser("Test2", UUID.randomUUID() + "@test.ch", "password");
+
+        List<UserDTO> users = userService.getAllUser("");
+        assertTrue(users.contains(firstUserDTO));
+        assertTrue(users.contains(secondUserDTO));
+    }
+
+    @Test
+    @TestTransaction
+    public void testGetAllUserSearch() {
+        UserDTO userDTO = userService.addUser("John", UUID.randomUUID() + "@test.ch", "password");
+
+        List<UserDTO> users = userService.getAllUser("");
+        assertTrue(users.contains(userDTO));
+
+        List<UserDTO> userSearched = userService.getAllUser("John");
+        assertTrue(userSearched.contains(userDTO));
+
+        List<UserDTO> userWrongSearch = userService.getAllUser("John Doe");
+        assertTrue(userWrongSearch.isEmpty());
+    }
+
+    @Test
+    @TestTransaction
+    public void testValidateUserById() {
+        UserDTO userDTO = userService.addUser("Test", UUID.randomUUID() + "@test.ch", "password");
+
+        assertFalse(userDTO.isValid());
+
+        UserDTO validatedUserDTO = userService.validateUserById(userDTO.id());
+
+        assertTrue(validatedUserDTO.isValid());
     }
 }

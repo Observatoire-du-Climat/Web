@@ -57,9 +57,8 @@ public class UserService {
         user.setName(name);
         user.setEmail(email);
         user.setValid(false);
-        //user.setAdmin(false);
         user.setPassword(BcryptUtil.bcryptHash(password));
-        user.setRole("admin");
+        user.setRole("user");
 
         em.persist(user);
 
