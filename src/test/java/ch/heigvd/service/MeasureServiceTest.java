@@ -51,13 +51,15 @@ public class MeasureServiceTest {
                 m.id().equals(temperature.getId()) &&
                 m.date().equals(LocalDate.of(2001, 2, 15)) &&
                 m.location().equals("testlocation") &&
-                m.type().equals(MeasureType.TEMPERATURE)
+                m.type().equals(MeasureType.TEMPERATURE) &&
+                m.author().equals(user.getName())
         ));
         assertTrue(result.stream().anyMatch(m ->
                 m.id().equals(snowHeight.getId()) &&
                 m.date().equals(LocalDate.of(2001, 2, 15)) &&
                 m.location().equals("testlocation") &&
-                m.type().equals(MeasureType.SNOW_HEIGHT)
+                m.type().equals(MeasureType.SNOW_HEIGHT) &&
+                m.author().equals(user.getName())
         ));
     }
 

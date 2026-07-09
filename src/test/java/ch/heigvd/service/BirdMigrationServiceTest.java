@@ -54,6 +54,7 @@ public class BirdMigrationServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.BIRD_MIGRATION,
+                "Test User",
                 BirdSpecies.SWALLOW,
                 BirdEventType.ARRIVAL
         );
@@ -110,6 +111,7 @@ public class BirdMigrationServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.BIRD_MIGRATION,
+                "Test User",
                 BirdSpecies.SWIFT,
                 BirdEventType.DEPARTURE
         );

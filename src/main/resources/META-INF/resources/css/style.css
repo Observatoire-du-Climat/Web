@@ -1,0 +1,282 @@
+:root {
+    --green: #224433;
+    --green-light: #2f5a45;
+    --blue: #3f51b5;
+    --background: #f4f6f8;
+    --white: #ffffff;
+    --border: #dddddd;
+    --text: #333333;
+    --grey: #696969;
+    --danger: #c0392b;
+    --danger-light: #fdecea;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+/* ---------- Pages ---------- */
+
+.container,
+.detail-page {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+header,
+.detail-header {
+    margin-bottom: 30px;
+}
+
+header h1,
+.detail-header h2 {
+    color: var(--green);
+}
+
+.detail-header {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+
+.detail-header h2 {
+    font-size: 30px;
+}
+
+/* ---------- Cards ---------- */
+
+.card,
+.detail-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+
+.page-title {
+    color: var(--green);
+    margin-bottom: 25px;
+    font-size: 22px;
+}
+
+/* ---------- Search ---------- */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header input {
+    width: 280px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.section-header input:focus {
+    outline: none;
+    border-color: var(--green);
+}
+
+/* ---------- Tables ---------- */
+
+.table-wrapper {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: var(--green);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+th,
+td {
+    height: 50px;
+    padding: 14px;
+    text-align: left;
+}
+
+th a {
+    all: unset;
+    display: block;
+    cursor: pointer;
+}
+
+tbody tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
+tbody tr:hover {
+    background: #eceff8;
+}
+
+/* ---------- Detail pages ---------- */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 15px 25px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: var(--green);
+}
+
+.info-value {
+    color: var(--text);
+}
+
+/* ---------- Status ---------- */
+
+.badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.badge-valid {
+    background: #e8f3ed;
+    color: var(--green);
+}
+
+.badge-invalid {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+
+.valid {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.invalid {
+    color: var(--danger);
+    font-weight: bold;
+}
+
+/* ---------- Buttons ---------- */
+
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-primary {
+    background: var(--green);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--green-light);
+}
+
+.btn-secondary {
+    background: #e9ecef;
+}
+
+.btn-secondary:hover {
+    background: #d9dde0;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #a93226;
+}
+
+/* ---------- Empty ---------- */
+
+.empty {
+    padding: 20px;
+    color: var(--grey);
+    font-style: italic;
+    text-align: center;
+}
+
+/* ---------- Login ---------- */
+
+.login-card {
+    width: 100%;
+    max-width: 520px;
+    margin: 80px auto;
+    padding: 40px;
+}
+
+.login-card .page-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.login-form label {
+    font-weight: bold;
+    color: var(--green);
+    font-size: 16px;
+}
+
+.login-form input {
+    height: 46px;
+    padding: 0 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--green);
+}
+
+.login-form .btn {
+    margin-top: 10px;
+    width: fit-content;
+    padding: 14px 22px;
+    font-size: 16px;
+}

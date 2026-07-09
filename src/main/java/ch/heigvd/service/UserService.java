@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -20,10 +21,6 @@ public class UserService {
     public UserService(EntityManager em) {
         this.em = em;
     }
-
-    //DTO used only for login, checking the password with email in the LoginResource
-    public record UserPasswordDTO(Long id, String name, String email, String password) {}
-
 
     /**
      * Search a User by its id
@@ -38,7 +35,7 @@ public class UserService {
         }
 
         var query = em.createQuery("""
-            SELECT u.id, u.name, u.email
+            SELECT u.id, u.name, u.email, u.isValid
             FROM User as u
             WHERE u.id = :id
         """, UserDTO.class).setParameter("id", userId);
@@ -60,13 +57,12 @@ public class UserService {
         user.setName(name);
         user.setEmail(email);
         user.setValid(false);
-        user.setAdmin(false);
         user.setPassword(BcryptUtil.bcryptHash(password));
-        user.setRole(""); //TODO to modify after admin features
+        user.setRole("user");
 
         em.persist(user);
 
-        return new UserDTO(user.getId(), user.getName(), user.getEmail());
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getValid());
     }
 
     /**
@@ -88,7 +84,7 @@ public class UserService {
         userToModify.setName(name);
         userToModify.setEmail(email);
         userToModify.setPassword(BcryptUtil.bcryptHash(password));
-        return new UserDTO(userToModify.getId(), userToModify.getName(), userToModify.getEmail());
+        return new UserDTO(userToModify.getId(), userToModify.getName(), userToModify.getEmail(), userToModify.getValid());
 
     }
 
@@ -108,6 +104,36 @@ public class UserService {
         """, User.class).setParameter("email", userEmail);
 
         return query.getSingleResult();
+    }
+
+
+    public List<UserDTO> getAllUser(String search) {
+
+        if (search == null || search.isBlank()) {
+            return em.createQuery("""
+            SELECT u.id, u.name, u.email, u.isValid
+            FROM User as u
+            ORDER BY u.id
+        """, UserDTO.class).getResultList();
+        }
+
+        var query = em.createQuery("""
+            SELECT u.id, u.name, u.email, u.isValid
+            FROM User as u
+            WHERE LOWER(u.name) LIKE LOWER(:search)
+        """, UserDTO.class).setParameter("search", "%"+search+"%");
+
+        return query.getResultList();
+    }
+
+    @Transactional
+    public UserDTO validateUserById(long userId) {
+        User user = em.find(User.class, userId);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+        user.setValid(true);
+        return new UserDTO(user.getId(), user.getName(), user.getEmail(), user.getValid());
     }
 
 }

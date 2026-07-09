@@ -1,9 +1,6 @@
 package ch.heigvd.entity;
 
-import io.quarkus.security.jpa.Password;
-import io.quarkus.security.jpa.Roles;
-import io.quarkus.security.jpa.UserDefinition;
-import io.quarkus.security.jpa.Username;
+import io.quarkus.security.jpa.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
@@ -21,22 +18,19 @@ public class User {
     private Long id;
 
     @Column(name = "name", length = 50, nullable = false)
-    @Username
     private String name;
 
     @Column(name = "email", length = 50, nullable = false, unique = true)
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+    @Username
     private String email;
 
     @Column(name = "password", nullable = false)
-    @Password
+    @Password(value = PasswordType.MCF)
     private String password;
 
     @Roles
     private String role;
-
-    @Column(name = "is_admin", nullable = false)
-    private Boolean isAdmin;
 
     @Column(name = "is_valid", nullable = false)
     private Boolean isValid;
@@ -86,6 +80,7 @@ public class User {
         this.role = role;
     }
 
+    /*
     public Boolean getAdmin() {
         return isAdmin;
     }
@@ -93,7 +88,7 @@ public class User {
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
-
+     */
     public Boolean getValid() {
         return isValid;
     }

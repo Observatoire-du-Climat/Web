@@ -29,7 +29,7 @@ public class MeasureService {
      */
     public List<MeasureDTO> searchAllMeasures() {
         var query = em.createQuery("""
-            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type)
+            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
             FROM Measure AS m
         """, MeasureDTO.class);
 
@@ -49,9 +49,10 @@ public class MeasureService {
         }
 
         var query = em.createQuery("""
-            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type)
+            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
             FROM Measure AS m
             WHERE m.user.id = :id
+            ORDER BY m.date
         """, MeasureDTO.class).setParameter("id", userId);
 
         return query.getResultList();
@@ -72,7 +73,7 @@ public class MeasureService {
         switch (measure.getType()) {
             case TEMPERATURE -> {
                 var query = em.createQuery("""
-                    SELECT new ch.heigvd.dto.TemperatureMeasureDTO(t.id, t.date, t.location, t.type, t.degree)
+                    SELECT new ch.heigvd.dto.TemperatureMeasureDTO(t.id, t.date, t.location, t.type, t.user.name, t.degree)
                     FROM Temperature AS t
                     WHERE t.id = :id
                 """, TemperatureMeasureDTO.class).setParameter("id", measure.getId());
@@ -81,7 +82,7 @@ public class MeasureService {
 
             case SNOW_HEIGHT -> {
                 var query = em.createQuery("""
-                    SELECT new ch.heigvd.dto.SnowHeightMeasureDTO(s.id, s.date, s.location, s.type, s.height, s.weather, s.precipitation)
+                    SELECT new ch.heigvd.dto.SnowHeightMeasureDTO(s.id, s.date, s.location, s.type, s.user.name, s.height, s.weather, s.precipitation)
                     FROM SnowHeight AS s
                     WHERE s.id = :id
                 """, SnowHeightMeasureDTO.class).setParameter("id", measure.getId());
@@ -90,7 +91,7 @@ public class MeasureService {
 
             case BIRD_MIGRATION -> {
                 var query = em.createQuery("""
-                    SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.specie, b.eventType)
+                    SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.user.name, b.specie, b.eventType)
                     FROM BirdMigration AS b
                     WHERE b.id = :id
                 """, BirdMigrationMeasureDTO.class).setParameter("id", measure.getId());
@@ -99,7 +100,7 @@ public class MeasureService {
 
             case EGGS_LAYING -> {
                 var query = em.createQuery("""
-                    SELECT new ch.heigvd.dto.EggsLayingMeasureDTO(e.id, e.date, e.location, e.type, e.number)
+                    SELECT new ch.heigvd.dto.EggsLayingMeasureDTO(e.id, e.date, e.location, e.type, e.user.name, e.number)
                     FROM EggsLaying AS e
                     WHERE e.id = :id
                 """, EggsLayingMeasureDTO.class).setParameter("id", measure.getId());
@@ -133,6 +134,25 @@ public class MeasureService {
         return true;
     }
 
+    public List<MeasureDTO> getAllMeasures(String sort) {
+        String orderBy;
+        if (sort == null || sort.isBlank()) {
+            orderBy = "m.id";
+        } else {
+            orderBy = switch (sort) {
+                case "date" -> "m.date";
+                case "type" -> "m.type";
+                case "author" -> "m.user.name";
+                default -> "m.id";
+            };
+        }
 
+        String query = """
+                SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
+                FROM Measure AS m
+                ORDER BY %s
+                """.formatted(orderBy);
+        return em.createQuery(query, MeasureDTO.class).getResultList();
+    }
 
 }

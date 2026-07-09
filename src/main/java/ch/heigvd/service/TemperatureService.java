@@ -52,6 +52,7 @@ public class TemperatureService {
                                         temperature.getDate(),
                                         temperature.getLocation(),
                                         temperature.getType(),
+                                        temperature.getUser().getName(),
                                         temperature.getDegree());
     }
 
@@ -78,6 +79,7 @@ public class TemperatureService {
                                         temperatureToModify.getDate(),
                                         temperatureToModify.getLocation(),
                                         temperatureToModify.getType(),
+                                        temperatureToModify.getUser().getName(),
                                         temperatureToModify.getDegree());
 
     }

@@ -4,5 +4,6 @@ import ch.heigvd.entity.MeasureType;
 
 import java.time.LocalDate;
 
-public record EggsLayingMeasureDTO(Long id, LocalDate date, String location, MeasureType type, Integer number) {
+//author will be used only in the admin interface
+public record EggsLayingMeasureDTO(Long id, LocalDate date, String location, MeasureType type, String author, Integer number) {
 }

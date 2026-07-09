@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mesure {measure.id}</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<script>
+    async function deleteMeasure() {
+        const response = await fetch(`/api/measures/{measure.id}`, {
+            method: "DELETE"
+        });
+        console.log(response)
+        if (response.status === 204) {
+            window.location="/admin"
+        } else {
+            alert("Erreur lors de la suppression.");
+        }
+    }
+</script>
+
+<body>
+<div class="detail-page">
+
+    <div class="detail-header">
+        <h2>Mesure {measure.id}</h2>
+    </div>
+
+    <div class="detail-card">
+        <h3 class="page-title">Informations générales</h3>
+        <div class="info-grid">
+            <div class="info-label">ID</div>
+            <div class="info-value">{measure.id}</div>
+
+            <div class="info-label">Auteur</div>
+            <div class="info-value">{measure.author}</div>
+
+            <div class="info-label">Date</div>
+            <div class="info-value">{measure.date}</div>
+
+            <div class="info-label">Lieu</div>
+            <div class="info-value">{measure.location}</div>
+
+            <div class="info-label">Type</div>
+            <div class="info-value">{measure.type.getLabel()}</div>
+
+            {#if measure.type.name == "TEMPERATURE"}
+                <div class="info-label">Degré</div>
+                <div class="info-value">{measure.degree} °C</div>
+            {#else if measure.type.name == "SNOW_HEIGHT"}
+                <div class="info-label">Hauteur</div>
+                <div class="info-value">{measure.height} cm</div>
+
+                <div class="info-label">Condition météo</div>
+                <div class="info-value">{measure.weather.getLabel()}</div>
+
+                <div class="info-label">Précipitation</div>
+                <div class="info-value">{measure.precipitation}</div>
+            {#else if measure.type.name == "BIRD_MIGRATION"}
+                <div class="info-label">Espèce</div>
+                <div class="info-value">{measure.specie.getLabel()}</div>
+
+                <div class="info-label">Événement</div>
+                <div class="info-value">{measure.event.getLabel()}</div>
+            {#else if measure.type.name == "EGGS_LAYING"}
+                <div class="info-label">Nombre de pontes</div>
+                <div class="info-value">{measure.number}</div>
+            {/if}
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-secondary">Modifier</button>
+            <button class="btn btn-danger" onclick="deleteMeasure()">Supprimer</button>
+        </div>
+    </div>
+
+</div>
+</body>

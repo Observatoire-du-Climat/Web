@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin interface</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Portail Administrateur</h1>
+        <h3>Connecté en tant que : {adminName}</h3>
+        <br>
+        <br>
+        <a class="btn btn-secondary" href="/admin/logout">Déconnexion</a>
+    </header>
+
+    <section class="card">
+
+        <div class="section-header">
+            <h2>Utilisateurs</h2>
+            <form method="get" action="/admin">
+                <input type="text" name="userSearch" value="{userSearch ?: ''}" placeholder="Rechercher un utilisateur...">
+                <button type="submit" class="btn btn-secondary">Rechercher</button>
+            </form>
+        </div>
+
+        {#if users.isEmpty}
+            <p class="empty">Aucun utilisateur</p>
+        {#else}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Statut</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {#for user in users}
+                        <tr onclick="window.location='/admin/user/{user.id}'">
+                            <td>{user.id}</td>
+                            <td>{user.name}</td>
+                            {#if user.isValid}
+                                <td class="valid">Valide</td>
+                            {#else}
+                                <td class="invalid">Non valide</td>
+                            {/if}
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+
+        {/if}
+
+    </section>
+
+    <section class="card">
+
+        <div class="section-header">
+            <h2>Mesures</h2>
+        </div>
+
+        {#if measures.isEmpty}
+            <p class="empty">Aucune mesure</p>
+        {#else}
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=id">
+                                ID
+                                {#if order == 'id'} ▼ {/if}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=date">
+                                Date
+                                {#if order == 'date'} ▼ {/if}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=type">
+                                Type
+                                {#if order == 'type'} ▼ {/if}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/admin?userSearch={userSearch}&order=author">
+                                Auteur
+                                {#if order == 'author'} ▼ {/if}
+                            </a>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {#for measure in measures}
+                        <tr onclick="window.location='/admin/measure/{measure.id}'">
+                            <td>{measure.id}</td>
+                            <td>{measure.date}</td>
+                            <td>{measure.type.getLabel()}</td>
+                            <td>{measure.author}</td>
+                        </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+        {/if}
+
+    </section>
+
+</div>
+
+</body>
+</html>

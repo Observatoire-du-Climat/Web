@@ -4,5 +4,6 @@ import ch.heigvd.entity.MeasureType;
 
 import java.time.LocalDate;
 
-public record TemperatureMeasureDTO(Long id, LocalDate date, String location, MeasureType type, Integer degree) {
+//author will be used only in the admin interface
+public record TemperatureMeasureDTO(Long id, LocalDate date, String location, MeasureType type, String author, Integer degree) {
 }

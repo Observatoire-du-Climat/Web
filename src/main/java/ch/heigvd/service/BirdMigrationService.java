@@ -52,6 +52,7 @@ public class BirdMigrationService {
                 birdMigration.getDate(),
                 birdMigration.getLocation(),
                 birdMigration.getType(),
+                birdMigration.getUser().getName(),
                 birdMigration.getSpecie(),
                 birdMigration.getEventType());
     }
@@ -81,6 +82,7 @@ public class BirdMigrationService {
                 birdMigrationToModify.getDate(),
                 birdMigrationToModify.getLocation(),
                 birdMigrationToModify.getType(),
+                birdMigrationToModify.getUser().getName(),
                 birdMigrationToModify.getSpecie(),
                 birdMigrationToModify.getEventType());
     }

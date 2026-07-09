@@ -54,6 +54,7 @@ public class TemperatureServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.TEMPERATURE,
+                "Test User",
                 30);
 
         assertEquals(temperatureMeasureDTO, result);
@@ -104,6 +105,7 @@ public class TemperatureServiceTest {
                 LocalDate.of(2001, 2, 15),
                 "testlocation",
                 MeasureType.TEMPERATURE,
+                "Test User",
                 20
         );
 
