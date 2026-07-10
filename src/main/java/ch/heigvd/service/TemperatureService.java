@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 import java.util.Optional;
