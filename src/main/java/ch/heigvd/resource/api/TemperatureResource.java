@@ -7,6 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.RestForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
@@ -40,13 +41,10 @@ public class TemperatureResource {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response createTemperatureMeasureWithPicture(@RestForm Long userId,
-                                                        @RestForm LocalDate date,
-                                                        @RestForm String location,
-                                                        @RestForm Integer degree,
-                                                        @RestForm FileUpload picture) {
+    public Response createTemperatureMeasureWithPicture(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) TemperatureRequest request,
+                                                        @RestForm("picture") FileUpload picture) {
         try {
-            var temperatureMeasureDTO = temperatureService.addTemperature(userId, date, location, degree);
+            var temperatureMeasureDTO = temperatureService.addTemperature(request.userId(), request.date(), request.location(), request.degree());
             if (picture != null) {
                 pictureService.addPicture(picture, temperatureMeasureDTO.id());
             }
@@ -56,7 +54,6 @@ public class TemperatureResource {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
     }
 
     @Path("/{id}")
