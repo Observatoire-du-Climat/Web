@@ -3,6 +3,7 @@ package ch.heigvd.resource.api;
 import ch.heigvd.dto.TemperatureMeasureDTO;
 import ch.heigvd.service.PictureService;
 import ch.heigvd.service.TemperatureService;
+import io.quarkus.security.UnauthorizedException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -25,19 +26,6 @@ public class TemperatureResource {
     PictureService pictureService;
 
     public record TemperatureRequest(Long userId, LocalDate date, String location, Integer degree) {}
-    /*
-    @POST
-    public Response createTemperatureMeasure(TemperatureRequest request) {
-        try {
-            var temperatureMeasureDTO = temperatureService.addTemperature(request.userId(), request.date(), request.location(), request.degree());
-            return Response.status(Response.Status.CREATED).entity(temperatureMeasureDTO).build();
-        } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
-     */
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -51,6 +39,8 @@ public class TemperatureResource {
             return Response.status(Response.Status.CREATED).entity(temperatureMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

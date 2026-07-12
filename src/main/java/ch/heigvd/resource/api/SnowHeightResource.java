@@ -38,6 +38,8 @@ public class SnowHeightResource {
             return Response.status(Response.Status.CREATED).entity(snowHeightMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

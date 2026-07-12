@@ -152,6 +152,10 @@ tbody tr:hover {
     color: var(--text);
 }
 
+img {
+    height: 500px;
+}
+
 /* ---------- Status ---------- */
 
 .badge {
