@@ -25,7 +25,7 @@ public class SnowHeightResourceTest {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
-        String body = """
+        String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
@@ -36,8 +36,7 @@ public class SnowHeightResourceTest {
                 }
                 """.formatted(user.getId());
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()
@@ -52,7 +51,7 @@ public class SnowHeightResourceTest {
 
     @Test
     public void testCreateSnowHeightMeasureWrongUserId() {
-        String body = """
+        String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
@@ -63,8 +62,7 @@ public class SnowHeightResourceTest {
                 }
                 """;
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()
@@ -75,7 +73,7 @@ public class SnowHeightResourceTest {
     public void testCreateSnowHeightMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
-        String body = """
+        String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
@@ -85,8 +83,7 @@ public class SnowHeightResourceTest {
                 }
                 """.formatted(user.getId());
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()

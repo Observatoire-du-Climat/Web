@@ -25,7 +25,7 @@ public class TemperatureResourceTest {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
-        String body = """
+        String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
@@ -34,8 +34,7 @@ public class TemperatureResourceTest {
                 }
                 """.formatted(user.getId());
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()
@@ -48,7 +47,7 @@ public class TemperatureResourceTest {
 
     @Test
     public void testCreateTemperatureMeasureWrongUserId() {
-        String body = """
+        String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
@@ -57,8 +56,7 @@ public class TemperatureResourceTest {
                 }
                 """;
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()
@@ -69,7 +67,7 @@ public class TemperatureResourceTest {
     public void testCreateTemperatureMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
-        String body = """
+        String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
@@ -77,8 +75,7 @@ public class TemperatureResourceTest {
                 }
                 """.formatted(user.getId());
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()

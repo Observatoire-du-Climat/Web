@@ -21,7 +21,7 @@ public class TestHelpers {
         //generate different random email to be sure there is no compatibility problem
         user.setEmail(UUID.randomUUID() + "@test.ch");
         user.setPassword(BcryptUtil.bcryptHash("password"));
-        user.setValid(false);
+        user.setValid(true);
         //user.setAdmin(false);
         user.setRole("user");
 
