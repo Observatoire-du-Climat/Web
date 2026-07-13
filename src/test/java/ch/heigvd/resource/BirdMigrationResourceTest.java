@@ -25,7 +25,7 @@ public class BirdMigrationResourceTest {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
-        String body = """
+        String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
@@ -35,8 +35,7 @@ public class BirdMigrationResourceTest {
                 }
                 """.formatted(user.getId());
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()
@@ -50,7 +49,7 @@ public class BirdMigrationResourceTest {
 
     @Test
     public void testCreateBirdMigrationMeasureWrongUserId() {
-        String body = """
+        String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
@@ -60,8 +59,7 @@ public class BirdMigrationResourceTest {
                 }
                 """;
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()
@@ -72,7 +70,7 @@ public class BirdMigrationResourceTest {
     public void testCreateBirdMigrationMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
-        String body = """
+        String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
@@ -81,8 +79,7 @@ public class BirdMigrationResourceTest {
                 }
                 """.formatted(user.getId());
 
-        given().contentType("application/json")
-                .body(body)
+        given().multiPart("request", requestJson, "application/json")
                 .when()
                 .post()
                 .then()

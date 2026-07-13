@@ -1,10 +1,16 @@
 package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.TemperatureMeasureDTO;
+import ch.heigvd.service.PictureService;
 import ch.heigvd.service.TemperatureService;
+import io.quarkus.security.UnauthorizedException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 
@@ -15,35 +21,26 @@ public class TemperatureResource {
 
     @Inject
     TemperatureService temperatureService;
-    /*
+
     @Inject
-    MeasureService measureService;
-    */
+    PictureService pictureService;
 
     public record TemperatureRequest(Long userId, LocalDate date, String location, Integer degree) {}
 
-    /*
-    @Path("/{id}")
-    @GET
-    public Response getTemperatureMeasure(@PathParam("id") Long id) {
-        try {
-            var temperatureMeasureDTO = measureService.searchMeasureById(id);
-            return Response.status(Response.Status.OK).entity(temperatureMeasureDTO).build();
-        } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
-     */
-
     @POST
-    public Response createTemperatureMeasure(TemperatureRequest request) {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createTemperatureMeasureWithPicture(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) TemperatureRequest request,
+                                                        @RestForm("picture") FileUpload picture) {
         try {
             var temperatureMeasureDTO = temperatureService.addTemperature(request.userId(), request.date(), request.location(), request.degree());
+            if (picture != null) {
+                pictureService.addPicture(picture, temperatureMeasureDTO.id());
+            }
             return Response.status(Response.Status.CREATED).entity(temperatureMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

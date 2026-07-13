@@ -4,11 +4,14 @@ import ch.heigvd.dto.TemperatureMeasureDTO;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.Temperature;
 import ch.heigvd.entity.User;
+import io.quarkus.security.UnauthorizedException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -43,6 +46,9 @@ public class TemperatureService {
         User user = em.find(User.class, userId);
         if (user == null) {
             throw new NotFoundException("User not found");
+        }
+        if (!user.getValid()) {
+            throw new ForbiddenException("User not valid");
         }
         temperature.setUser(user);
         user.getMeasures().add(temperature);

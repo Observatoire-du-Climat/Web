@@ -2,9 +2,14 @@ package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.BirdMigrationMeasureDTO;
 import ch.heigvd.service.BirdMigrationService;
+import ch.heigvd.service.PictureService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 
@@ -15,34 +20,26 @@ public class BirdMigrationResource {
 
     @Inject
     BirdMigrationService birdMigrationService;
-    /*
+
     @Inject
-    MeasureService measureService;
-    */
+    PictureService pictureService;
 
     public record BirdMigrationRequest(Long userId, LocalDate date, String location, String specie, String event) {}
-    /*
-    @Path("/{id}")
-    @GET
-    public Response getBirdMigrationMeasure(@PathParam("id") Long id) {
-        try {
-            var birdMigrationMeasureDTO = measureService.searchMeasureById(id);
-            return Response.status(Response.Status.OK).entity(birdMigrationMeasureDTO).build();
-        } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
-     */
 
     @POST
-    public Response createBirdMigrationMeasure(BirdMigrationRequest request) {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createBirdMigrationMeasure(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) BirdMigrationRequest request,
+                                               @RestForm("picture")FileUpload picture) {
         try {
             var birdMigrationMeasureDTO = birdMigrationService.addBirdMigration(request.userId(), request.date(), request.location(), request.specie, request.event);
+            if (picture != null) {
+                pictureService.addPicture(picture, birdMigrationMeasureDTO.id());
+            }
             return Response.status(Response.Status.CREATED).entity(birdMigrationMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

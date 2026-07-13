@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
@@ -44,6 +45,9 @@ public class SnowHeightService {
         User user = em.find(User.class, userId);
         if (user == null) {
             throw new NotFoundException("User not found");
+        }
+        if (!user.getValid()) {
+            throw new ForbiddenException("User not valid");
         }
         snowHeight.setUser(user);
         user.getMeasures().add(snowHeight);

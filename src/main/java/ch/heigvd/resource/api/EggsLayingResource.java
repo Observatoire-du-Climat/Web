@@ -2,9 +2,14 @@ package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.EggsLayingMeasureDTO;
 import ch.heigvd.service.EggsLayingService;
+import ch.heigvd.service.PictureService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 
@@ -15,34 +20,27 @@ public class EggsLayingResource {
 
     @Inject
     EggsLayingService eggsLayingService;
-    /*
+
     @Inject
-    MeasureService measureService;
-     */
+    PictureService pictureService;
 
     public record EggsLayingRequest(Long userId, LocalDate date, String location, Integer number) {}
-    /*
-    @Path("/{id}")
-    @GET
-    public Response getEggsLayingMeasure(@PathParam("id") Long id) {
-        try {
-            var eggsLayingMeasureDTO = measureService.searchMeasureById(id);
-            return Response.status(Response.Status.OK).entity(eggsLayingMeasureDTO).build();
-        } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
-     */
+
 
     @POST
-    public Response createEggsLayingMeasure(EggsLayingRequest request) {
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response createEggsLayingMeasure(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) EggsLayingRequest request,
+                                            @RestForm("picture") FileUpload picture) {
         try {
             var eggsLayingMeasureDTO = eggsLayingService.addEggsLaying(request.userId, request.date, request.location, request.number);
+            if (picture != null) {
+                pictureService.addPicture(picture, eggsLayingMeasureDTO.id());
+            }
             return Response.status(Response.Status.CREATED).entity(eggsLayingMeasureDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
