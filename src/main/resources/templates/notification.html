@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin notification</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Gestion des notifications</h1>
+    </header>
+
+    <form action="/admin/notification/send" method="post">
+
+        <label>Titre</label>
+        <input type="text" name="title" required>
+
+        <label>Message</label>
+        <textarea name="body" maxlength="300" required></textarea>
+
+        <button type="submit">Envoyer</button>
+    </form>
+
+    {#if success}
+        <div>
+            L'envoi de la notification a réussi
+        </div>
+    {/if}
+
+    {#if error}
+        <div>
+            L'envoi de la notification a échoué
+        </div>
+    {/if}
+
+</body>
