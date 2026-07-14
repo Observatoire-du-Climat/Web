@@ -22,68 +22,91 @@
 </script>
 
 <body>
-<div class="detail-page">
-
-    <div class="detail-header">
-        <h2>Mesure {measure.id}</h2>
-    </div>
-
-    <div class="detail-card">
-        <h3 class="page-title">Informations générales</h3>
-        <div class="info-grid">
-            <div class="info-label">ID</div>
-            <div class="info-value">{measure.id}</div>
-
-            <div class="info-label">Auteur</div>
-            <div class="info-value">{measure.author}</div>
-
-            <div class="info-label">Date</div>
-            <div class="info-value">{measure.date}</div>
-
-            <div class="info-label">Lieu</div>
-            <div class="info-value">{measure.location}</div>
-
-            <div class="info-label">Type</div>
-            <div class="info-value">{measure.type.getLabel()}</div>
-
-            {#if measure.type.name == "TEMPERATURE"}
-                <div class="info-label">Degré</div>
-                <div class="info-value">{measure.degree} °C</div>
-            {#else if measure.type.name == "SNOW_HEIGHT"}
-                <div class="info-label">Hauteur</div>
-                <div class="info-value">{measure.height} cm</div>
-
-                <div class="info-label">Condition météo</div>
-                <div class="info-value">{measure.weather.getLabel()}</div>
-
-                <div class="info-label">Précipitation</div>
-                <div class="info-value">{measure.precipitation}</div>
-            {#else if measure.type.name == "BIRD_MIGRATION"}
-                <div class="info-label">Espèce</div>
-                <div class="info-value">{measure.specie.getLabel()}</div>
-
-                <div class="info-label">Événement</div>
-                <div class="info-value">{measure.event.getLabel()}</div>
-            {#else if measure.type.name == "EGGS_LAYING"}
-                <div class="info-label">Nombre de pontes</div>
-                <div class="info-value">{measure.number}</div>
-            {/if}
+<div class="container">
+    <header class="admin-header">
+        <div class="admin-header-info">
+            <h1>Portail Administrateur</h1>
+            <h3>Connecté en tant que : {adminName}</h3>
         </div>
 
-        <br>
+        <nav class="admin-navbar">
 
-        <div>
-            <h3 class="page-title">Photo</h3>
+            <a class="btn btn-primary" href="/admin">Accueil</a>
 
-            <img src="/api/measures/{measure.id}/picture" alt="Photo de la mesure">
+            <a class="btn btn-primary" href="/admin/notification">Notifications</a>
+
+            <a class="btn btn-primary" href="/admin/export">Exporter</a>
+
+            <a class="btn btn-danger" href="/admin/logout">Déconnexion</a>
+
+        </nav>
+    </header>
+
+    <div class="detail-page">
+
+        <div class="detail-header">
+            <h2>Détails de la mesure {measure.id}</h2>
         </div>
 
+        <div class="detail-card">
+            <h3 class="page-title">Informations générales</h3>
+            <div class="info-grid">
+                <div class="info-label">ID</div>
+                <div class="info-value">{measure.id}</div>
 
-        <div class="actions">
-            <button class="btn btn-secondary">Modifier</button>
-            <button class="btn btn-danger" onclick="deleteMeasure()">Supprimer</button>
+                <div class="info-label">Auteur</div>
+                <div class="info-value">{measure.author}</div>
+
+                <div class="info-label">Date</div>
+                <div class="info-value">{measure.date}</div>
+
+                <div class="info-label">Lieu</div>
+                <div class="info-value">{measure.location}</div>
+
+                <div class="info-label">Type</div>
+                <div class="info-value">{measure.type.getLabel()}</div>
+
+                {#if measure.type.name == "TEMPERATURE"}
+                    <div class="info-label">Degré</div>
+                    <div class="info-value">{measure.degree} °C</div>
+                {#else if measure.type.name == "SNOW_HEIGHT"}
+                    <div class="info-label">Hauteur</div>
+                    <div class="info-value">{measure.height} cm</div>
+
+                    <div class="info-label">Condition météo</div>
+                    <div class="info-value">{measure.weather.getLabel()}</div>
+
+                    <div class="info-label">Précipitation</div>
+                    <div class="info-value">{measure.precipitation}</div>
+                {#else if measure.type.name == "BIRD_MIGRATION"}
+                    <div class="info-label">Espèce</div>
+                    <div class="info-value">{measure.specie.getLabel()}</div>
+
+                    <div class="info-label">Événement</div>
+                    <div class="info-value">{measure.event.getLabel()}</div>
+                {#else if measure.type.name == "EGGS_LAYING"}
+                    <div class="info-label">Nombre de pontes</div>
+                    <div class="info-value">{measure.number}</div>
+                {/if}
+            </div>
+
+            <br>
+
+            <div>
+                <h3 class="page-title">Photo</h3>
+
+                <img src="/api/measures/{measure.id}/picture" alt="Photo de la mesure">
+            </div>
+
+
+            <div class="actions">
+                <button class="btn btn-secondary">Modifier</button>
+                <button class="btn btn-danger" onclick="deleteMeasure()">Supprimer</button>
+            </div>
         </div>
+
     </div>
 
 </div>
+
 </body>

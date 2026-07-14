@@ -8,31 +8,59 @@
 </head>
 
 <body>
-    <header>
-        <h1>Gestion des notifications</h1>
-    </header>
 
-    <form action="/admin/notification/send" method="post">
+    <div class="container">
+        <header class="admin-header">
+            <div class="admin-header-info">
+                <h1>Portail Administrateur</h1>
+                <h3>Connecté en tant que : {adminName}</h3>
+            </div>
 
-        <label>Titre</label>
-        <input type="text" name="title" required>
+            <nav class="admin-navbar">
 
-        <label>Message</label>
-        <textarea name="body" maxlength="300" required></textarea>
+                <a class="btn btn-primary" href="/admin">Accueil</a>
 
-        <button type="submit">Envoyer</button>
-    </form>
+                <a class="btn btn-primary" href="/admin/notification">Notifications</a>
 
-    {#if success}
-        <div>
-            L'envoi de la notification a réussi
+                <a class="btn btn-primary" href="/admin/export">Exporter</a>
+
+                <a class="btn btn-danger" href="/admin/logout">Déconnexion</a>
+
+            </nav>
+        </header>
+
+        <div class="notification-page">
+            <h2 class="notification-title">Envoyer une notification à tous les utilisateurs</h2>
+
+            <form class="notification-form" action="/admin/notification/send" method="post">
+
+                <div class="notification-field">
+                    <label>Titre</label>
+                    <input type="text" name="title" maxlength="100" required>
+                </div>
+
+                <div class="notification-field">
+                    <label>Message</label>
+                    <textarea name="body" maxlength="400" required></textarea>
+                </div>
+
+
+                <button class="notification-button" type="submit">Envoyer</button>
+            </form>
+
+            {#if success}
+                <div class="notification-success">
+                    L'envoi de la notification a réussi
+                </div>
+            {/if}
+
+            {#if error}
+                <div class="notification-error">
+                    L'envoi de la notification a échoué
+                </div>
+            {/if}
         </div>
-    {/if}
+    </div>
 
-    {#if error}
-        <div>
-            L'envoi de la notification a échoué
-        </div>
-    {/if}
 
 </body>

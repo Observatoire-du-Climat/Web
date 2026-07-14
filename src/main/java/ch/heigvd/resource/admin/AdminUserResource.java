@@ -5,6 +5,7 @@ import ch.heigvd.service.MeasureService;
 import ch.heigvd.service.UserService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -24,12 +25,16 @@ public class AdminUserResource {
     @Inject
     MeasureService measureService;
 
+    @Inject
+    SecurityIdentity identity;
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/{id}")
     public TemplateInstance index(@PathParam("id") long id) {
         return user.data("user", userService.searchUserById(id))
-                .data("measures", measureService.searchAllMeasuresByUserId(id));
+                .data("measures", measureService.searchAllMeasuresByUserId(id))
+                .data("adminName", identity.getPrincipal().getName());
     }
 
     @PUT

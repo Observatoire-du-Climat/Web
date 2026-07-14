@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import firebase.NotificationService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -23,11 +24,15 @@ public class AdminNotificationResource {
     @Inject
     NotificationService notificationService;
 
+    @Inject
+    SecurityIdentity identity;
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index(@QueryParam("success") boolean success, @QueryParam("error") boolean error) {
         return  notification.data("success", success)
-                .data("error", error);
+                .data("error", error)
+                .data("adminName", identity.getPrincipal().getName());
     }
 
     @POST

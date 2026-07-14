@@ -11,12 +11,23 @@
 
 <div class="container">
 
-    <header>
-        <h1>Portail Administrateur</h1>
-        <h3>Connecté en tant que : {adminName}</h3>
-        <br>
-        <br>
-        <a class="btn btn-secondary" href="/admin/logout">Déconnexion</a>
+    <header class="admin-header">
+        <div class="admin-header-info">
+            <h1>Portail Administrateur</h1>
+            <h3>Connecté en tant que : {adminName}</h3>
+        </div>
+
+        <nav class="admin-navbar">
+
+            <a class="btn btn-primary" href="/admin">Accueil</a>
+
+            <a class="btn btn-primary" href="/admin/notification">Notifications</a>
+
+            <a class="btn btn-primary" href="/admin/export">Exporter</a>
+
+            <a class="btn btn-danger" href="/admin/logout">Déconnexion</a>
+
+        </nav>
     </header>
 
     <section class="card">
