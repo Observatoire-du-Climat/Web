@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin notification</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <header class="admin-header">
+            <div class="admin-header-info">
+                <h1>Portail Administrateur</h1>
+                <h3>Connecté en tant que : {adminName}</h3>
+            </div>
+
+            <nav class="admin-navbar">
+
+                <a class="btn btn-primary" href="/admin">Accueil</a>
+
+                <a class="btn btn-primary" href="/admin/notification">Notifications</a>
+
+                <a class="btn btn-primary" href="/admin/export">Exporter</a>
+
+                <a class="btn btn-danger" href="/admin/logout">Déconnexion</a>
+
+            </nav>
+        </header>
+
+        <div class="notification-page">
+            <h2 class="notification-title">Envoyer une notification à tous les utilisateurs</h2>
+
+            <form class="notification-form" action="/admin/notification/send" method="post">
+
+                <div class="notification-field">
+                    <label>Titre</label>
+                    <input type="text" name="title" maxlength="100" required>
+                </div>
+
+                <div class="notification-field">
+                    <label>Message</label>
+                    <textarea name="body" maxlength="400" required></textarea>
+                </div>
+
+
+                <button class="notification-button" type="submit">Envoyer</button>
+            </form>
+
+            {#if success}
+                <div class="notification-success">
+                    L'envoi de la notification a réussi
+                </div>
+            {/if}
+
+            {#if error}
+                <div class="notification-error">
+                    L'envoi de la notification a échoué
+                </div>
+            {/if}
+        </div>
+    </div>
+
+
+</body>
