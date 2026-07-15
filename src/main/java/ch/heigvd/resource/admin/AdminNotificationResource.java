@@ -1,7 +1,7 @@
 package ch.heigvd.resource.admin;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
-import firebase.NotificationService;
+import ch.heigvd.firebase.NotificationService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.identity.SecurityIdentity;

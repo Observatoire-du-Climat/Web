@@ -14,6 +14,7 @@ import jakarta.ws.rs.NotFoundException;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -88,6 +89,16 @@ public class TemperatureService {
                                         temperatureToModify.getUser().getName(),
                                         temperatureToModify.getDegree());
 
+    }
+
+
+    public List<TemperatureMeasureDTO> getAllTemperatureMeasures() {
+        var query = em.createQuery("""
+                    SELECT new ch.heigvd.dto.TemperatureMeasureDTO(t.id, t.date, t.location, t.type, t.user.name, t.degree)
+                    FROM Temperature AS t
+                """, TemperatureMeasureDTO.class);
+
+        return query.getResultList();
     }
 
 }
