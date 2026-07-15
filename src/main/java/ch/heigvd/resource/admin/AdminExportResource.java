@@ -36,10 +36,57 @@ public class AdminExportResource {
     @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     @Path("/temperature")
     public Response exportTemperature() {
-        byte[] file = exportService.exportTemperatureMeasure();
+        byte[] file = exportService.exportTemperatureMeasures();
+        if (file == null) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
         return Response.status(Response.Status.OK)
                 .entity(file)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"temperatures.xlsx\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"temperature.xlsx\"")
                 .build();
     }
+
+    @GET
+    @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    @Path("/snow-height")
+    public Response exportSnowHeight() {
+        byte[] file = exportService.exportSnowHeightMeasures();
+        if (file == null) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        return Response.status(Response.Status.OK)
+                .entity(file)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"hauteur-des-neiges.xlsx\"")
+                .build();
+    }
+
+    @GET
+    @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    @Path("/bird-migration")
+    public Response exportBirdMigration() {
+        byte[] file = exportService.exportBirdMigrationMeasures();
+        if (file == null) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        return Response.status(Response.Status.OK)
+                .entity(file)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"migration-des-oiseaux.xlsx\"")
+                .build();
+    }
+
+    @GET
+    @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    @Path("/eggs-laying")
+    public Response exportEggsLaying() {
+        byte[] file = exportService.exportEggsLayingMeasures();
+        if (file == null) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        return Response.status(Response.Status.OK)
+                .entity(file)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"relevé-des-pontes.xlsx\"")
+                .build();
+    }
+
+
 }
