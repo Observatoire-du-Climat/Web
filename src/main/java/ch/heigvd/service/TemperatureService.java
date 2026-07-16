@@ -17,6 +17,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service in charge of the Temperature Class.
+ * It contains the business logic associated with the Temperature Entity.
+ */
 @ApplicationScoped
 public class TemperatureService {
 
@@ -34,6 +38,8 @@ public class TemperatureService {
      * @param location the location of the measure
      * @param degree the degree value
      * @return A DTO of the newly created Temperature if the insert was successful
+     * @throws NotFoundException if no user possess this userId
+     * @throws ForbiddenException if the user does not have the rights to create a Measure
      */
     @Transactional
     public TemperatureMeasureDTO addTemperature(Long userId, LocalDate date, String location, Integer degree) {
@@ -64,13 +70,14 @@ public class TemperatureService {
     }
 
     /**
-     * Update a Temperature
+     * Update a Temperature Measure
      * All the attribute are updated, even if not all of them are changed
      * @param measureId the id of the Temperature Measure to Update
      * @param date the (new) date of the Temperature
      * @param location the (new) location of the Temperature
      * @param degree the (new) degree of the Temperature
      * @return a DTO with the modified Temperature if the update was successful
+     * @throws NotFoundException if no measure possess this measureId
      */
     @Transactional
     public TemperatureMeasureDTO modifyTemperatureById(Long measureId, LocalDate date, String location, Integer degree) {
@@ -91,7 +98,10 @@ public class TemperatureService {
 
     }
 
-
+    /**
+     * Get all the existing Temperature measures in details.
+     * @return a list of DTO from all the Temperature measures.
+     */
     public List<TemperatureMeasureDTO> getAllTemperatureMeasures() {
         var query = em.createQuery("""
                     SELECT new ch.heigvd.dto.TemperatureMeasureDTO(t.id, t.date, t.location, t.type, t.user.name, t.degree)

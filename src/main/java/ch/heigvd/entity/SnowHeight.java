@@ -5,6 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
+/**
+ * This class represents a SnowHeight entity.
+ * It is a subclass of the Measure entity.
+ */
 @Entity
 public class SnowHeight extends Measure{
 

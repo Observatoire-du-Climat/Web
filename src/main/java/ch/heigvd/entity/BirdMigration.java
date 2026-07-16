@@ -2,6 +2,10 @@ package ch.heigvd.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * This class represents a BirdMigration entity.
+ * It is a subclass of the Measure entity.
+ */
 @Entity
 @Table(name = "bird_migration")
 public class BirdMigration extends Measure {

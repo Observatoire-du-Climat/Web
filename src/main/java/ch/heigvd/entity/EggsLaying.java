@@ -3,6 +3,10 @@ package ch.heigvd.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
+/**
+ * This class represents a EggsLaying entity.
+ * It is a subclass of the Measure entity.
+ */
 @Entity
 public class EggsLaying extends Measure{
 

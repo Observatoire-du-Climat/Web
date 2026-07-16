@@ -11,7 +11,9 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 
-
+/**
+ * Class responsible for a sub administration web page, displaying a measure details.
+ */
 @RolesAllowed("admin")
 @Path("/admin/measure")
 public class AdminMeasureResource {
@@ -25,6 +27,11 @@ public class AdminMeasureResource {
     @Inject
     SecurityIdentity identity;
 
+    /**
+     * Display the measure details page.
+     * @param id the id of the measure.
+     * @return the rendered measure details page.
+     */
     @GET
     @Path("/{id}")
     public TemplateInstance index(@PathParam("id") long id) {

@@ -13,12 +13,20 @@ import jakarta.ws.rs.core.Response;
 import java.io.File;
 import java.nio.file.Files;
 
+/**
+ * Class responsible for the REST resource exposing MeasurePicture-related endpoints.
+ */
 @Path("/api/measures")
 public class PictureResource {
 
     @Inject
     PictureService pictureService;
 
+    /**
+     * Get the picture of a measure.
+      * @param measureId the id of the measure
+     * @return the appropriate HTTP Response, containing the picture if successful.
+     */
     @GET
     @Path("/{id}/picture")
     public Response getPicture(@PathParam("id") long measureId) {

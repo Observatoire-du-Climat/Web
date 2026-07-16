@@ -2,6 +2,10 @@ package ch.heigvd.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * This class represents a MeasurePicture entity.
+ * It contains the path from where a picture of a specified measure is stored.
+ */
 @Entity
 public class MeasurePicture {
 

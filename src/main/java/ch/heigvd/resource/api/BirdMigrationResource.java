@@ -13,9 +13,11 @@ import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 
+/**
+ * Class responsible for the REST resource exposing BirdMigration-related endpoints.
+ */
 @Path("/api/measures/bird-migration")
-@Consumes("application/json")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public class BirdMigrationResource {
 
     @Inject
@@ -24,8 +26,22 @@ public class BirdMigrationResource {
     @Inject
     PictureService pictureService;
 
+    /**
+     * Request payload used to create or update a BirdMigration measure.
+     * @param userId the id of the user who did the measure.
+     * @param date the date of the measure.
+     * @param location the location where the measure was taken.
+     * @param specie the observed specie.
+     * @param event the observed event.
+     */
     public record BirdMigrationRequest(Long userId, LocalDate date, String location, String specie, String event) {}
 
+    /**
+     * Create a BirdMigration measure.
+     * @param request the measure data.
+     * @param picture the optional picture associated with the measure.
+     * @return the appropriate HTTP Response, containing the measure if successful.
+     */
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response createBirdMigrationMeasure(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) BirdMigrationRequest request,
@@ -45,8 +61,15 @@ public class BirdMigrationResource {
         }
     }
 
+    /**
+     * Update an existing SnowHeight measure.
+     * @param id the id of the measure.
+     * @param request the (new) measure data.
+     * @return the appropriate HTTP Response, containing the measure if successful.
+     */
     @Path("/{id}")
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updateBirdMigrationMeasure(@PathParam("id") Long id, BirdMigrationRequest request) {
         try {
             BirdMigrationMeasureDTO birdMigrationMeasureDTO = birdMigrationService.modifyBirdMigrationById(id, request.date(), request.location(), request.specie, request.event);

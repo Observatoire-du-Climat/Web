@@ -15,6 +15,9 @@ import java.awt.*;
 import java.net.URI;
 import java.util.UUID;
 
+/**
+ * Class responsible for the administration login web page.
+ */
 @Path("/admin/login")
 public class AdminLoginResource {
 
@@ -24,30 +27,14 @@ public class AdminLoginResource {
     @Inject
     UserService userService;
 
+    /**
+     * Log in as an administrator
+     * @param error if the login was an error
+     * @return a redirection to the main administration page if the login is successful.
+     */
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance loginPage(@QueryParam("error") String error) {
         return login.data("error", error != null);
     }
-
-    /*
-    @POST
-    public Response login(@FormParam("email") String email, @FormParam("password") String password) {
-        User user = userService.searchUserByEmail(email);
-        if (!BcryptUtil.matches(password, user.getPassword())) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-        NewCookie cookie = new NewCookie.Builder("admin-session")
-                .value(UUID.randomUUID().toString())
-                .path("/")
-                //.domain("domain.com")
-                .sameSite(NewCookie.SameSite.LAX)
-                .maxAge(60*2)
-                .build();
-
-        return Response.seeOther(URI.create("/admin"))
-                .cookie(cookie)
-                .build();
-    }
-     */
 }

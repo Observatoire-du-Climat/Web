@@ -13,6 +13,9 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Class responsible for a sub administration web page, exporting data into Excel files.
+ */
 @RolesAllowed("admin")
 @Path("/admin/export")
 public class AdminExportResource {
@@ -26,12 +29,20 @@ public class AdminExportResource {
     @Inject
     SecurityIdentity identity;
 
+    /**
+     * Display the exporting page.
+     * @return the rendered exporting page.
+     */
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index() {
         return export.data("adminName", identity.getPrincipal().getName());
     }
 
+    /**
+     * Export the Temperature measures data into an Excel file.
+     * @return a download of the Excel file.
+     */
     @GET
     @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     @Path("/temperature")
@@ -46,6 +57,10 @@ public class AdminExportResource {
                 .build();
     }
 
+    /**
+     * Export the SnowHeight measures data into an Excel file.
+     * @return a download of the Excel file.
+     */
     @GET
     @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     @Path("/snow-height")
@@ -60,6 +75,10 @@ public class AdminExportResource {
                 .build();
     }
 
+    /**
+     * Export the BirdMigration measures data into an Excel file.
+     * @return a download of the Excel file.
+     */
     @GET
     @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     @Path("/bird-migration")
@@ -74,6 +93,10 @@ public class AdminExportResource {
                 .build();
     }
 
+    /**
+     * Export the EggsLaying measures data into an Excel file.
+     * @return a download of the Excel file.
+     */
     @GET
     @Produces("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     @Path("/eggs-laying")

@@ -12,6 +12,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Class to help the configuration of Firebase Cloud Messaging
+ * It is launched at the start of the application
+ */
 @Startup
 @ApplicationScoped
 public class FirebaseConfig {
@@ -22,6 +26,9 @@ public class FirebaseConfig {
     @ConfigProperty(name = "firebase.enabled", defaultValue = "true")
     boolean firebaseEnabled;
 
+    /**
+     * Initialize Firebase at the start of the application
+     */
     @PostConstruct
     void initializeFirebase() {
 

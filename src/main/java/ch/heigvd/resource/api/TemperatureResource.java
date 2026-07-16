@@ -14,9 +14,11 @@ import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 
+/**
+ * Class responsible for the REST resource exposing Temperature-related endpoints.
+ */
 @Path("/api/measures/temperature")
-@Consumes("application/json")
-@Produces("application/json")
+@Produces(MediaType.APPLICATION_JSON)
 public class TemperatureResource {
 
     @Inject
@@ -25,11 +27,24 @@ public class TemperatureResource {
     @Inject
     PictureService pictureService;
 
+    /**
+     * Request payload used to create or update a Temperature measure.
+     * @param userId the id of the user who did the measure.
+     * @param date the date of the measure.
+     * @param location the location where the measure was taken.
+     * @param degree the measured temperature in degrees Celsius.
+     */
     public record TemperatureRequest(Long userId, LocalDate date, String location, Integer degree) {}
 
+    /**
+     * Create a new temperature measure.
+     * @param request the measure data.
+     * @param picture the optional picture associated with the measure.
+     * @return the appropriate HTTP Response, containing the measure if successful.
+     */
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response createTemperatureMeasureWithPicture(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) TemperatureRequest request,
+    public Response createTemperatureMeasure(@RestForm("request") @PartType(MediaType.APPLICATION_JSON) TemperatureRequest request,
                                                         @RestForm("picture") FileUpload picture) {
         try {
             var temperatureMeasureDTO = temperatureService.addTemperature(request.userId(), request.date(), request.location(), request.degree());
@@ -46,8 +61,15 @@ public class TemperatureResource {
         }
     }
 
+    /**
+     * Update an existing Temperature measure.
+     * @param id the id of the measure to update.
+     * @param request the (new) measure data.
+     * @return the appropriate HTTP Response, containing the measure if successful.
+     */
     @Path("/{id}")
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response updateTemperatureMeasure(@PathParam("id") Long id, TemperatureRequest request) {
         try {
             TemperatureMeasureDTO temperatureMeasureDTO = temperatureService.modifyTemperatureById(id, request.date(), request.location(), request.degree());
