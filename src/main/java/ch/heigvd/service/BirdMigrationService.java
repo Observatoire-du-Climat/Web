@@ -10,6 +10,7 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -89,5 +90,14 @@ public class BirdMigrationService {
                 birdMigrationToModify.getUser().getName(),
                 birdMigrationToModify.getSpecie(),
                 birdMigrationToModify.getEventType());
+    }
+
+    public List<BirdMigrationMeasureDTO> getAllBirdMigrationMeasures() {
+        var query = em.createQuery("""
+                    SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.user.name, b.specie, b.eventType)
+                    FROM BirdMigration AS b
+                """, BirdMigrationMeasureDTO.class);
+
+        return query.getResultList();
     }
 }

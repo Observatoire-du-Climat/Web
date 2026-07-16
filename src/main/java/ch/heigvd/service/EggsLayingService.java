@@ -12,6 +12,7 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -85,5 +86,14 @@ public class EggsLayingService {
                 eggsLayingToModify.getType(),
                 eggsLayingToModify.getUser().getName(),
                 eggsLayingToModify.getNumber());
+    }
+
+    public List<EggsLayingMeasureDTO> getAllEggsLayingMeasure() {
+        var query = em.createQuery("""
+                    SELECT new ch.heigvd.dto.EggsLayingMeasureDTO(e.id, e.date, e.location, e.type, e.user.name, e.number)
+                    FROM EggsLaying AS e
+                """, EggsLayingMeasureDTO.class);
+
+        return query.getResultList();
     }
 }

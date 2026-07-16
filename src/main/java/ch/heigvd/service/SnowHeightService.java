@@ -10,6 +10,7 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @ApplicationScoped
 public class SnowHeightService {
@@ -95,5 +96,14 @@ public class SnowHeightService {
                 snowHeightToModify.getWeather(),
                 snowHeightToModify.getPrecipitation());
 
+    }
+
+    public List<SnowHeightMeasureDTO> getAllSnowHeightMeasure() {
+        var query = em.createQuery("""
+                    SELECT new ch.heigvd.dto.SnowHeightMeasureDTO(s.id, s.date, s.location, s.type, s.user.name, s.height, s.weather, s.precipitation)
+                    FROM SnowHeight AS s
+                """, SnowHeightMeasureDTO.class);
+
+        return query.getResultList();
     }
 }

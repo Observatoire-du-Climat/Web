@@ -1,4 +1,4 @@
-package firebase;
+package ch.heigvd.firebase;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;

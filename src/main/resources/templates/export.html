@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Export des données</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="admin-header">
+            <div class="admin-header-info">
+                <h1>Portail Administrateur</h1>
+                <h3>Connecté en tant que : {adminName}</h3>
+            </div>
+
+            <nav class="admin-navbar">
+
+                <a class="btn btn-primary" href="/admin">Accueil</a>
+
+                <a class="btn btn-primary" href="/admin/notification">Notifications</a>
+
+                <a class="btn btn-primary" href="/admin/export">Exporter</a>
+
+                <a class="btn btn-danger" href="/admin/logout">Déconnexion</a>
+
+            </nav>
+        </header>
+
+        <div>
+            <h2 class="notification-title">Exporter les données en tableurs Excel</h2>
+            <a class="btn btn-primary" href="/admin/export/temperature">Temperature</a>
+            <a class="btn btn-primary" href="/admin/export/snow-height">Hauteur des neiges</a>
+            <a class="btn btn-primary" href="/admin/export/bird-migration">Migration des oiseaux</a>
+            <a class="btn btn-primary" href="/admin/export/eggs-laying">Relevé des pontes</a>
+        </div>
+    </div>
+</body>
