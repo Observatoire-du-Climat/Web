@@ -7,9 +7,11 @@ import ch.heigvd.dto.TemperatureMeasureDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 @ApplicationScoped
@@ -33,52 +35,35 @@ public class ExportService {
                 Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ) {
+            List<TemperatureMeasureDTO> measures = temperatureService.getAllTemperatureMeasures();
 
             Sheet sheet = workbook.createSheet("Température");
+            String[] headerValues = {"No", "id", "Date", "Lieu", "Auteur", "Degré (°C)"};
+            createTitle(sheet, headerValues.length, "Température");
+            createHeaderInfo(sheet, headerValues.length, measures.size());
+            createHeader(sheet, headerValues);
 
-            CellStyle headerStyle = createHeaderStyle(workbook);
-            CellStyle dataStyle = workbook.createCellStyle();
-            //dataStyle.setWrapText(true);
-
-            String[] headerValues = {"No", "id", "Date", "Lieu", "Auteur", "Degré"};
-            Row header = sheet.createRow(0);
-            for (int index = 0; index < headerValues.length; index++) {
-                Cell cell = header.createCell(index);
-                cell.setCellValue(headerValues[index]);
-                cell.setCellStyle(headerStyle);
-            }
-
-            int rowIndex = 1;
-            List<TemperatureMeasureDTO> measures = temperatureService.getAllTemperatureMeasures();
+            int rowIndex = 3;
+            int no = 1;
             for (TemperatureMeasureDTO measure : measures) {
-                //sheet.setColumnWidth(rowIndex, headerValues.length);
-                Row row = sheet.createRow(rowIndex);
+                Row row = sheet.createRow(rowIndex++);
 
                 //No
-                Cell cell0 = row.createCell(0);
-                cell0.setCellStyle(dataStyle);
-                cell0.setCellValue(rowIndex++);
+                createNumericCell(row, 0, no++);
                 //id
-                Cell cell1 = row.createCell(1);
-                cell1.setCellValue(measure.id());
-                cell1.setCellStyle(dataStyle);
+                createNumericCell(row, 1, measure.id());
                 //Date
-                Cell cell2 = row.createCell(2);
-                cell2.setCellValue(measure.date());
-                cell2.setCellStyle(dataStyle);
+                createDateCell(row, 2, measure.date());
                 //Lieu
-                Cell cell3 = row.createCell(3);
-                cell3.setCellValue(measure.location());
-                cell3.setCellStyle(dataStyle);
+                createTextCell(row, 3, measure.location());
                 //Auteur
-                Cell cell4 = row.createCell(4);
-                cell4.setCellValue(measure.author());
-                cell4.setCellStyle(dataStyle);
+                createTextCell(row, 4, measure.author());
                 //Degré
-                Cell cell5 = row.createCell(5);
-                cell5.setCellValue(measure.degree());
-                cell5.setCellStyle(dataStyle);
+                createNumericCell(row, 5, measure.degree());
             }
+
+            formatSheet(sheet, headerValues.length, rowIndex);
+
             workbook.write(outputStream);
             return outputStream.toByteArray();
 
@@ -93,49 +78,40 @@ public class ExportService {
                 Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ) {
+            List<SnowHeightMeasureDTO> measures = snowHeightService.getAllSnowHeightMeasure();
 
             Sheet sheet = workbook.createSheet("Hauteur des neiges");
-
-            CellStyle headerStyle = createHeaderStyle(workbook);
-
             String[] headerValues = {"No", "id", "Date", "Lieu", "Auteur", "Hauteur de la neige", "Conditions météo", "Précipitations"};
-            Row header = sheet.createRow(0);
-            for (int index = 0; index < headerValues.length; index++) {
-                Cell cell = header.createCell(index);
-                cell.setCellValue(headerValues[index]);
-                cell.setCellStyle(headerStyle);
-            }
+            createTitle(sheet, headerValues.length, "Hauteur des neiges");
+            createHeaderInfo(sheet, headerValues.length, measures.size());
+            createHeader(sheet, headerValues);
 
-            int rowIndex = 1;
-            List<SnowHeightMeasureDTO> measures = snowHeightService.getAllSnowHeightMeasure();
+            int rowIndex = 3;
+            int no = 1;
             for (SnowHeightMeasureDTO measure : measures) {
-                Row row = sheet.createRow(rowIndex);
+                Row row = sheet.createRow(rowIndex++);
 
                 //No
-                Cell cell0 = row.createCell(0);
-                cell0.setCellValue(rowIndex++);
+                createNumericCell(row, 0, no++);
                 //id
-                Cell cell1 = row.createCell(1);
-                cell1.setCellValue(measure.id());
+                createNumericCell(row, 1, measure.id());
                 //Date
-                Cell cell2 = row.createCell(2);
-                cell2.setCellValue(measure.date());
+                createDateCell(row, 2, measure.date());
                 //Lieu
-                Cell cell3 = row.createCell(3);
-                cell3.setCellValue(measure.location());
+                createTextCell(row, 3, measure.location());
                 //Auteur
-                Cell cell4 = row.createCell(4);
-                cell4.setCellValue(measure.author());
+                createTextCell(row, 4, measure.author());
                 //Hauteur
-                Cell cell5 = row.createCell(5);
-                cell5.setCellValue(measure.height());
+                createNumericCell(row, 5, measure.height());
                 //Conditions météo
-                Cell cell6 = row.createCell(6);
-                cell6.setCellValue(measure.weather().getLabel());
+                createTextCell(row, 6, measure.weather().getLabel());
                 //Precipitations
-                Cell cell7 = row.createCell(7);
-                cell7.setCellValue(measure.precipitation());
+                createNumericCell(row, 7, measure.precipitation());
             }
+
+            formatSheet(sheet, headerValues.length, rowIndex);
+
+
             workbook.write(outputStream);
             return outputStream.toByteArray();
 
@@ -149,46 +125,38 @@ public class ExportService {
                 Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ) {
+            List<BirdMigrationMeasureDTO> measures = birdMigrationService.getAllBirdMigrationMeasures();
 
             Sheet sheet = workbook.createSheet("Hauteur des neiges");
-
-            CellStyle headerStyle = createHeaderStyle(workbook);
-
             String[] headerValues = {"No", "id", "Date", "Lieu", "Auteur", "Espèce d'oiseau", "Evénement"};
-            Row header = sheet.createRow(0);
-            for (int index = 0; index < headerValues.length; index++) {
-                Cell cell = header.createCell(index);
-                cell.setCellValue(headerValues[index]);
-                cell.setCellStyle(headerStyle);
-            }
+            createTitle(sheet, headerValues.length, "Migration des oiseaux");
+            createHeaderInfo(sheet, headerValues.length, measures.size());
+            createHeader(sheet, headerValues);
 
-            int rowIndex = 1;
-            List<BirdMigrationMeasureDTO> measures = birdMigrationService.getAllBirdMigrationMeasures();
+            int rowIndex = 3;
+            int no = 1;
             for (BirdMigrationMeasureDTO measure : measures) {
-                Row row = sheet.createRow(rowIndex);
+                Row row = sheet.createRow(rowIndex++);
 
                 //No
-                Cell cell0 = row.createCell(0);
-                cell0.setCellValue(rowIndex++);
+                createNumericCell(row, 0, no++);
                 //id
-                Cell cell1 = row.createCell(1);
-                cell1.setCellValue(measure.id());
+                createNumericCell(row, 1, measure.id());
                 //Date
-                Cell cell2 = row.createCell(2);
-                cell2.setCellValue(measure.date());
+                createDateCell(row, 2, measure.date());
                 //Lieu
-                Cell cell3 = row.createCell(3);
-                cell3.setCellValue(measure.location());
+                createTextCell(row, 3, measure.location());
                 //Auteur
-                Cell cell4 = row.createCell(4);
-                cell4.setCellValue(measure.author());
+                createTextCell(row, 4, measure.author());
                 //Espèce
-                Cell cell5 = row.createCell(5);
-                cell5.setCellValue(measure.specie().getLabel());
+                createTextCell(row, 5, measure.specie().getLabel());
                 //Evenement
-                Cell cell6 = row.createCell(6);
-                cell6.setCellValue(measure.event().getLabel());
+                createTextCell(row, 6, measure.event().getLabel());
             }
+
+            formatSheet(sheet, headerValues.length, rowIndex);
+
+
             workbook.write(outputStream);
             return outputStream.toByteArray();
 
@@ -202,43 +170,35 @@ public class ExportService {
                 Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ) {
+            List<EggsLayingMeasureDTO> measures = eggsLayingService.getAllEggsLayingMeasure();
 
             Sheet sheet = workbook.createSheet("Hauteur des neiges");
-
-            CellStyle headerStyle = createHeaderStyle(workbook);
-
             String[] headerValues = {"No", "id", "Date", "Lieu", "Auteur", "Nombre de pontes"};
-            Row header = sheet.createRow(0);
-            for (int index = 0; index < headerValues.length; index++) {
-                Cell cell = header.createCell(index);
-                cell.setCellValue(headerValues[index]);
-                cell.setCellStyle(headerStyle);
-            }
+            createTitle(sheet, headerValues.length, "Hauteur des neiges");
+            createHeaderInfo(sheet, headerValues.length, measures.size());
+            createHeader(sheet, headerValues);
 
-            int rowIndex = 1;
-            List<EggsLayingMeasureDTO> measures = eggsLayingService.getAllEggsLayingMeasure();
+            int rowIndex = 3;
+            int no = 1;
             for (EggsLayingMeasureDTO measure : measures) {
-                Row row = sheet.createRow(rowIndex);
+                Row row = sheet.createRow(rowIndex++);
 
                 //No
-                Cell cell0 = row.createCell(0);
-                cell0.setCellValue(rowIndex++);
+                createNumericCell(row, 0, no++);
                 //id
-                Cell cell1 = row.createCell(1);
-                cell1.setCellValue(measure.id());
+                createNumericCell(row, 1, measure.id());
                 //Date
-                Cell cell2 = row.createCell(2);
-                cell2.setCellValue(measure.date());
+                createDateCell(row, 2, measure.date());
                 //Lieu
-                Cell cell3 = row.createCell(3);
-                cell3.setCellValue(measure.location());
+                createTextCell(row, 3, measure.location());
                 //Auteur
-                Cell cell4 = row.createCell(4);
-                cell4.setCellValue(measure.author());
+                createTextCell(row, 4, measure.author());
                 //Nombre de pontes
-                Cell cell5 = row.createCell(5);
-                cell5.setCellValue(measure.number());
+                createNumericCell(row, 5, measure.number());
             }
+
+            formatSheet(sheet, headerValues.length, rowIndex);
+
             workbook.write(outputStream);
             return outputStream.toByteArray();
 
@@ -248,18 +208,217 @@ public class ExportService {
     }
 
 
+    private void createTitle(Sheet sheet, int columnSize, String title) {
+
+        CellStyle titleStyle = createTitleStyle(sheet.getWorkbook());
+        Row titleRow = sheet.createRow(0);
+        titleRow.setHeightInPoints(32);
+
+        Cell titleCell = titleRow.createCell(0);
+        titleCell.setCellValue(title);
+        titleCell.setCellStyle(titleStyle);
+
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, columnSize-1));
+    }
+
+    private void createHeaderInfo(Sheet sheet, int columnSize, int nMeasures) {
+
+        CellStyle infoStyle = createInfoStyle(sheet.getWorkbook());
+
+        Row infoRow = sheet.createRow(1);
+        infoRow.setHeightInPoints(22);
+
+        Cell dateCell = infoRow.createCell(0);
+        dateCell.setCellValue(
+                "Date d'export : " + LocalDate.now()
+        );
+        dateCell.setCellStyle(infoStyle);
+
+        sheet.addMergedRegion(
+                new CellRangeAddress(1, 1, 0, columnSize/2)
+        );
+
+        Cell countCell = infoRow.createCell((columnSize/2)+1);
+        countCell.setCellValue(
+                "Nombre de mesures : " + nMeasures
+        );
+        countCell.setCellStyle(infoStyle);
+
+        sheet.addMergedRegion(
+                new CellRangeAddress(1, 1, (columnSize/2)+1, columnSize-1)
+        );
+    }
+
+    private void createHeader(Sheet sheet, String[] headerValues) {
+
+        CellStyle headerStyle = createHeaderStyle(sheet.getWorkbook());
+        addBorders(headerStyle);
+
+        Row header = sheet.createRow(2);
+        header.setHeightInPoints(26);
+        for (int index = 0; index < headerValues.length; index++) {
+            Cell cell = header.createCell(index);
+            cell.setCellValue(headerValues[index]);
+            cell.setCellStyle(headerStyle);
+        }
+    }
+
+    private void createTextCell(Row row, int columnIndex, String value) {
+        CellStyle style = createValueStyle(row.getSheet().getWorkbook());
+
+        Cell cell = row.createCell(columnIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
+    private void createNumericCell(Row row, int columnIndex, Number value) {
+        CellStyle style = createValueStyle(row.getSheet().getWorkbook());
+        Cell cell = row.createCell(columnIndex);
+        cell.setCellValue(value.doubleValue());
+        cell.setCellStyle(style);
+    }
+
+    private void createDateCell(Row row, int columnIndex, LocalDate date) {
+        CellStyle style = createDateStyle(row.getSheet().getWorkbook());
+
+        Cell cell = row.createCell(columnIndex);
+        cell.setCellValue(date);
+        cell.setCellStyle(style);
+    }
+
+    private void addBorders(CellStyle style) {
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+
+        short borderColor = IndexedColors.GREY_25_PERCENT.getIndex();
+
+        style.setTopBorderColor(borderColor);
+        style.setBottomBorderColor(borderColor);
+        style.setLeftBorderColor(borderColor);
+        style.setRightBorderColor(borderColor);
+    }
+
+    private CellStyle createTitleStyle(Workbook workbook) {
+        Font titleFont = workbook.createFont();
+        titleFont.setBold(true);
+        titleFont.setFontHeightInPoints((short) 18);
+        titleFont.setColor(IndexedColors.DARK_GREEN.getIndex());
+
+        CellStyle titleStyle = workbook.createCellStyle();
+        titleStyle.setFont(titleFont);
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
+        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        titleStyle.setFillForegroundColor(
+                IndexedColors.LIGHT_GREEN.getIndex()
+        );
+        titleStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        return titleStyle;
+    }
+
+    private CellStyle createInfoStyle(Workbook workbook) {
+        Font infoFont = workbook.createFont();
+        infoFont.setItalic(true);
+        infoFont.setColor(IndexedColors.DARK_GREEN.getIndex());
+
+        CellStyle infoStyle = workbook.createCellStyle();
+        infoStyle.setFont(infoFont);
+        infoStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        infoStyle.setFillForegroundColor(
+                IndexedColors.LIGHT_GREEN.getIndex()
+        );
+        infoStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        infoStyle.setBorderBottom(BorderStyle.THIN);
+        infoStyle.setBottomBorderColor(
+                IndexedColors.DARK_GREEN.getIndex()
+        );
+        infoStyle.setAlignment(HorizontalAlignment.CENTER);
+
+        return infoStyle;
+    }
 
     private CellStyle createHeaderStyle(Workbook workbook) {
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeightInPoints((short) 14);
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setColor(IndexedColors.WHITE.getIndex());
 
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFont(headerFont);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        headerStyle.setFillForegroundColor(
+                IndexedColors.GREEN.getIndex()
+        );
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        return headerStyle;
+    }
+
+    private CellStyle createValueStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
-        style.setFont(font);
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setBorderBottom(BorderStyle.THIN);
 
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setWrapText(true);
+        addBorders(style);
         return style;
+    }
+
+    private CellStyle createDateStyle(Workbook workbook) {
+        CellStyle dateStyle = createValueStyle(workbook);
+
+        CreationHelper helper = workbook.getCreationHelper();
+        dateStyle.setDataFormat(helper.createDataFormat().getFormat("dd.MM.yyyy"));
+
+        return dateStyle;
+    }
+
+    private void formatSheet(
+            Sheet sheet,
+            int numberOfColumns,
+            int lastDataRow
+    ) {
+        //sheet.createFreezePane(0, 3);
+
+        if (lastDataRow >= 3) {
+            sheet.setAutoFilter(
+                    new CellRangeAddress(
+                            2,
+                            lastDataRow,
+                            0,
+                            numberOfColumns - 1
+                    )
+            );
+        }
+
+        for (int columnIndex = 0;
+             columnIndex < numberOfColumns;
+             columnIndex++) {
+
+            sheet.autoSizeColumn(columnIndex);
+
+            int currentWidth = sheet.getColumnWidth(columnIndex);
+            int widthWithMargin = currentWidth + 1200;
+
+            sheet.setColumnWidth(
+                    columnIndex,
+                    Math.min(widthWithMargin, 255 * 256)
+            );
+        }
+
+        sheet.setColumnWidth(0, 8 * 256);
+        sheet.setColumnWidth(1, 10 * 256);
+        sheet.setColumnWidth(2, 14 * 256);
+        sheet.setColumnWidth(3, 24 * 256);
+        sheet.setColumnWidth(4, 22 * 256);
+        sheet.setColumnWidth(5, 20 * 256);
+        sheet.setColumnWidth(6, 20 * 256);
+        sheet.setColumnWidth(7, 20 * 256);
+
+        sheet.setDefaultRowHeightInPoints(20);
+        sheet.setDisplayGridlines(false);
     }
 }
