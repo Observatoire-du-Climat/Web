@@ -1,6 +1,5 @@
 package ch.heigvd.resource.admin;
 
-import ch.heigvd.dto.MeasureDTO;
 import ch.heigvd.service.MeasureService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;

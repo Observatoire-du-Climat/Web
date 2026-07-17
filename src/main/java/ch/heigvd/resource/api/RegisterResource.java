@@ -20,9 +20,6 @@ import jakarta.ws.rs.core.Response;
 public class RegisterResource {
 
     @Inject
-    EntityManager em;
-
-    @Inject
     UserService userService;
 
     /**

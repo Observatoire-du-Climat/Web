@@ -5,7 +5,6 @@ import ch.heigvd.entity.User;
 import ch.heigvd.service.UserService;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -19,9 +18,6 @@ import jakarta.ws.rs.core.Response;
 @Consumes("application/json")
 @Produces("application/json")
 public class LoginResource {
-
-    @Inject
-    EntityManager em;
 
     @Inject
     UserService userService;

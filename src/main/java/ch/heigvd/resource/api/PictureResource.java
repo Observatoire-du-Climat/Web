@@ -1,7 +1,6 @@
 package ch.heigvd.resource.api;
 
 import ch.heigvd.dto.MeasurePictureDTO;
-import ch.heigvd.entity.MeasurePicture;
 import ch.heigvd.service.PictureService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;

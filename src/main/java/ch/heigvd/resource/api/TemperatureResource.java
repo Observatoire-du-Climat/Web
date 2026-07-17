@@ -3,7 +3,6 @@ package ch.heigvd.resource.api;
 import ch.heigvd.dto.TemperatureMeasureDTO;
 import ch.heigvd.service.PictureService;
 import ch.heigvd.service.TemperatureService;
-import io.quarkus.security.UnauthorizedException;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

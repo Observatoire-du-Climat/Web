@@ -191,7 +191,7 @@ public class MeasureServiceTest {
     void testGetAllMeasures() {
 
         User user = TestHelpers.createTestUser(em);
-        Temperature temperature = TestHelpers.createTestTemperatureMeasure(em, user);
+        TestHelpers.createTestTemperatureMeasure(em, user);
         TestHelpers.createTestSnowHeightMeasure(em, user);
         TestHelpers.createTestBirdMigrationMeasure(em, user);
         TestHelpers.createTestEggsLayingMeasure(em, user);

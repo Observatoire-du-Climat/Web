@@ -40,7 +40,7 @@ public class ExportService {
 
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
             ) {
             List<TemperatureMeasureDTO> measures = temperatureService.getAllTemperatureMeasures();
 
@@ -87,7 +87,7 @@ public class ExportService {
 
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
             ) {
             List<SnowHeightMeasureDTO> measures = snowHeightService.getAllSnowHeightMeasure();
 
@@ -138,7 +138,7 @@ public class ExportService {
     public byte[] exportBirdMigrationMeasures() {
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         ) {
             List<BirdMigrationMeasureDTO> measures = birdMigrationService.getAllBirdMigrationMeasures();
 
@@ -187,7 +187,7 @@ public class ExportService {
     public byte[] exportEggsLayingMeasures() {
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         ) {
             List<EggsLayingMeasureDTO> measures = eggsLayingService.getAllEggsLayingMeasure();
 

@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service in charge of the User Class.

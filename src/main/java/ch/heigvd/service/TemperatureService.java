@@ -4,18 +4,15 @@ import ch.heigvd.dto.TemperatureMeasureDTO;
 import ch.heigvd.entity.MeasureType;
 import ch.heigvd.entity.Temperature;
 import ch.heigvd.entity.User;
-import io.quarkus.security.UnauthorizedException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
-import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service in charge of the Temperature Class.

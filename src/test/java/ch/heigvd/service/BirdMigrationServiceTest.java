@@ -140,9 +140,9 @@ public class BirdMigrationServiceTest {
     @TestTransaction
     void testGetAllBirdMigrationMeasures() {
         User user = TestHelpers.createTestUser(em);
-        SnowHeight snowHeight = TestHelpers.createTestSnowHeightMeasure(em, user);
-        Temperature temperature = TestHelpers.createTestTemperatureMeasure(em, user);
-        EggsLaying eggsLaying = TestHelpers.createTestEggsLayingMeasure(em, user);
+        TestHelpers.createTestSnowHeightMeasure(em, user);
+        TestHelpers.createTestTemperatureMeasure(em, user);
+        TestHelpers.createTestEggsLayingMeasure(em, user);
 
         var results = birdMigrationService.getAllBirdMigrationMeasures();
         for (var result : results) {
