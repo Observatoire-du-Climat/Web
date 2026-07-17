@@ -1,8 +1,7 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
-import ch.heigvd.entity.EggsLaying;
+import ch.heigvd.entity.Temperature;
 import ch.heigvd.entity.User;
-import ch.heigvd.resource.api.EggsLayingResource;
 import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,14 +13,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@TestHTTPEndpoint(EggsLayingResource.class)
-public class EggsLayingResourceTest {
+@TestHTTPEndpoint(TemperatureResource.class)
+public class TemperatureResourceTest {
 
     @Inject
     EntityManager em;
 
     @Test
-    public void testCreateEggsLayingMeasure() {
+    public void testCreateTemperatureMeasure() {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
@@ -30,7 +29,7 @@ public class EggsLayingResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "number": 10
+                  "degree": 30
                 }
                 """.formatted(user.getId());
 
@@ -41,18 +40,18 @@ public class EggsLayingResourceTest {
                 .statusCode(201)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("testlocation"))
-                .body("type", equalTo("EGGS_LAYING"))
-                .body("number", equalTo(10));
+                .body("type", equalTo("TEMPERATURE"))
+                .body("degree", equalTo(30));
     }
 
     @Test
-    public void testCreateEggsLayingMeasureWrongUserId() {
+    public void testCreateTemperatureMeasureWrongUserId() {
         String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "number": 10
+                  "degree": 30
                 }
                 """;
 
@@ -64,7 +63,7 @@ public class EggsLayingResourceTest {
     }
 
     @Test
-    public void testCreateEggsLayingMeasureWrongBody() {
+    public void testCreateTemperatureMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
         String requestJson = """
@@ -83,42 +82,42 @@ public class EggsLayingResourceTest {
     }
 
     @Test
-    public void testUpdateEggsLayingMeasure() {
+    public void testUpdateTemperatureMeasure() {
         User user = TestResourceHelpers.createUserForTest(em);
-        EggsLaying eggsLaying = TestResourceHelpers.createTestEggsLayingMeasureForTest(em, user);
+        Temperature temperature = TestResourceHelpers.createTestTemperatureMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "newlocation",
-                  "number": 20
+                  "degree": 20
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + eggsLaying.getId())
+                .put("/" + temperature.getId())
                 .then()
                 .statusCode(200)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("newlocation"))
-                .body("type", equalTo("EGGS_LAYING"))
-                .body("number", equalTo(20));
+                .body("type", equalTo("TEMPERATURE"))
+                .body("degree", equalTo(20));
     }
 
     @Test
-    public void testUpdateEggsLayingMeasureWrongId() {
+    public void testUpdateTemperatureMeasureWrongId() {
         User user = TestResourceHelpers.createUserForTest(em);
-        EggsLaying eggsLaying = TestResourceHelpers.createTestEggsLayingMeasureForTest(em, user);
+        Temperature temperature = TestResourceHelpers.createTestTemperatureMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "newlocation",
-                  "number": 20
+                  "degree": 20
                 }
                 """.formatted(user.getId());
 
@@ -132,9 +131,9 @@ public class EggsLayingResourceTest {
     }
 
     @Test
-    public void testUpdateEggsLayingMeasureWrongBody() {
+    public void testUpdateTemperatureMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
-        EggsLaying eggsLaying = TestResourceHelpers.createTestEggsLayingMeasureForTest(em, user);
+        Temperature temperature = TestResourceHelpers.createTestTemperatureMeasureForTest(em, user);
 
         String body = """
                 {
@@ -147,8 +146,10 @@ public class EggsLayingResourceTest {
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + eggsLaying.getId())
+                .put("/" + temperature.getId())
                 .then()
                 .statusCode(400);
     }
+
+
 }

@@ -1,4 +1,4 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.admin;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

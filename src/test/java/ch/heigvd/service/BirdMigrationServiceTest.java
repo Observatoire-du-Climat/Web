@@ -7,6 +7,7 @@ import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +30,21 @@ public class BirdMigrationServiceTest {
         assertThrows(NotFoundException.class, () ->
                 birdMigrationService.addBirdMigration(
                         -1L,
+                        LocalDate.of(2001, 2, 15),
+                        "testlocation",
+                        "Swallow",
+                        "Arrival"
+                )
+        );
+    }
+
+    @Test
+    @TestTransaction
+    void testAddBirdMigrationNotValidUser() {
+        User user = TestHelpers.createTestNotValidUser(em);
+        assertThrows(ForbiddenException.class, () ->
+                birdMigrationService.addBirdMigration(
+                        user.getId(),
                         LocalDate.of(2001, 2, 15),
                         "testlocation",
                         "Swallow",
@@ -118,5 +134,20 @@ public class BirdMigrationServiceTest {
 
         assertNotEquals(firstBirdMigrationMeasureDTO, result);
         assertEquals(secondBirdMigrationMeasureDTO, result);
+    }
+
+    @Test
+    @TestTransaction
+    void testGetAllBirdMigrationMeasures() {
+        User user = TestHelpers.createTestUser(em);
+        SnowHeight snowHeight = TestHelpers.createTestSnowHeightMeasure(em, user);
+        Temperature temperature = TestHelpers.createTestTemperatureMeasure(em, user);
+        EggsLaying eggsLaying = TestHelpers.createTestEggsLayingMeasure(em, user);
+
+        var results = birdMigrationService.getAllBirdMigrationMeasures();
+        for (var result : results) {
+            assertEquals(MeasureType.BIRD_MIGRATION, result.type());
+        }
+
     }
 }

@@ -1,8 +1,7 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
-import ch.heigvd.entity.Temperature;
+import ch.heigvd.entity.BirdMigration;
 import ch.heigvd.entity.User;
-import ch.heigvd.resource.api.TemperatureResource;
 import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,14 +13,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@TestHTTPEndpoint(TemperatureResource.class)
-public class TemperatureResourceTest {
+@TestHTTPEndpoint(BirdMigrationResource.class)
+public class BirdMigrationResourceTest {
 
     @Inject
     EntityManager em;
 
     @Test
-    public void testCreateTemperatureMeasure() {
+    public void testCreateBirdMigrationMeasure() {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
@@ -30,7 +29,8 @@ public class TemperatureResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "degree": 30
+                  "specie": "Swallow",
+                  "event": "Arrival"
                 }
                 """.formatted(user.getId());
 
@@ -41,18 +41,20 @@ public class TemperatureResourceTest {
                 .statusCode(201)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("testlocation"))
-                .body("type", equalTo("TEMPERATURE"))
-                .body("degree", equalTo(30));
+                .body("type", equalTo("BIRD_MIGRATION"))
+                .body("specie", equalTo("SWALLOW"))
+                .body("event", equalTo("ARRIVAL"));
     }
 
     @Test
-    public void testCreateTemperatureMeasureWrongUserId() {
+    public void testCreateBirdMigrationMeasureWrongUserId() {
         String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "degree": 30
+                  "specie": "Swallow",
+                  "event": "Arrival"
                 }
                 """;
 
@@ -64,14 +66,15 @@ public class TemperatureResourceTest {
     }
 
     @Test
-    public void testCreateTemperatureMeasureWrongBody() {
+    public void testCreateBirdMigrationMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
         String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
-                  "location": "testlocation"
+                  "location": "testlocation",
+                  "specie": "Swallow"
                 }
                 """.formatted(user.getId());
 
@@ -83,42 +86,44 @@ public class TemperatureResourceTest {
     }
 
     @Test
-    public void testUpdateTemperatureMeasure() {
+    public void testUpdateBirdMigrationMeasure() {
         User user = TestResourceHelpers.createUserForTest(em);
-        Temperature temperature = TestResourceHelpers.createTestTemperatureMeasureForTest(em, user);
+        BirdMigration birdMigration = TestResourceHelpers.createTestBirdMigrationForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "newlocation",
-                  "degree": 20
+                  "specie": "Swift",
+                  "event": "Departure"
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + temperature.getId())
+                .put("/" + birdMigration.getId())
                 .then()
                 .statusCode(200)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("newlocation"))
-                .body("type", equalTo("TEMPERATURE"))
-                .body("degree", equalTo(20));
+                .body("type", equalTo("BIRD_MIGRATION"))
+                .body("specie", equalTo("SWIFT"))
+                .body("event", equalTo("DEPARTURE"));
     }
 
     @Test
-    public void testUpdateTemperatureMeasureWrongId() {
+    public void testUpdateBirdMigrationMeasureWrongId() {
         User user = TestResourceHelpers.createUserForTest(em);
-        Temperature temperature = TestResourceHelpers.createTestTemperatureMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
-                  "location": "newlocation",
-                  "degree": 20
+                  "location": "testlocation",
+                  "specie": "Swift",
+                  "event": "Depature"
                 }
                 """.formatted(user.getId());
 
@@ -132,25 +137,24 @@ public class TemperatureResourceTest {
     }
 
     @Test
-    public void testUpdateTemperatureMeasureWrongBody() {
+    public void testUpdateSnowHeightMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
-        Temperature temperature = TestResourceHelpers.createTestTemperatureMeasureForTest(em, user);
+        BirdMigration birdMigration = TestResourceHelpers.createTestBirdMigrationForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
-                  "location": "newlocation"
+                  "location": "testlocation",
+                  "specie": "Swallow",
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + temperature.getId())
+                .put("/" + birdMigration.getId())
                 .then()
                 .statusCode(400);
     }
-
-
 }

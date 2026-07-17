@@ -1,8 +1,7 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
-import ch.heigvd.entity.SnowHeight;
+import ch.heigvd.entity.EggsLaying;
 import ch.heigvd.entity.User;
-import ch.heigvd.resource.api.SnowHeightResource;
 import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,14 +13,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@TestHTTPEndpoint(SnowHeightResource.class)
-public class SnowHeightResourceTest {
+@TestHTTPEndpoint(EggsLayingResource.class)
+public class EggsLayingResourceTest {
 
     @Inject
     EntityManager em;
 
     @Test
-    public void testCreateSnowHeightMeasure() {
+    public void testCreateEggsLayingMeasure() {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
@@ -30,9 +29,7 @@ public class SnowHeightResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "height": 10,
-                  "weather": "Sunny",
-                  "precipitation": 2
+                  "number": 10
                 }
                 """.formatted(user.getId());
 
@@ -43,22 +40,18 @@ public class SnowHeightResourceTest {
                 .statusCode(201)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("testlocation"))
-                .body("type", equalTo("SNOW_HEIGHT"))
-                .body("height", equalTo(10))
-                .body("weather", equalTo("SUNNY"))
-                .body("precipitation", equalTo(2));
+                .body("type", equalTo("EGGS_LAYING"))
+                .body("number", equalTo(10));
     }
 
     @Test
-    public void testCreateSnowHeightMeasureWrongUserId() {
+    public void testCreateEggsLayingMeasureWrongUserId() {
         String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "height": 10,
-                  "weather": "Sunny",
-                  "precipitation": 2
+                  "number": 10
                 }
                 """;
 
@@ -70,16 +63,14 @@ public class SnowHeightResourceTest {
     }
 
     @Test
-    public void testCreateSnowHeightMeasureWrongBody() {
+    public void testCreateEggsLayingMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
         String requestJson = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
-                  "location": "testlocation",
-                  "height": 10,
-                  "weather": "Sunny",
+                  "location": "testlocation"
                 }
                 """.formatted(user.getId());
 
@@ -91,48 +82,42 @@ public class SnowHeightResourceTest {
     }
 
     @Test
-    public void testUpdateSnowHeightMeasure() {
+    public void testUpdateEggsLayingMeasure() {
         User user = TestResourceHelpers.createUserForTest(em);
-        SnowHeight snowHeight = TestResourceHelpers.createTestSnowHeightMeasureForTest(em, user);
+        EggsLaying eggsLaying = TestResourceHelpers.createTestEggsLayingMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "newlocation",
-                  "height": 20,
-                  "weather": "Rainy",
-                  "precipitation": 2
+                  "number": 20
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + snowHeight.getId())
+                .put("/" + eggsLaying.getId())
                 .then()
                 .statusCode(200)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("newlocation"))
-                .body("type", equalTo("SNOW_HEIGHT"))
-                .body("height", equalTo(20))
-                .body("weather", equalTo("RAINY"))
-                .body("precipitation", equalTo(2));
+                .body("type", equalTo("EGGS_LAYING"))
+                .body("number", equalTo(20));
     }
 
     @Test
-    public void testUpdateSnowHeightMeasureWrongId() {
+    public void testUpdateEggsLayingMeasureWrongId() {
         User user = TestResourceHelpers.createUserForTest(em);
-        SnowHeight snowHeight = TestResourceHelpers.createTestSnowHeightMeasureForTest(em, user);
+        EggsLaying eggsLaying = TestResourceHelpers.createTestEggsLayingMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
-                  "location": "testlocation",
-                  "height": 10,
-                  "weather": "Sunny",
-                  "precipitation": 2
+                  "location": "newlocation",
+                  "number": 20
                 }
                 """.formatted(user.getId());
 
@@ -146,24 +131,22 @@ public class SnowHeightResourceTest {
     }
 
     @Test
-    public void testUpdateSnowHeightMeasureWrongBody() {
+    public void testUpdateEggsLayingMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
-        SnowHeight snowHeight = TestResourceHelpers.createTestSnowHeightMeasureForTest(em, user);
+        EggsLaying eggsLaying = TestResourceHelpers.createTestEggsLayingMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
-                  "location": "testlocation",
-                  "height": 10,
-                  "weather": "Sunny",
+                  "location": "newlocation"
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + snowHeight.getId())
+                .put("/" + eggsLaying.getId())
                 .then()
                 .statusCode(400);
     }

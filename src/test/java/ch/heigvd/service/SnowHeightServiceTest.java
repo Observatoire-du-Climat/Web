@@ -1,15 +1,13 @@
 package ch.heigvd.service;
 
 import ch.heigvd.dto.SnowHeightMeasureDTO;
-import ch.heigvd.entity.MeasureType;
-import ch.heigvd.entity.SnowHeight;
-import ch.heigvd.entity.User;
-import ch.heigvd.entity.WeatherType;
+import ch.heigvd.entity.*;
 import ch.heigvd.utils.TestHelpers;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +31,22 @@ public class SnowHeightServiceTest {
         assertThrows(NotFoundException.class, () ->
                 snowHeightService.addSnowHeight(
                         -1L,
+                        LocalDate.of(2001, 2, 15),
+                        "testlocation",
+                        10,
+                        "Sunny",
+                        2
+                )
+        );
+    }
+
+    @Test
+    @TestTransaction
+    void testAddSnowHeightNotValidUser() {
+        User user = TestHelpers.createTestNotValidUser(em);
+        assertThrows(ForbiddenException.class, () ->
+                snowHeightService.addSnowHeight(
+                        user.getId(),
                         LocalDate.of(2001, 2, 15),
                         "testlocation",
                         10,
@@ -131,5 +145,20 @@ public class SnowHeightServiceTest {
 
         assertNotEquals(firstSnowHeightMeasureDTO, result);
         assertEquals(secondSnowHeightMeasureDTO, result);
+    }
+
+    @Test
+    @TestTransaction
+    void testGetAllSnowHeightMeasures() {
+        User user = TestHelpers.createTestUser(em);
+        Temperature temperature = TestHelpers.createTestTemperatureMeasure(em, user);
+        BirdMigration birdMigration = TestHelpers.createTestBirdMigrationMeasure(em, user);
+        EggsLaying eggsLaying = TestHelpers.createTestEggsLayingMeasure(em, user);
+
+        var results = snowHeightService.getAllSnowHeightMeasure();
+        for (var result : results) {
+            assertEquals(MeasureType.SNOW_HEIGHT, result.type());
+        }
+
     }
 }
