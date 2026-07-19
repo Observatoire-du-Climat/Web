@@ -14,6 +14,9 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Service to convert the data into Excel files.
+ */
 @ApplicationScoped
 public class ExportService {
 
@@ -29,11 +32,15 @@ public class ExportService {
     @Inject
     EggsLayingService eggsLayingService;
 
+    /**
+     * Export all Temperature Measure into an Excel file.
+     * @return a byte array containing the generated Excel file.
+     */
     public byte[] exportTemperatureMeasures() {
 
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
             ) {
             List<TemperatureMeasureDTO> measures = temperatureService.getAllTemperatureMeasures();
 
@@ -72,11 +79,15 @@ public class ExportService {
         }
     }
 
+    /**
+     * Export all SnowHeight Measure into an Excel file.
+     * @return a byte array containing the generated Excel file.
+     */
     public byte[] exportSnowHeightMeasures() {
 
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
             ) {
             List<SnowHeightMeasureDTO> measures = snowHeightService.getAllSnowHeightMeasure();
 
@@ -120,10 +131,14 @@ public class ExportService {
         }
     }
 
+    /**
+     * Export all BirdMigration Measure into an Excel file.
+     * @return a byte array containing the generated Excel file.
+     */
     public byte[] exportBirdMigrationMeasures() {
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         ) {
             List<BirdMigrationMeasureDTO> measures = birdMigrationService.getAllBirdMigrationMeasures();
 
@@ -165,10 +180,14 @@ public class ExportService {
         }
     }
 
+    /**
+     * Export all EggsLaying Measure into an Excel file.
+     * @return a byte array containing the generated Excel file.
+     */
     public byte[] exportEggsLayingMeasures() {
         try (
                 Workbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         ) {
             List<EggsLayingMeasureDTO> measures = eggsLayingService.getAllEggsLayingMeasure();
 

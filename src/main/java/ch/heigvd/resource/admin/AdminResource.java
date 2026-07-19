@@ -11,10 +11,11 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.SecurityContext;
 
+/**
+ * Class responsible for the administration web page.
+ */
 @RolesAllowed("admin")
 @Path("/admin")
 public class AdminResource {
@@ -35,6 +36,12 @@ public class AdminResource {
         this.admin = admin;
     }
 
+    /**
+     * Display the main administration page.
+     * @param userSearch the optional userSearch query.
+     * @param order the optional measure sorting query.
+     * @return the rendered administration page.
+     */
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index(@QueryParam("userSearch") String userSearch, @QueryParam("order") String order) {

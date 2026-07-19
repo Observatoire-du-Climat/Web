@@ -14,6 +14,9 @@ import org.jboss.resteasy.reactive.RestForm;
 
 import java.net.URI;
 
+/**
+ * Class responsible for a sub administration web page, displaying and sending push notifications.
+ */
 @RolesAllowed("admin")
 @Path("/admin/notification")
 public class AdminNotificationResource {
@@ -27,6 +30,12 @@ public class AdminNotificationResource {
     @Inject
     SecurityIdentity identity;
 
+    /**
+     * Display the notification page.
+     * @param success if the sending was a success.
+     * @param error if the sending was an error.
+     * @return the rendered notification page.
+     */
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index(@QueryParam("success") boolean success, @QueryParam("error") boolean error) {
@@ -35,6 +44,12 @@ public class AdminNotificationResource {
                 .data("adminName", identity.getPrincipal().getName());
     }
 
+    /**
+     * Send a push notifications to the mobile application users.
+     * @param title the title of the notification.
+     * @param body the body of the notification.
+     * @return a redirection to the notification success or notification error page.
+     */
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Path("/send")

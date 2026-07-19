@@ -11,8 +11,11 @@ import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Service in charge of the BirdMigration Class.
+ * It contains the business logic associated with the BirdMigration Entity.
+ */
 @ApplicationScoped
 public class BirdMigrationService {
 
@@ -31,6 +34,8 @@ public class BirdMigrationService {
      * @param specie the specie of the bird
      * @param event departure or arrival
      * @return a DTO with the newly created BirdMigration if the insert was successful
+     * @throws NotFoundException if no user possess this userId
+     * @throws ForbiddenException if the user does not have the rights to create a Measure.
      */
     @Transactional
     public BirdMigrationMeasureDTO addBirdMigration(Long userId, LocalDate date, String location, String specie, String event) {
@@ -71,6 +76,7 @@ public class BirdMigrationService {
      * @param specie the (new) bird specie of the measure
      * @param event the (new) event of the measure
      * @return a DTO with the modified BirdMigration if the update was successful
+     * @throws NotFoundException if no measure possess this measureId
      */
     @Transactional
     public BirdMigrationMeasureDTO modifyBirdMigrationById(Long measureId, LocalDate date, String location, String specie, String event) {
@@ -92,6 +98,10 @@ public class BirdMigrationService {
                 birdMigrationToModify.getEventType());
     }
 
+    /**
+     * Get all the BirdMigration measures in details.
+     * @return a list of DTO from all the BirdMigrations measures.
+     */
     public List<BirdMigrationMeasureDTO> getAllBirdMigrationMeasures() {
         var query = em.createQuery("""
                     SELECT new ch.heigvd.dto.BirdMigrationMeasureDTO(b.id, b.date, b.location, b.type, b.user.name, b.specie, b.eventType)

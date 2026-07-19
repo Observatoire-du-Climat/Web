@@ -184,4 +184,22 @@ public class MeasureServiceTest {
         assertEquals(MeasureType.EGGS_LAYING, eggsLayingMeasureDTO.type());
         assertEquals(eggsLaying.getNumber(), eggsLayingMeasureDTO.number());
     }
+
+
+    @Test
+    @TestTransaction
+    void testGetAllMeasures() {
+
+        User user = TestHelpers.createTestUser(em);
+        TestHelpers.createTestTemperatureMeasure(em, user);
+        TestHelpers.createTestSnowHeightMeasure(em, user);
+        TestHelpers.createTestBirdMigrationMeasure(em, user);
+        TestHelpers.createTestEggsLayingMeasure(em, user);
+
+        List<MeasureDTO> result = measureService.getAllMeasures(null);
+        assertEquals(1, result.getFirst().id());
+
+        result = measureService.getAllMeasures("type");
+        assertEquals(MeasureType.BIRD_MIGRATION, result.getFirst().type());
+    }
 }

@@ -10,8 +10,11 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Service in charge of the User Class.
+ * It contains the business logic associated with the User Entity.
+ */
 @ApplicationScoped
 public class UserService {
 
@@ -25,7 +28,8 @@ public class UserService {
     /**
      * Search a User by its id
      * @param userId the user id
-     * @return the user with this id
+     * @return a DTO with this user displayable information
+     * @throws NotFoundException if no user possess this id
      */
     public UserDTO searchUserById(Long userId) {
 
@@ -71,8 +75,9 @@ public class UserService {
      * @param userId the id of the user to update
      * @param name the (new) name of the user
      * @param email the (new) email of the user
-     * @param password the (new) password of the user, encrypted by Bcrypt
-     * @return a DTO with the modified User if the update was successful, or an empty Optional if insertion failed
+     * @param password the (new) password of the user, encrypted with the Bcrypt algorithm
+     * @return a DTO with the modified User if the update was successful
+     * @throws NotFoundException if no user possess this id
      */
     @Transactional
     public UserDTO modifyUserById(Long userId, String name, String email, String password) {
@@ -106,7 +111,11 @@ public class UserService {
         return query.getSingleResult();
     }
 
-
+    /**
+     * Get all existing User
+     * @param search get all the users whose name contains this string
+     * @return a list of all the user in a DTO.
+     */
     public List<UserDTO> getAllUser(String search) {
 
         if (search == null || search.isBlank()) {
@@ -126,6 +135,12 @@ public class UserService {
         return query.getResultList();
     }
 
+    /**
+     * Validate a user by changing his isValid field
+     * @param userId the id of the user to validate
+     * @return a DTO of the newly validated user
+     * @throws NotFoundException if no user possess this id
+     */
     @Transactional
     public UserDTO validateUserById(long userId) {
         User user = em.find(User.class, userId);

@@ -16,6 +16,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+/**
+ * Service in charge of the MeasurePicture Class.
+ * It contains the business logic associated with the MeasurePicture Entity.
+ */
 @ApplicationScoped
 public class PictureService {
 
@@ -34,6 +38,12 @@ public class PictureService {
         return index == -1 ? "" : fileName.substring(index);
     }
 
+    /**
+     * Insert a MeasurePicture.
+     * Store the picture in the application.
+     * @param picture the picture
+     * @param measureId the id of the measure associated with the picture
+     */
     @Transactional
     public void addPicture(FileUpload picture, Long measureId) {
         Measure measure = em.find(Measure.class, measureId);
@@ -55,7 +65,11 @@ public class PictureService {
          }
     }
 
-
+    /**
+     * Get the MeasurePicture of a specified Measure.
+     * @param measureId the id of the Measure
+     * @return a DTO with the picture path.
+     */
     public MeasurePictureDTO getPictureByMeasureId(Long measureId) {
 
         Measure measure = em.find(Measure.class, measureId);

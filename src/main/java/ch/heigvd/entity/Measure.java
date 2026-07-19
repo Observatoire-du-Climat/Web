@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class represents the Measure Entity
+ * This is a superclass for inheritance of measure subclasses. It defines common fields of all measure types.
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "measure")

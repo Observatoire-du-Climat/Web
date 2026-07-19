@@ -12,6 +12,10 @@ import jakarta.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Service in charge of the SnowHeight Class.
+ * It contains the business logic associated with the SnowHeight Entity.
+ */
 @ApplicationScoped
 public class SnowHeightService {
 
@@ -31,6 +35,8 @@ public class SnowHeightService {
      * @param weather the weather value of the measure
      * @param precipitation the precipitation value of the measure
      * @return a DTO with the newly created SnowHeight if the insert was successful
+     * @throws NotFoundException if no user possess this userId
+     * @throws ForbiddenException if the user does not have the right to create a measure
      */
     @Transactional
     public SnowHeightMeasureDTO addSnowHeight(Long userId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
@@ -74,6 +80,7 @@ public class SnowHeightService {
      * @param weather the (new) weather value of the measure
      * @param precipitation the (new) precipitation value of the measure
      * @return a DTO with the modified SnowHeight if the update was successful
+     * @throws  NotFoundException if no measure possess this measureId
      */
     @Transactional
     public SnowHeightMeasureDTO modifySnowHeightById(Long measureId, LocalDate date, String location, Integer height, String weather, Integer precipitation) {
@@ -98,6 +105,10 @@ public class SnowHeightService {
 
     }
 
+    /**
+     * Get all the existing SnowHeight measures in details.
+     * @return a list of DTO from all the SnowHeight measure
+     */
     public List<SnowHeightMeasureDTO> getAllSnowHeightMeasure() {
         var query = em.createQuery("""
                     SELECT new ch.heigvd.dto.SnowHeightMeasureDTO(s.id, s.date, s.location, s.type, s.user.name, s.height, s.weather, s.precipitation)

@@ -1,7 +1,6 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
 import ch.heigvd.entity.User;
-import ch.heigvd.resource.api.LoginResource;
 import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -13,18 +12,39 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@TestHTTPEndpoint(LoginResource.class)
-public class LoginResourceTest {
+@TestHTTPEndpoint(RegisterResource.class)
+public class RegisterResourceTest {
 
     @Inject
     EntityManager em;
 
     @Test
-    public void testLogin() {
+    public void testRegister() {
+        String body = """
+        {
+            "name": "Test User",
+            "email": "test@test.ch",
+            "password": "password"
+        }
+        """;
+
+        given().contentType("application/json")
+                .body(body)
+                .when()
+                .post()
+                .then()
+                .statusCode(201)
+                .body("name", equalTo("Test User"))
+                .body("email", equalTo("test@test.ch"));
+    }
+
+    @Test
+    public void testRegisterSameEmail() {
         User user = TestResourceHelpers.createUserForTest(em);
 
         String body = """
         {
+            "name": "Test User",
             "email": "%s",
             "password": "password"
         }
@@ -35,38 +55,16 @@ public class LoginResourceTest {
                 .when()
                 .post()
                 .then()
-                .statusCode(200)
-                .body("id", equalTo(user.getId().intValue()))
-                .body("name", equalTo(user.getName()))
-                .body("email", equalTo(user.getEmail()));
+                .statusCode(400);
+
     }
 
     @Test
-    public void testLoginWrongPassword() {
-        User user = TestResourceHelpers.createUserForTest(em);
-
+    public void testRegisterWrongBody() {
         String body = """
         {
-            "email": "%s",
-            "password": "wrongpassword"
-        }
-        """.formatted(user.getEmail());
-
-        given().contentType("application/json")
-                .body(body)
-                .when()
-                .post()
-                .then()
-                .statusCode(401);
-    }
-
-    @Test
-    public void testLoginWrongEmail() {
-
-        String body = """
-        {
-            "email": "unknown@test.ch",
-            "password": "password"
+            "name": "Test User",
+            "email": "test@test.ch",
         }
         """;
 
@@ -77,23 +75,5 @@ public class LoginResourceTest {
                 .then()
                 .statusCode(400);
     }
-
-    @Test
-    public void testLoginWrongBody() {
-
-        String body = """
-        {
-            "email": "test@test.ch"
-        }
-        """;
-
-        given().contentType("application/json")
-                .body(body)
-                .when()
-                .post()
-                .then()
-                .statusCode(400);
-    }
-
 
 }

@@ -1,96 +1,143 @@
-# code-with-quarkus
+# Observatoire Citoyen du Climat – Web Application
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This repository contains the web application for the **Observatoire Citoyen du Climat** project. It is developed as part of a Bachelor's thesis at HEIG-VD.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+The application provides the database and the backend REST API used by the mobile application and a web administration portal for managing users and measurements.
 
-## Running the application in dev mode
+You can find more about the mobile application [here](https://github.com/Observatoire-du-Climat/Mobile).
 
-You can run your application in dev mode that enables live coding using:
+## Context
 
-```shell script
+This application was developed as part of a Bachelor's thesis at HEIG-VD in collaboration with the **Parc naturel régional Jura vaudois**.
+
+The objective of the project is to provide a digital platform allowing citizen observers to collect and submit climate-related observations.
+
+## Features
+
+### REST API
+
+The application exposes a REST API used by the mobile application to:
+
+- Register and authenticate users
+- Retrieve and update user information
+- Submit climate measurements
+- Retrieve measurement history
+- Update and delete climate measurements
+
+All the information about the endpoint and their responses can be found here : **link to doc**.
+
+### Administration Portal
+
+The web administration portal allows administrators to:
+
+- View, search and validate registered users 
+- View and manage measurements
+- Send push notifications to mobile application users
+- Export collected data to Excel files
+
+## Technologies
+
+The backend is built using:
+
+- Java 21 
+- Quarkus 
+- Jakarta 
+- Hibernate ORM 
+- PostgreSQL 
+- Qute 
+- Apache POI 
+- Firebase Cloud Messaging 
+- Maven 
+- Docker
+
+## Project Structure
+
+The application follows this structure :
+
+`src/main/java/ch/heigvd`
+
+- `dto` – Data Transfer Objects used between application layers
+- `entity` – JPA entities representing the application's data model
+- `resource/api` – REST API endpoints used by the mobile application
+- `resource/admin` – Web resources for the administration portal
+- `service` – Application business logic
+- `firebase` - Configuration and methods about Firebase Cloud Messaging 
+
+## Requirements
+
+To run the application locally, you need:
+
+* Java 21
+* Maven
+* PostgreSQL
+
+The whole application can be run using Docker Compose as well.
+
+## Configuration
+
+Firebase credentials are required to send push notifications. The path to the Firebase service account credentials must be provided through the following environment variable:
+
+```
+FIREBASE_CREDENTIALS_PATH=/path/to/firebase-service-account.json
+```
+
+## Running the Application
+
+### Development Mode
+
+The application can be started in development mode with:
+
+```
 ./mvnw quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+The application is then available at:
 
-## Packaging and running the application
+```
+http://localhost:8080
+```
 
-The application can be packaged using:
+The administration portal is available at:
 
-```shell script
+```
+http://localhost:8080/admin
+```
+
+## Running Tests
+
+Run all tests with:
+
+```
+./mvnw test
+```
+
+## Docker
+
+The application can be packaged with:
+
+```
 ./mvnw package
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+A Docker image can then be built using the Dockerfile provided by the project.
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+For example:
 
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```
+docker build -f src/main/docker/Dockerfile.jvm -t observatoire-climat-web .
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+The application can also be deployed alongside a PostgreSQL database using Docker Compose.
 
-## Creating a native executable
+## CI/CD
 
-You can create a native executable using:
+A CI/CD pipeline is configured using GitHub Actions.
 
-```shell script
-./mvnw package -Dnative
-```
+The pipeline:
+- Runs automated tests for pull requests 
+- Runs automated tests when changes are pushed to the main branch 
+- Builds the application 
+- Creates a Docker image 
+- Publishes the Docker image to the GitHub Container Registry
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/code-with-quarkus-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): Build RESTful web services and APIs using Jakarta REST (formerly JAX-RS)
-- Qute Web ([guide](https://quarkiverse.github.io/quarkiverse-docs/quarkus-qute-web/dev/index.html)): Serves Qute templates directly over HTTP.
-- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Bean validation using Hibernate Validator and Jakarta Validation annotations
-- Qute ([guide](https://quarkus.io/guides/qute)): Offer templating support for web, email, etc in a build time, type-safe way
-- REST Qute ([guide](https://quarkus.io/guides/qute-reference#rest_integration)): Qute integration for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplified JPA/Hibernate data access layer with active record and repository patterns
-- Security JPA ([guide](https://quarkus.io/guides/security-getting-started)): Secure your applications with username/password stored in a database via Jakarta Persistence
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### Qute Web
-
-Qute templates like `some-page.html` served via HTTP automatically by Quarkus from the `src/main/resource/templates/pub` directory. No controllers needed. Once the quarkus app is started visit the generated page at http://localhost:8080/some-page?name=World
-
-[Related guide section...](https://docs.quarkiverse.io/quarkus-qute-web/dev/index.html)
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
-
-### REST Qute
-
-Create your web page using Quarkus REST and Qute
-
-[Related guide section...](https://quarkus.io/guides/qute#type-safe-templates)
+The Docker image can then be pulled and deployed on the production server.

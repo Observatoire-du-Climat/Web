@@ -1,14 +1,13 @@
 package ch.heigvd.service;
 
 import ch.heigvd.dto.TemperatureMeasureDTO;
-import ch.heigvd.entity.MeasureType;
-import ch.heigvd.entity.Temperature;
-import ch.heigvd.entity.User;
+import ch.heigvd.entity.*;
 import ch.heigvd.utils.TestHelpers;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +30,20 @@ public class TemperatureServiceTest {
         assertThrows(NotFoundException.class, () ->
                 temperatureService.addTemperature(
                         -1L,
+                        LocalDate.of(2001, 2, 15),
+                        "testlocation",
+                        30
+                )
+        );
+    }
+
+    @Test
+    @TestTransaction
+    void testAddTemperatureNotValidUser() {
+        User user = TestHelpers.createTestNotValidUser(em);
+        assertThrows(ForbiddenException.class, () ->
+                temperatureService.addTemperature(
+                        user.getId(),
                         LocalDate.of(2001, 2, 15),
                         "testlocation",
                         30
@@ -111,5 +124,20 @@ public class TemperatureServiceTest {
 
         assertNotEquals(firstTemperatureMeasureDTO, result);
         assertEquals(secondTemperatureMeasureDTO, result);
+    }
+
+    @Test
+    @TestTransaction
+    void testGetAllTemperatureMeasures() {
+        User user = TestHelpers.createTestUser(em);
+        TestHelpers.createTestSnowHeightMeasure(em, user);
+        TestHelpers.createTestBirdMigrationMeasure(em, user);
+        TestHelpers.createTestEggsLayingMeasure(em, user);
+
+        var results = temperatureService.getAllTemperatureMeasures();
+        for (var result : results) {
+            assertEquals(MeasureType.TEMPERATURE, result.type());
+        }
+
     }
 }

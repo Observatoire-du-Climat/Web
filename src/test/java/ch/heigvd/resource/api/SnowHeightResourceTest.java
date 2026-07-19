@@ -1,8 +1,7 @@
-package ch.heigvd.resource;
+package ch.heigvd.resource.api;
 
-import ch.heigvd.entity.BirdMigration;
+import ch.heigvd.entity.SnowHeight;
 import ch.heigvd.entity.User;
-import ch.heigvd.resource.api.BirdMigrationResource;
 import ch.heigvd.utils.TestResourceHelpers;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,14 +13,14 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
-@TestHTTPEndpoint(BirdMigrationResource.class)
-public class BirdMigrationResourceTest {
+@TestHTTPEndpoint(SnowHeightResource.class)
+public class SnowHeightResourceTest {
 
     @Inject
     EntityManager em;
 
     @Test
-    public void testCreateBirdMigrationMeasure() {
+    public void testCreateSnowHeightMeasure() {
 
         User user = TestResourceHelpers.createUserForTest(em);
 
@@ -30,8 +29,9 @@ public class BirdMigrationResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "specie": "Swallow",
-                  "event": "Arrival"
+                  "height": 10,
+                  "weather": "Sunny",
+                  "precipitation": 2
                 }
                 """.formatted(user.getId());
 
@@ -42,20 +42,22 @@ public class BirdMigrationResourceTest {
                 .statusCode(201)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("testlocation"))
-                .body("type", equalTo("BIRD_MIGRATION"))
-                .body("specie", equalTo("SWALLOW"))
-                .body("event", equalTo("ARRIVAL"));
+                .body("type", equalTo("SNOW_HEIGHT"))
+                .body("height", equalTo(10))
+                .body("weather", equalTo("SUNNY"))
+                .body("precipitation", equalTo(2));
     }
 
     @Test
-    public void testCreateBirdMigrationMeasureWrongUserId() {
+    public void testCreateSnowHeightMeasureWrongUserId() {
         String requestJson = """
                 {
                   "userId": -1,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "specie": "Swallow",
-                  "event": "Arrival"
+                  "height": 10,
+                  "weather": "Sunny",
+                  "precipitation": 2
                 }
                 """;
 
@@ -67,7 +69,7 @@ public class BirdMigrationResourceTest {
     }
 
     @Test
-    public void testCreateBirdMigrationMeasureWrongBody() {
+    public void testCreateSnowHeightMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
 
         String requestJson = """
@@ -75,7 +77,8 @@ public class BirdMigrationResourceTest {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "specie": "Swallow"
+                  "height": 10,
+                  "weather": "Sunny",
                 }
                 """.formatted(user.getId());
 
@@ -87,44 +90,48 @@ public class BirdMigrationResourceTest {
     }
 
     @Test
-    public void testUpdateBirdMigrationMeasure() {
+    public void testUpdateSnowHeightMeasure() {
         User user = TestResourceHelpers.createUserForTest(em);
-        BirdMigration birdMigration = TestResourceHelpers.createTestBirdMigrationForTest(em, user);
+        SnowHeight snowHeight = TestResourceHelpers.createTestSnowHeightMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "newlocation",
-                  "specie": "Swift",
-                  "event": "Departure"
+                  "height": 20,
+                  "weather": "Rainy",
+                  "precipitation": 2
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + birdMigration.getId())
+                .put("/" + snowHeight.getId())
                 .then()
                 .statusCode(200)
                 .body("date", equalTo("2001-02-15"))
                 .body("location", equalTo("newlocation"))
-                .body("type", equalTo("BIRD_MIGRATION"))
-                .body("specie", equalTo("SWIFT"))
-                .body("event", equalTo("DEPARTURE"));
+                .body("type", equalTo("SNOW_HEIGHT"))
+                .body("height", equalTo(20))
+                .body("weather", equalTo("RAINY"))
+                .body("precipitation", equalTo(2));
     }
 
     @Test
-    public void testUpdateBirdMigrationMeasureWrongId() {
+    public void testUpdateSnowHeightMeasureWrongId() {
         User user = TestResourceHelpers.createUserForTest(em);
+        SnowHeight snowHeight = TestResourceHelpers.createTestSnowHeightMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "specie": "Swift",
-                  "event": "Depature"
+                  "height": 10,
+                  "weather": "Sunny",
+                  "precipitation": 2
                 }
                 """.formatted(user.getId());
 
@@ -140,21 +147,22 @@ public class BirdMigrationResourceTest {
     @Test
     public void testUpdateSnowHeightMeasureWrongBody() {
         User user = TestResourceHelpers.createUserForTest(em);
-        BirdMigration birdMigration = TestResourceHelpers.createTestBirdMigrationForTest(em, user);
+        SnowHeight snowHeight = TestResourceHelpers.createTestSnowHeightMeasureForTest(em, user);
 
         String body = """
                 {
                   "userId": %d,
                   "date": "2001-02-15",
                   "location": "testlocation",
-                  "specie": "Swallow",
+                  "height": 10,
+                  "weather": "Sunny",
                 }
                 """.formatted(user.getId());
 
         given().contentType("application/json")
                 .body(body)
                 .when()
-                .put("/" + birdMigration.getId())
+                .put("/" + snowHeight.getId())
                 .then()
                 .statusCode(400);
     }

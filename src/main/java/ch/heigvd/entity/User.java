@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Email;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * This class represents a User entity
+ */
 @Entity
 @Table(name = "users") //name "user" not avaiable
 @UserDefinition
@@ -17,20 +20,20 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "name", length = 50, nullable = false)
+    @Column(name = "name", length = 70, nullable = false)
     private String name;
 
-    @Column(name = "email", length = 50, nullable = false, unique = true)
+    @Column(name = "email", length = 70, nullable = false, unique = true)
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @Username
     private String email;
 
     @Column(name = "password", nullable = false)
     @Password(value = PasswordType.MCF)
-    private String password;
+    private String password; //password is encrypted with the BCrypt algorithm.
 
     @Roles
-    private String role;
+    private String role; //2 roles possibles : "admin" and "user"
 
     @Column(name = "is_valid", nullable = false)
     private Boolean isValid;
@@ -80,15 +83,6 @@ public class User {
         this.role = role;
     }
 
-    /*
-    public Boolean getAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
-     */
     public Boolean getValid() {
         return isValid;
     }

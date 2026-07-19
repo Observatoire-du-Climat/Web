@@ -4,6 +4,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+/**
+ * This class represents a Temperature entity.
+ * It is a subclass of the Measure entity.
+ */
 @Entity
 @Table(name = "temperature")
 public class Temperature extends Measure {

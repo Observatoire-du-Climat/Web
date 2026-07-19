@@ -22,7 +22,25 @@ public class TestHelpers {
         user.setEmail(UUID.randomUUID() + "@test.ch");
         user.setPassword(BcryptUtil.bcryptHash("password"));
         user.setValid(true);
-        //user.setAdmin(false);
+        user.setRole("user");
+
+        em.persist(user);
+        return user;
+    }
+
+    /**
+     * Create a User that has not been validated for test methods
+     * @param em the EntityManager of the test
+     * @return the test user
+     */
+    public static User createTestNotValidUser(EntityManager em) {
+        User user = new User();
+
+        user.setName("Test User");
+        //generate different random email to be sure there is no compatibility problem
+        user.setEmail(UUID.randomUUID() + "@test.ch");
+        user.setPassword(BcryptUtil.bcryptHash("password"));
+        user.setValid(false);
         user.setRole("user");
 
         em.persist(user);

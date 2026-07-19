@@ -13,8 +13,11 @@ import jakarta.ws.rs.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Service in charge of the EggsLaying Class.
+ * It contains the business logic associated with the EggsLaying Entity.
+ */
 @ApplicationScoped
 public class EggsLayingService {
 
@@ -32,6 +35,8 @@ public class EggsLayingService {
      * @param location the location of the measure
      * @param number the number value of the measure
      * @return a DTO with the newly created EggsLaying if the insert was successful
+     * @throws NotFoundException if no user possess this userId
+     * @throws ForbiddenException if the user does not have the rights to create a Measure.
      */
     @Transactional
     public EggsLayingMeasureDTO addEggsLaying(Long userId, LocalDate date, String location, Integer number) {
@@ -69,6 +74,7 @@ public class EggsLayingService {
      * @param location the (new) location of the measure
      * @param number the (new) number value of the measure
      * @return a DTO with the modified EggsLaying if the update was successful
+     * @throws NotFoundException if no measure possess this measureId
      */
     @Transactional
     public EggsLayingMeasureDTO modifyEggsLayingById(Long measureId, LocalDate date, String location, Integer number) {
@@ -88,6 +94,10 @@ public class EggsLayingService {
                 eggsLayingToModify.getNumber());
     }
 
+    /**
+     * Get all the existing EggsLaying measures in details.
+     * @return a list of DTO from all the EggsLaying measures.
+     */
     public List<EggsLayingMeasureDTO> getAllEggsLayingMeasure() {
         var query = em.createQuery("""
                     SELECT new ch.heigvd.dto.EggsLayingMeasureDTO(e.id, e.date, e.location, e.type, e.user.name, e.number)

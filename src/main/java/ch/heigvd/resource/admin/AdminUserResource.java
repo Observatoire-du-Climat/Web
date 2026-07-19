@@ -12,6 +12,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Class responsible for a sub administration web page, displaying a user details.
+ */
 @RolesAllowed("admin")
 @Path("/admin/user")
 public class AdminUserResource {
@@ -28,6 +31,11 @@ public class AdminUserResource {
     @Inject
     SecurityIdentity identity;
 
+    /**
+     * Display a user details page.
+     * @param id the id of the user.
+     * @return the renderer user details page.
+     */
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Path("/{id}")
@@ -37,12 +45,16 @@ public class AdminUserResource {
                 .data("adminName", identity.getPrincipal().getName());
     }
 
+    /**
+     * Validate a user from its details page
+     * @param id the id of the user
+     * @return the appropriate HTTP Response, containing the user if successful.
+     */
     @PUT
     @Path("/{id}")
     public Response validateUser(@PathParam("id") long id) {
         try {
             UserDTO userDTO = userService.validateUserById(id);
-            System.out.println(userDTO);
             return Response.status(Response.Status.OK).entity(userDTO).build();
         } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();

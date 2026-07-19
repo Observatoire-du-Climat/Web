@@ -9,10 +9,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Service in charge of the Measure Class.
+ * It contains the business logic associated with the Measure Entity and its subclasses.
+ */
 @ApplicationScoped
 public class MeasureService {
 
@@ -24,8 +26,9 @@ public class MeasureService {
     }
 
     /**
-     * Search all the measures in the database
-     * @return all the measures
+     * Get all the existing measures
+     * It contains only the global details of the measures
+     * @return a list of DTO from all the measures
      */
     public List<MeasureDTO> searchAllMeasures() {
         var query = em.createQuery("""
@@ -38,8 +41,10 @@ public class MeasureService {
 
     /**
      * Search all the measure of a specific user
+     * It contains only the global details of the measures
      * @param userId the id of the user
-     * @return the list of all measure taken by the specific user
+     * @return a list of DTO from all measure taken by the specific user
+     * @throws NotFoundException if no measure possess this id
      */
     public List<MeasureDTO> searchAllMeasuresByUserId(Long userId) {
 
@@ -59,9 +64,11 @@ public class MeasureService {
     }
 
     /**
-     * Search a measure by its id
+     * Get a measure by its id
+     * It retrieves all the details from the measures
      * @param measureId the measure id
-     * @return the specific measure with this id
+     * @return the specific DTO of the measure with this id
+     * @throws NotFoundException if no measure possess this id
      */
     public Object searchMeasureById(Long measureId) {
 
@@ -134,6 +141,13 @@ public class MeasureService {
         return true;
     }
 
+    /**
+     * Get all the existing measure, sorted by a given field
+     * It contains only the global details of the measures
+     * By default, sorted by id.
+     * @param sort the field used to sort the measures
+     * @return a list of DTO from all the measure
+     */
     public List<MeasureDTO> getAllMeasures(String sort) {
         String orderBy;
         if (sort == null || sort.isBlank()) {
