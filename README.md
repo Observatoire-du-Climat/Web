@@ -39,16 +39,16 @@ The web administration portal allows administrators to:
 
 The backend is built using:
 
-* Java 21
-* Quarkus
-* Jakarta REST
-* Hibernate ORM
-* PostgreSQL
-* Qute
-* Apache POI
-* Firebase Cloud Messaging
-* Maven
-* Docker
+- Java 21 
+- Quarkus 
+- Jakarta 
+- Hibernate ORM 
+- PostgreSQL 
+- Qute 
+- Apache POI 
+- Firebase Cloud Messaging 
+- Maven 
+- Docker
 
 ## Project Structure
 
@@ -56,11 +56,12 @@ The application follows this structure :
 
 `src/main/java/ch/heigvd`
 
-* `dto` – Data Transfer Objects used between application layers
-* `entity` – JPA entities representing the application's data model
-* `resource/api` – REST API endpoints used by the mobile application
-* `resource/admin` – Web resources for the administration portal
-* `service` – Application business logic
+- `dto` – Data Transfer Objects used between application layers
+- `entity` – JPA entities representing the application's data model
+- `resource/api` – REST API endpoints used by the mobile application
+- `resource/admin` – Web resources for the administration portal
+- `service` – Application business logic
+- `firebase` - Configuration and methods about Firebase Cloud Messaging 
 
 ## Requirements
 
@@ -133,11 +134,10 @@ The application can also be deployed alongside a PostgreSQL database using Docke
 A CI/CD pipeline is configured using GitHub Actions.
 
 The pipeline:
-
-* Runs automated tests for pull requests
-* Runs automated tests when changes are pushed to the main branch
-* Builds the application
-* Creates a Docker image
-* Publishes the Docker image to the GitHub Container Registry
+- Runs automated tests for pull requests 
+- Runs automated tests when changes are pushed to the main branch 
+- Builds the application 
+- Creates a Docker image 
+- Publishes the Docker image to the GitHub Container Registry
 
 The Docker image can then be pulled and deployed on the production server.
