@@ -10,7 +10,7 @@
 <script>
     async function validateUser() {
 
-        const response = await fetch(`/admin/user/{user.id}`, {
+        const response = await fetch(`/api/users/{user.id}/validate`, {
             method: "PUT"
         });
         console.log(response)

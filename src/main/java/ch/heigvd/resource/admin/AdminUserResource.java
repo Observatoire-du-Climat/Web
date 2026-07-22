@@ -1,6 +1,5 @@
 package ch.heigvd.resource.admin;
 
-import ch.heigvd.dto.UserDTO;
 import ch.heigvd.service.MeasureService;
 import ch.heigvd.service.UserService;
 import io.quarkus.qute.Template;
@@ -10,7 +9,6 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
 /**
  * Class responsible for a sub administration web page, displaying a user details.
@@ -43,24 +41,5 @@ public class AdminUserResource {
         return user.data("user", userService.searchUserById(id))
                 .data("measures", measureService.searchAllMeasuresByUserId(id))
                 .data("adminName", identity.getPrincipal().getName());
-    }
-
-    /**
-     * Validate a user from its details page
-     * @param id the id of the user
-     * @return the appropriate HTTP Response, containing the user if successful.
-     */
-    @PUT
-    @Path("/{id}")
-    public Response validateUser(@PathParam("id") long id) {
-        try {
-            UserDTO userDTO = userService.validateUserById(id);
-            return Response.status(Response.Status.OK).entity(userDTO).build();
-        } catch (NotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
     }
 }
