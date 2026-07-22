@@ -28,12 +28,72 @@
             </nav>
         </header>
 
-        <div>
-            <h2 class="notification-title">Exporter les données en tableurs Excel</h2>
-            <a class="btn btn-primary" href="/admin/export/temperature">Temperature</a>
-            <a class="btn btn-primary" href="/admin/export/snow-height">Hauteur des neiges</a>
-            <a class="btn btn-primary" href="/admin/export/bird-migration">Migration des oiseaux</a>
-            <a class="btn btn-primary" href="/admin/export/eggs-laying">Relevé des pontes</a>
+        <div class="export-page">
+            <h2 class="export-title">
+                Exporter les données en tableurs Excel
+            </h2>
+
+            <div class="export-grid">
+
+                <div class="export-card">
+                    <div class="export-card-content">
+                        <h3>Température</h3>
+
+                        <p class="export-count">
+                            Nombre de relevés :
+                            <strong>{temperatureCount}</strong>
+                        </p>
+                    </div>
+
+                    <a class="btn btn-primary export-button" href="/admin/export/temperature">
+                       Télécharger
+                    </a>
+                </div>
+
+                <div class="export-card">
+                    <div class="export-card-content">
+                        <h3>Hauteur des neiges</h3>
+
+                        <p class="export-count">
+                            Nombre de relevés :
+                            <strong>{snowHeightCount}</strong>
+                        </p>
+                    </div>
+
+                    <a class="btn btn-primary export-button" href="/admin/export/snow-height">
+                        Télécharger
+                    </a>
+                </div>
+
+                <div class="export-card">
+                    <div class="export-card-content">
+                        <h3>Migration des oiseaux</h3>
+
+                        <p class="export-count">
+                            Nombre de relevés :
+                            <strong>{birdMigrationCount}</strong>
+                        </p>
+                    </div>
+
+                    <a class="btn btn-primary export-button" href="/admin/export/bird-migration">
+                        Télécharger
+                    </a>
+                </div>
+
+                <div class="export-card">
+                    <div class="export-card-content">
+                        <h3>Relevé des pontes</h3>
+
+                        <p class="export-count">
+                            Nombre de relevés :
+                            <strong>{eggsLayingCount}</strong>
+                        </p>
+                    </div>
+
+                    <a class="btn btn-primary export-button" href="/admin/export/eggs-laying">Télécharger</a>
+                </div>
+
+            </div>
         </div>
     </div>
 </body>

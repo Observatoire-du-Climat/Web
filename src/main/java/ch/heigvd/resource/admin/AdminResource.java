@@ -1,6 +1,7 @@
 package ch.heigvd.resource.admin;
 
 import ch.heigvd.service.MeasureService;
+import ch.heigvd.service.PictureService;
 import ch.heigvd.service.UserService;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
@@ -27,6 +28,8 @@ public class AdminResource {
     UserService userService;
     @Inject
     MeasureService measureService;
+    @Inject
+    PictureService pictureService;
 
     @Inject
     SecurityIdentity identity;
@@ -48,6 +51,8 @@ public class AdminResource {
         return admin.data("users", userService.getAllUser(userSearch))
                 .data("userSearch", userSearch)
                 .data("measures", measureService.getAllMeasures(order))
+                .data("measureCount", measureService.getAllMeasures("").size())
+                .data("pictureCount", pictureService.getPictureCount())
                 .data("order", order)
                 .data("adminName", identity.getPrincipal().getName());
     }

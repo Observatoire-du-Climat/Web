@@ -78,10 +78,23 @@ public class PictureService {
         }
         var query = em.createQuery("""
         SELECT p.path
-        FROM MeasurePicture as p
+        FROM MeasurePicture AS p
         WHERE p.measure.id = :measureId
         """, MeasurePictureDTO.class).setParameter("measureId", measureId);
 
         return query.getResultList().getFirst();
+    }
+
+    /**
+     * Get the number of pictures existing in the database
+     * @return the number of pictures
+     */
+    public int getPictureCount() {
+        var query = em.createQuery("""
+            SELECT COUNT(p)
+            FROM MeasurePicture AS p
+            """, Long.class);
+
+        return  query.getSingleResult().intValue();
     }
 }
