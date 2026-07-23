@@ -24,45 +24,6 @@ public class MeasureServiceTest {
     @Inject
     MeasureService measureService;
 
-    /* Pass when testing only this Class, but doesn't when testing all at once
-    @Test
-    void testSearchAllMeasuresEmptyList() {
-        List<MeasureDTO> result = measureService.searchAllMeasures();
-        assertTrue(result.isEmpty());
-    }
-     */
-
-
-    @Test
-    @TestTransaction
-    void testSearchAllMeasures() {
-
-        User user = TestHelpers.createTestUser(em);
-        Temperature temperature = TestHelpers.createTestTemperatureMeasure(em, user);
-        SnowHeight snowHeight = TestHelpers.createTestSnowHeightMeasure(em, user);
-
-        List<MeasureDTO> result = measureService.searchAllMeasures();
-        assertFalse(result.isEmpty());
-        //assertEquals(2, result.size());
-
-        assertTrue(user.getMeasures().contains(temperature));
-        assertTrue(user.getMeasures().contains(snowHeight));
-        assertTrue(result.stream().anyMatch(m ->
-                m.id().equals(temperature.getId()) &&
-                m.date().equals(LocalDate.of(2001, 2, 15)) &&
-                m.location().equals("testlocation") &&
-                m.type().equals(MeasureType.TEMPERATURE) &&
-                m.author().equals(user.getName())
-        ));
-        assertTrue(result.stream().anyMatch(m ->
-                m.id().equals(snowHeight.getId()) &&
-                m.date().equals(LocalDate.of(2001, 2, 15)) &&
-                m.location().equals("testlocation") &&
-                m.type().equals(MeasureType.SNOW_HEIGHT) &&
-                m.author().equals(user.getName())
-        ));
-    }
-
     @Test
     @TestTransaction
     void testSearchAllMeasuresByUserIdEmptyList() {
@@ -196,10 +157,10 @@ public class MeasureServiceTest {
         TestHelpers.createTestBirdMigrationMeasure(em, user);
         TestHelpers.createTestEggsLayingMeasure(em, user);
 
-        List<MeasureDTO> result = measureService.getAllMeasures(null);
+        List<MeasureDTO> result = measureService.getAllMeasures(null, true);
         assertEquals(1, result.getFirst().id());
 
-        result = measureService.getAllMeasures("type");
+        result = measureService.getAllMeasures("type", true);
         assertEquals(MeasureType.BIRD_MIGRATION, result.getFirst().type());
     }
 }
