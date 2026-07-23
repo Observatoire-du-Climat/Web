@@ -2,6 +2,7 @@ package ch.heigvd.service;
 
 import ch.heigvd.dto.*;
 import ch.heigvd.entity.Measure;
+import ch.heigvd.entity.MeasurePicture;
 import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -136,6 +137,12 @@ public class MeasureService {
             //If the user doesn't have this measure in his measures set
             return false;
         }
+
+        //delete all the measure's associated pictures
+        for (MeasurePicture picture : measureToDelete.getPictures()) {
+            em.remove(picture);
+        }
+
         em.remove(measureToDelete);
 
         return true;

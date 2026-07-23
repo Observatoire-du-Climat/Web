@@ -60,6 +60,8 @@ public class PictureService {
              measurePicture.setMeasure(measure);
              measurePicture.setPath(path.toString());
              em.persist(measurePicture);
+
+             measure.getPictures().add(measurePicture);
          } catch (Exception e) {
              throw new RuntimeException("Unable to create picture file");
          }
