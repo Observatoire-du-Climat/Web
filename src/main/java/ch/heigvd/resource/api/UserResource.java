@@ -11,8 +11,8 @@ import jakarta.ws.rs.core.Response;
  * Class responsible for the REST resource exposing user-related endpoints.
  */
 @Path("/api/users")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+//@Consumes(MediaType.APPLICATION_JSON)
+//@Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
     @Inject
@@ -33,6 +33,7 @@ public class UserResource {
      */
     @Path("/{id}")
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") Long id) {
         try {
             UserDTO userDTO = userService.searchUserById(id);
@@ -52,6 +53,8 @@ public class UserResource {
      */
     @Path("/{id}")
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(@PathParam("id") Long id, UserRequest userRequest) {
         try {
             UserDTO userDTO = userService.modifyUserById(id,userRequest.name(), userRequest.email(), userRequest.password());
@@ -63,4 +66,22 @@ public class UserResource {
         }
     }
 
+    /**
+     * Validate a user from its details page
+     * @param id the id of the user
+     * @return the appropriate HTTP Response, containing the user if successful.
+     */
+    @PUT
+    @Path("/{id}/validate")
+    public Response validateUser(@PathParam("id") long id) {
+        try {
+            UserDTO userDTO = userService.validateUserById(id);
+            return Response.status(Response.Status.OK).entity(userDTO).build();
+        } catch (NotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+    }
 }

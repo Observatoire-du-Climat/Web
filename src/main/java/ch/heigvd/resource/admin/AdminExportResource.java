@@ -1,6 +1,6 @@
 package ch.heigvd.resource.admin;
 
-import ch.heigvd.service.ExportService;
+import ch.heigvd.service.*;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.identity.SecurityIdentity;
@@ -24,6 +24,15 @@ public class AdminExportResource {
     ExportService exportService;
 
     @Inject
+    TemperatureService temperatureService;
+    @Inject
+    SnowHeightService snowHeightService;
+    @Inject
+    BirdMigrationService birdMigrationService;
+    @Inject
+    EggsLayingService eggsLayingService;
+
+    @Inject
     Template export;
 
     @Inject
@@ -36,7 +45,11 @@ public class AdminExportResource {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance index() {
-        return export.data("adminName", identity.getPrincipal().getName());
+        return export.data("adminName", identity.getPrincipal().getName())
+                .data("temperatureCount", temperatureService.getAllTemperatureMeasures().size())
+                .data("snowHeightCount", snowHeightService.getAllSnowHeightMeasure().size())
+                .data("birdMigrationCount", birdMigrationService.getAllBirdMigrationMeasures().size())
+                .data("eggsLayingCount", eggsLayingService.getAllEggsLayingMeasure().size());
     }
 
     /**

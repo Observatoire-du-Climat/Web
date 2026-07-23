@@ -78,6 +78,11 @@
         <div class="section-header">
             <h2>Mesures</h2>
         </div>
+        <div>
+            <h3>Nombre de mesures : {measureCount}</h3>
+            <h3>Nombre de photo : {pictureCount}</h3>
+        </div>
+        <br>
 
         {#if measures.isEmpty}
             <p class="empty">Aucune mesure</p>
@@ -87,25 +92,25 @@
                     <thead>
                     <tr>
                         <th>
-                            <a href="/admin?userSearch={userSearch}&order=id">
+                            <a href="/admin?userSearch={userSearch}&order=id&asc={order == 'id' && asc ? 'false' : 'true'}">
                                 ID
                                 {#if order == 'id'} ▼ {/if}
                             </a>
                         </th>
                         <th>
-                            <a href="/admin?userSearch={userSearch}&order=date">
+                            <a href="/admin?userSearch={userSearch}&order=date&asc={order == 'date' && asc ? 'false' : 'true'}">
                                 Date
                                 {#if order == 'date'} ▼ {/if}
                             </a>
                         </th>
                         <th>
-                            <a href="/admin?userSearch={userSearch}&order=type">
+                            <a href="/admin?userSearch={userSearch}&order=type&asc={order == 'type' && asc ? 'false' : 'true'}">
                                 Type
                                 {#if order == 'type'} ▼ {/if}
                             </a>
                         </th>
                         <th>
-                            <a href="/admin?userSearch={userSearch}&order=author">
+                            <a href="/admin?userSearch={userSearch}&order=author&asc={order == 'author' && asc ? 'false' : 'true'}">
                                 Auteur
                                 {#if order == 'author'} ▼ {/if}
                             </a>

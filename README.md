@@ -24,7 +24,7 @@ The application exposes a REST API used by the mobile application to:
 - Retrieve measurement history
 - Update and delete climate measurements
 
-All the information about the endpoint and their responses can be found here : **link to doc**.
+All the information about the endpoint and their responses can be found [here](/documents/api.md) (currently only available in French).
 
 ### Administration Portal
 

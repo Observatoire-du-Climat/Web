@@ -2,6 +2,7 @@ package ch.heigvd.service;
 
 import ch.heigvd.dto.*;
 import ch.heigvd.entity.Measure;
+import ch.heigvd.entity.MeasurePicture;
 import ch.heigvd.entity.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,20 +27,6 @@ public class MeasureService {
     }
 
     /**
-     * Get all the existing measures
-     * It contains only the global details of the measures
-     * @return a list of DTO from all the measures
-     */
-    public List<MeasureDTO> searchAllMeasures() {
-        var query = em.createQuery("""
-            SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
-            FROM Measure AS m
-        """, MeasureDTO.class);
-
-        return query.getResultList();
-    }
-
-    /**
      * Search all the measure of a specific user
      * It contains only the global details of the measures
      * @param userId the id of the user
@@ -57,7 +44,7 @@ public class MeasureService {
             SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
             FROM Measure AS m
             WHERE m.user.id = :id
-            ORDER BY m.date
+            ORDER BY m.date DESC
         """, MeasureDTO.class).setParameter("id", userId);
 
         return query.getResultList();
@@ -136,6 +123,12 @@ public class MeasureService {
             //If the user doesn't have this measure in his measures set
             return false;
         }
+
+        //delete all the measure's associated pictures
+        for (MeasurePicture picture : measureToDelete.getPictures()) {
+            em.remove(picture);
+        }
+
         em.remove(measureToDelete);
 
         return true;
@@ -148,7 +141,7 @@ public class MeasureService {
      * @param sort the field used to sort the measures
      * @return a list of DTO from all the measure
      */
-    public List<MeasureDTO> getAllMeasures(String sort) {
+    public List<MeasureDTO> getAllMeasures(String sort, boolean asc) {
         String orderBy;
         if (sort == null || sort.isBlank()) {
             orderBy = "m.id";
@@ -161,11 +154,13 @@ public class MeasureService {
             };
         }
 
+        String direction = asc ? "ASC" : "DESC";
+
         String query = """
                 SELECT new ch.heigvd.dto.MeasureDTO(m.id, m.date, m.location, m.type, m.user.name)
                 FROM Measure AS m
-                ORDER BY %s
-                """.formatted(orderBy);
+                ORDER BY %s %s
+                """.formatted(orderBy, direction);
         return em.createQuery(query, MeasureDTO.class).getResultList();
     }
 

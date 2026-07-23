@@ -451,3 +451,88 @@ img {
     color: white;
     text-decoration: none;
 }
+
+
+/* ---------- Export ---------- */
+
+
+.export-page {
+    margin-top: 32px;
+}
+
+.export-title {
+    margin: 0 0 28px;
+    text-align: center;
+    color: var(--green, #224433);
+    font-size: 1.6rem;
+}
+
+.export-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.export-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 210px;
+    padding: 24px;
+
+    background-color: #ffffff;
+    border: 1px solid #d7e0da;
+    border-left: 6px solid var(--green, #224433);
+    border-radius: 12px;
+
+    box-shadow: 0 4px 12px rgba(34, 68, 51, 0.10);
+
+    transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+.export-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(34, 68, 51, 0.16);
+}
+
+.export-card-content h3 {
+    margin: 0 0 12px;
+    color: var(--green, #224433);
+    font-size: 1.25rem;
+}
+
+.export-description {
+    margin: 0 0 20px;
+    color: #4e5b54;
+    line-height: 1.5;
+}
+
+.export-count {
+    margin: 0;
+    padding: 10px 12px;
+
+    background-color: #f2f6f3;
+    border-radius: 8px;
+
+    color: #33443a;
+    font-size: 0.95rem;
+}
+
+.export-count strong {
+    color: var(--green, #224433);
+    font-size: 1.05rem;
+}
+
+.export-button {
+    align-self: flex-start;
+    margin-top: 22px;
+    text-decoration: none;
+}
+
+@media (max-width: 800px) {
+    .export-grid {
+        grid-template-columns: 1fr;
+    }
+}
